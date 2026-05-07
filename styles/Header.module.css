@@ -1,0 +1,428 @@
+/* ═══════════════════════════════════════════════════════════
+   KATHART HEADER — Ink & Gold redesign
+   · Transparent on hero → frosted-glass on light sections
+   · Ghost pill CTA with gold hover
+   · DM Sans UI type
+   ═══════════════════════════════════════════════════════════ */
+
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 0 48px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.80);   /* default: white on hero / dark sections */
+  transition:
+    background 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    backdrop-filter 0.55s ease,
+    box-shadow 0.4s ease,
+    color 0.5s ease;
+}
+
+/* Frosted glass — activates on light (About/Work) sections */
+.header.dark {
+  color: rgba(17, 16, 8, 0.55);
+  background: rgba(249, 246, 240, 0.88);
+  backdrop-filter: blur(22px) saturate(1.5);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  box-shadow: 0 1px 0 rgba(17, 16, 8, 0.08);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;            /* 72 → 80 for better breathing room */
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ─────────────────────────────────────
+   LOGO
+   ───────────────────────────────────── */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoMark {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+.logoWord {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #ffffff;
+  transition: color 0.5s ease;
+}
+
+.dark .logoWord {
+  color: var(--fg);
+}
+
+/* ─────────────────────────────────────
+   DESKTOP NAV
+   ───────────────────────────────────── */
+
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+}
+
+.navBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 22px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 400;            /* Light weight = more editorial */
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.80);
+  opacity: 1;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+  z-index: 1;
+}
+
+.navBtn:hover {
+  color: #ffffff;
+}
+
+.dark .navBtn {
+  color: rgba(17, 16, 8, 0.55);
+}
+
+.dark .navBtn:hover {
+  color: var(--fg);
+}
+
+/* Sliding underline — GSAP controls x + width */
+.indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.70);
+  pointer-events: none;
+  transition: background 0.5s ease;
+}
+
+.dark .indicator {
+  background: var(--accent);   /* Gold underline on light sections */
+}
+
+/* ─────────────────────────────────────
+   HEADER ACTIONS — CTA + toggle grouped
+   ───────────────────────────────────── */
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+/* Vertical rule between CTA and toggle */
+.ctaSep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.20);
+  flex-shrink: 0;
+  transition: background 0.5s ease;
+}
+
+.dark .ctaSep {
+  background: rgba(16, 14, 10, 0.15);
+}
+
+/* ─────────────────────────────────────
+   CTA — Sharp editorial button (Tier 3)
+   ───────────────────────────────────── */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+
+  padding: 10px 22px;
+  border-radius: 3px;
+  border: 1.5px solid rgba(255, 255, 255, 0.48);
+
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffffff;
+
+  background: transparent;
+  transition:
+    color 0.4s ease,
+    border-color 0.4s ease,
+    background 0.3s ease;
+}
+
+.cta:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.80);
+}
+
+/* On light sections */
+.dark .cta {
+  border-color: rgba(16, 14, 10, 0.25);
+  color: var(--fg);
+  background: transparent;
+}
+
+.dark .cta:hover {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.cta:hover .ctaArrow {
+  transform: translateX(5px);
+}
+
+/* ─────────────────────────────────────
+   HAMBURGER — two lines
+   ───────────────────────────────────── */
+
+.burger {
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.bLine {
+  display: block;
+  height: 1.5px;
+  width: 26px;
+  border-radius: 2px;
+  background: #ffffff;
+  transition: background 0.5s ease;
+}
+
+.dark .bLine {
+  background: var(--fg);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE OVERLAY + SHEET — Full-screen editorial takeover
+   ═══════════════════════════════════════════════════════════ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+}
+
+.overlayBg {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 10, 8, 0.55);
+}
+
+/* Full-screen sheet — editorial, not a bottom drawer */
+.sheet {
+  position: absolute;
+  inset: 0;
+  background: #09080C;   /* cool-dark void */
+  display: flex;
+  flex-direction: column;
+  padding: 0 40px 56px;
+  overflow-y: auto;
+}
+
+/* Amber top accent line */
+.sheet::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(124, 92, 191, 0.60) 25%,
+    rgba(124, 92, 191, 1)    50%,
+    rgba(124, 92, 191, 0.60) 75%,
+    transparent
+  );
+}
+
+.sheetHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+/* No handle pill on full-screen */
+.handle { display: none; }
+
+.sheetClose {
+  background: none; border: none;
+  color: rgba(240, 237, 232, 0.30);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 8px;
+  line-height: 1;
+  transition: color 0.2s ease;
+  margin-left: auto;
+}
+
+.sheetClose:hover { color: var(--accent); }
+
+.sheetLogo {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  margin-bottom: 52px;
+  flex-shrink: 0;
+}
+
+.sheetMark {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.sheetWord {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #ffffff;
+}
+
+/* Nav items — large editorial serif, color on active */
+.sheetNav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  margin-bottom: 52px;
+}
+
+.sheetItem {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  background: none; border: none;
+  text-align: left;
+  cursor: pointer;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(240, 237, 232, 0.06);
+}
+
+.sheetItem:first-child { border-top: 1px solid rgba(240, 237, 232, 0.06); }
+
+.sheetNum {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: rgba(240, 237, 232, 0.20);
+  min-width: 24px;
+  transition: color 0.25s ease;
+}
+
+/* Large display serif for menu items */
+.sheetLabel {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 11vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: rgba(240, 237, 232, 0.20);
+  transition: color 0.25s ease;
+}
+
+.sheetItem:hover .sheetLabel { color: rgba(240, 237, 232, 0.80); }
+.sheetItem:hover .sheetNum   { color: var(--accent); }
+.sheetActive .sheetLabel     { color: var(--accent); }
+.sheetActive .sheetNum       { color: var(--accent); }
+
+.sheetFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Solid filled CTA in mobile sheet */
+.sheetCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #09080C;
+  background: var(--accent);
+  border-radius: 40px;
+  padding: 13px 30px;
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.sheetCta:hover {
+  background: #C9B8E8;
+  transform: translateY(-1px);
+}
+
+.sheetTagline {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.15);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 960px) {
+  .header  { padding: 0 24px; }
+  .nav, .cta, .ctaSep { display: none; }
+  .burger    { display: flex; }
+  .inner     { gap: 12px; }
+}
+
+@media (max-width: 640px) {
+  .sheet { padding: 0 28px 48px; }
+}

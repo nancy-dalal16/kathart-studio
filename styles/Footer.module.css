@@ -1,0 +1,330 @@
+/* ═══════════════════════════════════════════════════════════
+   KATHART — FOOTER (Ink & Gold redesign)
+   Dark warm-void background — matches cinematic hero energy.
+   Gold accent bar + gold column labels.
+   ═══════════════════════════════════════════════════════════ */
+
+.footer {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse 70% 60% at 0% 100%,
+      rgba(124, 92, 191, 0.10) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 55% 50% at 100% 0%,
+      rgba(87, 61, 138, 0.08) 0%,
+      transparent 55%
+    ),
+    #09080C;
+}
+
+/* ── Gold accent bar at the very top ── */
+.accentBar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent             0%,
+    rgba(124, 92, 191, 0.5) 20%,
+    rgba(124, 92, 191, 1)   50%,
+    rgba(124, 92, 191, 0.5) 80%,
+    transparent             100%
+  );
+  z-index: 2;
+}
+
+/* ── Ghost "ELEVATED." architectural watermark ── */
+.ghostWrap {
+  position: absolute;
+  bottom: -3%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+.ghostText {
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 16vw, 18rem);   /* architectural — much larger */
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
+  line-height: 1;
+  display: block;
+}
+
+/* ── Main content wrapper ── */
+.footerInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 60px;
+  padding: 88px 64px 68px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BRAND COLUMN
+   ═══════════════════════════════════════════════════════════ */
+
+.brand {
+  flex: 0 0 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.logoLink {
+  display: inline-block;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.logoImg {
+  height: 40px;
+  width: auto;
+  display: block;
+  /* White logo SVG reads perfectly on dark bg — no filter needed */
+}
+
+.brandStatement {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(240, 237, 232, 0.40);
+  letter-spacing: 0.01em;
+}
+
+/* Social icons */
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(240, 237, 232, 0.28);
+  text-decoration: none;
+  transition: color 0.25s ease, transform 0.25s ease;
+  line-height: 0;
+}
+
+.socialBtn:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.socialSep {
+  display: block;
+  width: 1px;
+  height: 14px;
+  background: rgba(240, 237, 232, 0.10);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LINK COLUMNS
+   ═══════════════════════════════════════════════════════════ */
+
+.cols {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 64px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 130px;
+}
+
+/* Gold labels — clear visual hierarchy on dark bg */
+.colLabel {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.75;
+  margin-bottom: 2px;
+}
+
+.colLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.colLink {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: rgba(240, 237, 232, 0.42);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  padding-bottom: 2px;
+  transition: color 0.25s ease;
+}
+
+.colLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.colLink:hover {
+  color: rgba(240, 237, 232, 0.90);
+}
+
+.colLink:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BOTTOM BAR
+   ═══════════════════════════════════════════════════════════ */
+
+.bottomBar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 64px 32px;
+  max-width: 1440px;
+  margin: 0 auto;
+  border-top: 1px solid rgba(240, 237, 232, 0.07);
+}
+
+.copyright {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: rgba(240, 237, 232, 0.22);
+}
+
+.dividerDot {
+  color: rgba(240, 237, 232, 0.15);
+  font-size: var(--text-xs);
+}
+
+.allRights {
+  font-size: var(--text-xs);
+  color: rgba(240, 237, 232, 0.16);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.motto {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: rgba(124, 92, 191, 0.50);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DARK MODE — footer is always dark, so this is a no-op
+   Light mode override: keep footer dark regardless of theme
+   ═══════════════════════════════════════════════════════════ */
+
+/* Footer stays dark in both light and dark mode */
+:global([data-theme="dark"]) .footer {
+  background:
+    radial-gradient(
+      ellipse 70% 60% at 0% 100%,
+      rgba(124, 92, 191, 0.08) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 55% 50% at 100% 0%,
+      rgba(87, 61, 138, 0.06) 0%,
+      transparent 55%
+    ),
+    #07060A;   /* slightly deeper cool-dark */
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 1100px) {
+  .footerInner {
+    flex-direction: column;
+    gap: 52px;
+    padding: 72px 40px 60px;
+  }
+
+  .brand {
+    flex: none;
+    max-width: 360px;
+  }
+
+  .cols {
+    justify-content: flex-start;
+    gap: 44px;
+  }
+
+  .bottomBar {
+    padding: 20px 40px 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footerInner {
+    padding: 56px 24px 52px;
+    gap: 44px;
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 24px;
+  }
+
+  .bottomBar {
+    padding: 16px 24px 24px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .spacer { display: none; }
+
+  .motto {
+    width: 100%;
+    text-align: center;
+    padding-top: 4px;
+  }
+
+  .ghostText {
+    font-size: clamp(4rem, 20vw, 9rem);
+  }
+}
