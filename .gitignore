@@ -39,21 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# editor
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# os
-Thumbs.db
-desktop.ini
-
-# backup files (created during development)
-*.bak
-*.current.bak
-*.future.bak
-
-# claude
-.claude/

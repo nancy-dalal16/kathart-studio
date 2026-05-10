@@ -1,0 +1,256 @@
+/* ═══════════════════════════════════════════════════════
+   HERO + WE-ARE PINNED MASTER CONTAINER
+   Default = dark mode  |  :global(.light) = light mode
+   ═══════════════════════════════════════════════════════ */
+
+.masterContainer {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Flash overlay — lens burst between scenes */
+.whiteFlash {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* ── Scenes ── */
+.scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scene1 { z-index: 1; }
+
+:global(.light) .scene1 { 
+  background-image: none;
+  background-color: #F7F4EF;
+}
+
+/* ── Scene 2: We Are ── */
+.aboutScene {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+/* ════════════════════════
+   SCENE 1 — HERO
+   ════════════════════════ */
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Film grain overlay */
+.heroGrain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.038;
+  mix-blend-mode: overlay;
+}
+
+/* Theatrical spotlight */
+@keyframes spotlightBreathe {
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%       { opacity: 0.62; transform: scale(1.10); }
+}
+
+.heroSpotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+  animation: spotlightBreathe 7s ease-in-out infinite;
+  background:
+    radial-gradient(ellipse 52% 74% at 50% 120%, rgba(124,92,191,0.55) 0%, rgba(124,92,191,0.20) 38%, rgba(124,92,191,0.05) 55%, transparent 68%),
+    radial-gradient(ellipse 28% 44% at 50% 110%, rgba(160,130,216,0.25) 0%, transparent 52%);
+}
+
+/* Top gradient scrim — keeps header readable */
+.heroTopScrim {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 180px;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.42) 0%, transparent 100%);
+}
+
+/* Edge vignette */
+.heroVignette {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: radial-gradient(ellipse 88% 88% at 50% 50%, transparent 35%, rgba(0,0,0,0.60) 100%);
+}
+
+:global(.light) .heroVignette {
+  background: radial-gradient(ellipse 88% 88% at 50% 50%, transparent 40%, rgba(0,0,0,0.28) 100%);
+}
+
+/*
+ * maskLayer — contains background image + text with blend mode.
+ */
+.maskLayer {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3;
+  background: 
+    url('/images/Kathart-Website-Image_V7-BG.jpeg') center/cover no-repeat;
+  mix-blend-mode:darken;
+  pointer-events: none;
+  backface-visibility: hidden;
+}
+
+:global(.light) .maskLayer {
+  background: #ffffff;
+  mix-blend-mode: screen;
+}
+
+/* Overlay layer — "Your Brand" text, above all hero layers */
+.overlayLayer {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.titleWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  font-family: var(--font-geologica);
+  font-weight: 700;
+  line-height: 1;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .title {
+    gap: 0.8rem;
+  }
+}
+
+/* "Your Brand" label above "Elevated" */
+.yourBrandSolid {
+  display: block;
+  font-size: clamp(1.6rem, 3.5vw, 3.5rem);
+  font-weight: 200;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #EEECEA;
+}
+
+:global(.light) .yourBrandSolid {
+  color: #100E0A;
+}
+
+/* "Elevated" wrapper — GSAP scales this 30× on scroll */
+.elevatedWrapper {
+  display: inline-block;
+  position: relative;
+  line-height: 0.85;
+}
+
+/* Mask version — near-white so multiply(near-white, video) ≈ video in dark mode */
+.elevatedTextMask {
+  position: relative;
+  display: inline-block;
+  font-size: clamp(4rem, 12vw, 16rem);
+  font-family: var(--font-geologica);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #EEECEA;
+}
+
+:global(.light) .elevatedTextMask {
+  color: #000000;
+}
+
+/* Transparent layout spacer in overlayLayer */
+.elevatedTextSolid {
+  position: relative;
+  display: inline-block;
+  font-size: clamp(5rem, 18vw, 22rem);
+  font-family: var(--font-geologica);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: transparent;
+}
+
+/* Scroll cue — drip animation */
+.scrollCue {
+  display: none;
+}
+
+.scrollLabel {
+  font-family: var(--font-questrial);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+:global(.light) .scrollLabel {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.scrollLine {
+  display: block;
+  width: 1px;
+  height: 56px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.55) 0%, transparent 100%);
+  animation: scrollDrop 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: top center;
+}
+
+:global(.light) .scrollLine {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%);
+}
+
+@keyframes scrollDrop {
+  0%   { transform: scaleY(0); opacity: 1; }
+  55%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
