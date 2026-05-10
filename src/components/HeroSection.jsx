@@ -53,7 +53,7 @@ export default function HeroSection() {
 
       // ── ACT 1: Hero departs ──────────────────────────────
       tl.to(scrollCueEl, { opacity: 0, duration: 0.1 }, 0)
-        .to(yourBrandEl, { opacity: 0, y: -50, duration: 0.15 }, 0)
+        .to(yourBrandEl, { opacity: 0, y: -50, duration: 0.07 }, 0)
         .to(
           maskElevatedEl,
           {
@@ -74,9 +74,9 @@ export default function HeroSection() {
       );
 
       // ── ACT 3: We Are scene materialises ─────────────────
-      tl.to(whiteFlashEl, { opacity: 0, duration: 0.15 }, 0.28).fromTo(
+      tl.to(whiteFlashEl, { opacity: 0, duration: 0.1 }, 0.28).fromTo(
         aboutSceneEl,
-        { scale: 1.08, opacity: 0 },
+        { scale: 1.1, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.25 },
         0.28,
       );
