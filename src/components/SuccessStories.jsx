@@ -50,21 +50,21 @@ export default function SuccessStories() {
     const dots = dotRefs.current.filter(Boolean);
     if (cards.length === 0) return;
 
-    // Stack offsets
-    // const offsets = [0, 28, 56, 84];
-    const offsets = [84, 56, 28, 0];
+    // Original design preserved: front = y:84 (bottom), back = y:0 (top)
+    const positions = [
+      { y: 84, scale: 1, zIndex: N },
+      { y: 56, scale: 0.96, zIndex: N - 1 },
+      { y: 28, scale: 0.92, zIndex: N - 2 },
+      { y: 0, scale: 0.88, zIndex: 1 },
+    ];
 
-    // Initial positions
-    cards.forEach((card, i) => {
-      gsap.set(card, {
-        y: offsets[i] ?? 84,
-        scale: 1 - i * 0.04,
-        opacity: 1 - i * 0.15,
-        zIndex: N - i,
-      });
-    });
+    cards.forEach((card, i) =>
+      gsap.set(card, { ...positions[i], opacity: 1, force3D: true }),
+    );
 
-    const totalScroll = N * 500;
+    const stepSize = 1 / N; // 0.25
+    const halfStep = stepSize / 2; // 0.125 — each phase gets half a step
+    const totalScroll = N * 600;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -72,86 +72,79 @@ export default function SuccessStories() {
           trigger: sectionRef.current,
           start: "top top",
           end: `+=${totalScroll}`,
-          scrub: 1,
+          scrub: 1.5,
           pin: true,
         },
       });
 
-      for (let i = 0; i < N; i++) {
-        const time = i / N;
+      for (let step = 0; step < N; step++) {
+        const time = step * stepSize;
+        const exitIdx = step % N; // card currently at front
+        const activeIdx = (step + 1) % N;
 
-        // Top card flies up
+        // Phase A — front card falls DOWN off screen (clipped by section overflow-hidden)
         tl.to(
-          cards[i],
+          cards[exitIdx],
           {
-            y: -250,
-            opacity: 0,
-            scale: 0.7,
+            y: 600,
+            scale: 0.88,
             ease: "power2.in",
-            duration: 0.25,
+            duration: halfStep,
+            force3D: true,
           },
           time,
         );
 
-        // Second card comes to front
-        if (cards[i + 1]) {
-          tl.to(
-            cards[i + 1],
-            {
-              y: 0,
-              scale: 1,
-              opacity: 1,
-              ease: "power2.out",
-              duration: 0.25,
-            },
-            time,
-          );
-        }
+        // While fully off screen, snap position to above the container + lowest z
+        // This snap is invisible because the card is at y:600 (below clipping boundary)
+        tl.set(cards[exitIdx], { y: -400, zIndex: 1 }, time + halfStep);
 
-        // Other cards slide up
-        for (let j = i + 2; j < N; j++) {
-          const newOffset = offsets[j - i - 1] ?? 84;
-          tl.to(
-            cards[j],
-            {
-              y: newOffset,
-              scale: 1 - (j - i - 1) * 0.04,
-              opacity: 1 - (j - i - 1) * 0.15,
-              ease: "power2.out",
-              duration: 0.25,
-            },
-            time,
-          );
-        }
-
-        // Update dots
-        tl.call(
-          () => {
-            const activeIdx = (i + 1) % N;
-            dots.forEach((dot, di) => {
-              gsap.to(dot, {
-                height: di === activeIdx ? 40 : 14,
-                opacity: di === activeIdx ? 1 : 0.35,
-                duration: 0.2,
-              });
-            });
+        // Phase B — card drops down from above into the back position (y:0)
+        tl.to(
+          cards[exitIdx],
+          {
+            y: 0,
+            scale: 0.88,
+            ease: "power2.out",
+            duration: halfStep,
+            force3D: true,
           },
-          [],
-          time + 0.1,
+          time + halfStep,
         );
-      }
 
-      // Reset all
-      tl.call(() => {
-        cards.forEach((card, i) => {
-          gsap.set(card, {
-            y: offsets[i] ?? 84,
-            scale: 1 - i * 0.04,
-            opacity: 1 - i * 0.15,
-            zIndex: N - i,
-          });
+        // All other cards advance one position forward — runs over the full step
+        for (let cardIdx = 0; cardIdx < N; cardIdx++) {
+          if (cardIdx === exitIdx) continue;
+          const newPosIdx = (cardIdx - step - 1 + N * 2) % N;
+          const pos = positions[newPosIdx];
+          tl.to(
+            cards[cardIdx],
+            {
+              y: pos.y,
+              scale: pos.scale,
+              zIndex: pos.zIndex,
+              ease: "sine.inOut",
+              duration: stepSize * 0.85,
+              force3D: true,
+            },
+            time,
+          );
+        }
+
+        // Dots — scrubbed timeline, no tl.call
+        dots.forEach((dot, di) => {
+          tl.to(
+            dot,
+            {
+              height:          di === activeIdx ? 40       : 14,
+              backgroundColor: di === activeIdx ? "#B88BFF" : "#ffffff",
+              ease: "power2.inOut",
+              duration: stepSize * 0.85,
+            },
+            time,
+          );
         });
-      });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -162,7 +155,7 @@ export default function SuccessStories() {
       ref={sectionRef}
       className="relative w-full min-h-screen flex flex-col items-center pt-16 md:pt-24 pb-16 px-4 md:px-10 lg:px-20 overflow-hidden"
     >
-      <div className="relative z-20 text-center mb-16 md:mb-20 flex-shrink-0">
+      <div className="relative z-20 text-center mb-16 md:mb-20 shrink-0">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-foreground">
           Success Stories
         </h2>
@@ -175,7 +168,7 @@ export default function SuccessStories() {
       <div className="relative w-full max-w-5xl flex-1 flex items-center justify-center">
         <div
           className="relative w-full"
-          style={{ height: "clamp(400px, 50vh, 520px)" }}
+          style={{ height: "clamp(500px, 62vh, 560px)" }}
         >
           {testimonials.map((t, i) => (
             <div
@@ -228,10 +221,10 @@ export default function SuccessStories() {
             <div
               key={i}
               ref={(el) => (dotRefs.current[i] = el)}
-              className="w-1.5 rounded-full bg-primary transition-all duration-300"
+              className="w-1.5 rounded-full"
               style={{
-                height: i === 0 ? 40 : 14,
-                opacity: i === 0 ? 1 : 0.35,
+                height:          i === 0 ? 40        : 14,
+                backgroundColor: i === 0 ? "#B88BFF" : "#ffffff",
               }}
             />
           ))}

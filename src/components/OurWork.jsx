@@ -189,7 +189,7 @@ export default function OurWork() {
         {/* IMAGE SIDE WITH FLOATING + 3D TILT */}
         <Card
           ref={cardRef}
-          className="w-full lg:w-1/2 rounded-[40px] overflow-hidden relative"
+          className="w-full lg:w-1/2 rounded-2xl sm:rounded-3xl lg:rounded-[40px] overflow-hidden relative"
         >
           <CardContent className="p-0">
             <Image

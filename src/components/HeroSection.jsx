@@ -168,9 +168,9 @@ export default function HeroSection() {
         className={`${styles.scene} ${styles.aboutScene} ${styles.scene2}`}
       >
         {/* Content */}
-        <div className="flex flex-col items-center w-full relative px-4 sm:px-8 md:px-20 pb-16 pt-24">
-          <div className="flex flex-col items-center gap-8 md:gap-8 relative max-w-4xl w-full">
-            <div className="flex flex-col items-center gap-2 sm:gap-8 w-full">
+        <div className="flex flex-col items-center w-full relative px-4 sm:px-8 md:px-20 pb-12 md:pb-16 pt-14 md:pt-24">
+          <div className="flex flex-col items-center gap-6 md:gap-8 relative max-w-4xl w-full">
+            <div className="flex flex-col items-center gap-6 sm:gap-8 w-full">
               <Image
                 alt="Kathart logo icon"
                 width={100}

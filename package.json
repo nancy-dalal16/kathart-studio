@@ -12,9 +12,9 @@
     "@fontsource-variable/geologica": "^5.2.8",
     "gsap": "^3.13.0",
     "lucide-react": "^0.555.0",
-    "next": "16.0.5",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
+    "next": "^16.2.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
     "react-icons": "^5.5.0"
   },
   "devDependencies": {

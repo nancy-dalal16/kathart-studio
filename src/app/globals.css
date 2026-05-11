@@ -102,35 +102,101 @@ p, span, label{
   font-family: var(--font-questrial, 'Questrial', Helvetica);
 }
 
-/* ── Theme toggle button (Kathart2.0 design) ── */
+/* ── Theme toggle button ── */
 .theme-toggle {
-  background: none;
-  border: 1.5px solid currentColor;
-  border-radius: 100px;
-  width: 36px;
-  height: 36px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: inherit;
-  /* opacity: 0.55; */
+  color: rgba(255, 255, 255, 0.8);
   padding: 0;
   flex-shrink: 0;
-  transition: opacity 0.25s ease, background 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  transition: background 0.25s ease,
+              border-color 0.25s ease,
+              transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
 .theme-toggle:hover {
-  opacity: 1;
-  transform: scale(1.08);
-  background: color-mix(in srgb, currentColor 10%, transparent);
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: scale(1.1);
+}
+
+[data-theme="light"] .theme-toggle,
+.light .theme-toggle {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .theme-toggle:hover,
+.light .theme-toggle:hover {
+  background: #f5f5f5;
+  border-color: rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
 }
 
 .theme-toggle-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: spinIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* transform-box: fill-box makes SVG use its own bbox as transform origin,
+   not the SVG viewport — this is what makes the animations actually visible */
+.toggle-icon-sun,
+.toggle-icon-moon {
+  transform-box: fill-box;
+  transform-origin: center center;
+  display: block;
+}
+
+/* ── Sun: spins in — delayed to play after the GSAP page overlay recedes ── */
+.toggle-icon-sun {
+  animation: sunIn 0.5s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* ── Moon: rotates in — same delay ── */
+.toggle-icon-moon {
+  animation: moonIn 0.45s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* ── Hover: sun drifts clockwise, moon tilts ── */
+.theme-toggle:hover .toggle-icon-sun {
+  transform: rotate(40deg);
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.theme-toggle:hover .toggle-icon-moon {
+  transform: rotate(-20deg);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+@keyframes sunIn {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes moonIn {
+  from {
+    opacity: 0;
+    transform: rotate(45deg) scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
 }
 
 /* ── Header sparkle dots (sit on the top/bottom border lines) ── */
@@ -149,44 +215,31 @@ p, span, label{
 
 /* ── Nav link styles ── */
 .nav-link {
-  color: #ffffff;
-  opacity: 0.65;
+  color: rgba(255, 255, 255, 0.48);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   position: relative;
-  transition: opacity 0.3s ease, color 0.3s ease;
+  transition: color 0.25s ease;
 }
 
 [data-theme="light"] .nav-link {
-  color: #0F0F1A;
-}
-
-button.nav-link {
-  transition: opacity 0.2s ease;
+  color: rgba(15, 15, 26, 0.45);
 }
 
 .nav-link:hover,
 .nav-link.active {
-  opacity: 1;
-  background: linear-gradient(90deg, #8B5CF6 0%, #C084FC 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: #B79FFE;
 }
 
 [data-theme="light"] .nav-link:hover,
 [data-theme="light"] .nav-link.active {
-  background: linear-gradient(90deg, #7C3AED 0%, #A78BFA 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: #6D28D9;
 }
 
+
 button.nav-link {
-  transition: opacity 0.2s ease;
+  transition: color 0.25s ease;
 }
 
 .rolling-text {
@@ -195,37 +248,14 @@ button.nav-link {
 
 .rolling-letter {
   display: inline-block;
-  opacity: 0.65;
-  color: var(--foreground);
+  color: inherit;
   text-align: center;
-  transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+  transition: transform 0.22s ease;
 }
 
 .nav-link:hover .rolling-letter,
 .nav-link.active .rolling-letter {
-  transform: scale(1.15);
-  opacity: 1;
-  background: linear-gradient(90deg, #8B5CF6 0%, #C084FC 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-[data-theme="light"] .nav-link:hover .rolling-letter,
-[data-theme="light"] .nav-link.active .rolling-letter {
-  background: linear-gradient(90deg, #7C3AED 0%, #A78BFA 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  opacity: 1;
+  transform: translateY(-1px);
 }
 
 /* Dot separator between nav items */
@@ -378,10 +408,6 @@ button.nav-link {
   opacity: 0.15;
 }
 
-@keyframes spinIn {
-  from { opacity: 0; transform: rotate(-45deg) scale(0.6); }
-  to   { opacity: 1; transform: rotate(0deg)   scale(1);   }
-}
 
 /* Smooth transition for theme change - applied only to body and main containers */
 html,

@@ -104,11 +104,11 @@ export function Footer() {
               </div>
 
               {/* Link columns */}
-              <div className="flex flex-col md:flex-row items-start gap-6 md:gap-9 flex-1 w-full">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-9 flex-1 w-full">
                 {footerColumns.map((column, idx) => (
                   <div
                     key={idx}
-                    className="flex flex-col items-start gap-3 md:gap-[15px] flex-1"
+                    className="flex flex-col items-start gap-3 md:gap-[15px]"
                   >
                     <h3 className="mt-[-1px] font-semibold text-foreground text-xl md:text-2xl leading-[32px] md:leading-[38.4px]">
                       {column.title}

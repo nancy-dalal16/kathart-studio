@@ -29,7 +29,7 @@ function Marquee({ children, reverse = false, speed = 30, className = "" }) {
     >
       <div
         ref={marqueeRef}
-        className={`flex gap-12 whitespace-nowrap ${
+        className={`flex gap-8 sm:gap-12 md:gap-16 whitespace-nowrap items-center ${
           reverse ? "animate-marquee-reverse" : "animate-marquee"
         }`}
         style={{ animationDuration: `${speed}s` }}
@@ -44,57 +44,18 @@ function Marquee({ children, reverse = false, speed = 30, className = "" }) {
 // -----------------------------------------------------------------------------
 // ⭐ Logo Rows (Inline, same file)
 // -----------------------------------------------------------------------------
+const logoClass = "h-7 sm:h-8 md:h-10 w-auto object-contain flex-shrink-0";
+
 function LogoRow1() {
   return (
     <>
-      <Image
-        src="/images/clients/creative-market.svg"
-        alt="Creative market"
-        width={500}
-        height={500}
-      />
-
-      <Image
-        src="/images/clients/walmart.svg"
-        alt="Walmart"
-        width={500}
-        height={500}
-      />
-
-      <Image
-        src="/images/clients/maze.svg"
-        alt="Maze"
-        width={500}
-        height={500}
-      />
-
-      <Image
-        src="/images/clients/bukalapak.svg"
-        alt="Vector4"
-        width={500}
-        height={500}
-      />
-
-      <Image
-        src="/images/clients/grapho.svg"
-        alt="grapho"
-        width={500}
-        height={500}
-      />
-
-      <Image
-        src="/images/clients/traveloka.svg"
-        alt="traveloka"
-        width={500}
-        height={500}
-      />
-
-      <Image
-        src="/images/clients/ebay.svg"
-        alt="ebay"
-        width={500}
-        height={500}
-      />
+      <Image src="/images/clients/creative-market.svg" alt="Creative market" width={500} height={500} className={logoClass} />
+      <Image src="/images/clients/walmart.svg"         alt="Walmart"         width={500} height={500} className={logoClass} />
+      <Image src="/images/clients/maze.svg"            alt="Maze"            width={500} height={500} className={logoClass} />
+      <Image src="/images/clients/bukalapak.svg"       alt="Bukalapak"       width={500} height={500} className={logoClass} />
+      <Image src="/images/clients/grapho.svg"          alt="Grapho"          width={500} height={500} className={logoClass} />
+      <Image src="/images/clients/traveloka.svg"       alt="Traveloka"       width={500} height={500} className={logoClass} />
+      <Image src="/images/clients/ebay.svg"            alt="eBay"            width={500} height={500} className={logoClass} />
     </>
   );
 }
@@ -102,36 +63,11 @@ function LogoRow1() {
 function LogoRow2() {
   return (
     <>
-      <Image
-        src="/images/clients/emblem.svg"
-        alt="emblem"
-        width={500}
-        height={500}
-      />
-      <Image
-        src="/images/clients/iconic.svg"
-        alt="iconic"
-        width={500}
-        height={500}
-      />{" "}
-      <Image
-        src="/images/clients/optimal.svg"
-        alt="optimal"
-        width={500}
-        height={500}
-      />{" "}
-      <Image
-        src="/images/clients/visualy.svg"
-        alt="visualy"
-        width={500}
-        height={500}
-      />{" "}
-      <Image
-        src="/images/clients/signet.svg"
-        alt="signet"
-        width={500}
-        height={500}
-      />
+      <Image src="/images/clients/emblem.svg"  alt="Emblem"  width={500} height={500} className={logoClass} />
+      <Image src="/images/clients/iconic.svg"  alt="Iconic"  width={500} height={500} className={logoClass} />
+      <Image src="/images/clients/optimal.svg" alt="Optimal" width={500} height={500} className={logoClass} />
+      <Image src="/images/clients/visualy.svg" alt="Visually" width={500} height={500} className={logoClass} />
+      <Image src="/images/clients/signet.svg"  alt="Signet"  width={500} height={500} className={logoClass} />
     </>
   );
 }
@@ -174,13 +110,13 @@ export default function OurClients() {
 
       {/* Left and Right Fade Edges */}
       <div
-        className="pointer-events-none absolute inset-y-0 left-0 w-[30rem]"
+        className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 md:w-48 lg:w-64 xl:w-[20rem]"
         style={{
           background: "linear-gradient(to right, var(--bg-base), transparent)",
         }}
       />
       <div
-        className="pointer-events-none absolute inset-y-0 right-0 w-[30rem]"
+        className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 md:w-48 lg:w-64 xl:w-[20rem]"
         style={{
           background: "linear-gradient(to left, var(--bg-base), transparent)",
         }}
