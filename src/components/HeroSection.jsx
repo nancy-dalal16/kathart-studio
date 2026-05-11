@@ -47,7 +47,14 @@ export default function HeroSection() {
           end: `+=${totalScroll}`,
           pin: true,
           anticipatePin: 1,
-          scrub: 1.5,
+          scrub: 0.8,
+          snap: {
+            snapTo: [0, 1],
+            directional: true,
+            duration: { min: 0.15, max: 0.2 },
+            delay: 0,
+            ease: "power1.inOut",
+          },
         },
       });
 

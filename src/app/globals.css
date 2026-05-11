@@ -102,101 +102,77 @@ p, span, label{
   font-family: var(--font-questrial, 'Questrial', Helvetica);
 }
 
-/* ── Theme toggle button ── */
-.theme-toggle {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 50%;
-  width: 46px;
-  height: 46px;
+/* ── Theme toggle pill ── */
+.theme-toggle-pill {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  border-radius: 100px;
+  background: #1A1733;
+  border: 1px solid rgba(184, 139, 255, 0.35);
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.8);
   padding: 0;
   flex-shrink: 0;
-  transition: background 0.25s ease,
-              border-color 0.25s ease,
-              transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  overflow: hidden;
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.3s ease;
 }
 
-.theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.13);
-  border-color: rgba(255, 255, 255, 0.22);
-  transform: scale(1.1);
+.theme-toggle-pill:hover {
+  box-shadow: 0 0 0 3px rgba(184, 139, 255, 0.2);
 }
 
-[data-theme="light"] .theme-toggle,
-.light .theme-toggle {
-  background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+.theme-toggle-pill.is-light {
+  background: #EDE9FF;
+  border-color: rgba(15, 15, 26, 0.18);
 }
 
-[data-theme="light"] .theme-toggle:hover,
-.light .theme-toggle:hover {
-  background: #f5f5f5;
-  border-color: rgba(0, 0, 0, 0.18);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+.theme-toggle-pill.is-light:hover {
+  box-shadow: 0 0 0 3px rgba(15, 15, 26, 0.08);
 }
 
-.theme-toggle-icon {
+/* Stars (visible in dark mode) */
+.toggle-bg-decoration {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.toggle-star {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.star-1 { width: 2.5px; height: 2.5px; top: 7px;  right: 13px; }
+.star-2 { width: 1.5px; height: 1.5px; top: 16px; right: 20px; }
+.star-3 { width: 2px;   height: 2px;   top: 21px; right: 12px; }
+
+.theme-toggle-pill.is-light .toggle-star {
+  opacity: 0;
+  transform: scale(0);
+}
+
+/* Sliding knob */
+.toggle-knob {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #B88BFF;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.4s ease;
 }
 
-/* transform-box: fill-box makes SVG use its own bbox as transform origin,
-   not the SVG viewport — this is what makes the animations actually visible */
-.toggle-icon-sun,
-.toggle-icon-moon {
-  transform-box: fill-box;
-  transform-origin: center center;
-  display: block;
-}
-
-/* ── Sun: spins in — delayed to play after the GSAP page overlay recedes ── */
-.toggle-icon-sun {
-  animation: sunIn 0.5s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-/* ── Moon: rotates in — same delay ── */
-.toggle-icon-moon {
-  animation: moonIn 0.45s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-/* ── Hover: sun drifts clockwise, moon tilts ── */
-.theme-toggle:hover .toggle-icon-sun {
-  transform: rotate(40deg);
-  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-}
-
-.theme-toggle:hover .toggle-icon-moon {
-  transform: rotate(-20deg);
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-}
-
-@keyframes sunIn {
-  from {
-    opacity: 0;
-    transform: rotate(-90deg) scale(0.2);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(0deg) scale(1);
-  }
-}
-
-@keyframes moonIn {
-  from {
-    opacity: 0;
-    transform: rotate(45deg) scale(0.2);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(0deg) scale(1);
-  }
+.theme-toggle-pill.is-light .toggle-knob {
+  transform: translateX(30px);
+  background: #0F0F1A;
 }
 
 /* ── Header sparkle dots (sit on the top/bottom border lines) ── */

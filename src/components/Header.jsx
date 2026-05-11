@@ -8,60 +8,33 @@ import Image from "next/image";
 
 function MoonIcon() {
   return (
-    <svg
-      className="toggle-icon-moon"
-      viewBox="0 0 24 24"
-      width="18"
-      height="18"
-      stroke="none"
-    >
-      <path fill="#0F0F1A" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    <svg viewBox="0 0 24 24" width="12" height="12" stroke="none">
+      <path fill="white" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
     </svg>
   );
 }
 
 function SunIcon() {
-  // Each ray length: cardinals ≈ 3, diagonals ≈ 3
-  // SMIL animates stroke-dashoffset 3→0 so rays draw outward from the core
-  const ray = (x1, y1, x2, y2, delay) => (
-    <line
-      x1={x1} y1={y1} x2={x2} y2={y2}
-      strokeDasharray="3.2"
-      strokeDashoffset="3.2"
-    >
-      <animate
-        attributeName="stroke-dashoffset"
-        from="3.2" to="0"
-        dur="0.3s"
-        begin={`${delay}s`}
-        fill="freeze"
-      />
-    </line>
-  );
-
   return (
     <svg
-      className="toggle-icon-sun"
       viewBox="0 0 24 24"
-      width="18"
-      height="18"
+      width="13"
+      height="13"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
+      stroke="white"
+      strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Core circle scales in via CSS sunIn keyframe */}
-      <circle cx="12" cy="12" r="4" />
-      {/* Rays draw in with staggered SMIL delay */}
-      {ray(12, 2,    12, 5,    0.18)}
-      {ray(19.78, 4.22, 17.66, 6.34, 0.21)}
-      {ray(22, 12,   19, 12,   0.24)}
-      {ray(19.78, 19.78, 17.66, 17.66, 0.27)}
-      {ray(12, 22,   12, 19,   0.30)}
-      {ray(4.22, 19.78, 6.34, 17.66, 0.27)}
-      {ray(2, 12,    5, 12,    0.24)}
-      {ray(4.22, 4.22, 6.34, 6.34, 0.21)}
+      <circle cx="12" cy="12" r="4" fill="white" />
+      <line x1="12" y1="2" x2="12" y2="5" />
+      <line x1="19.78" y1="4.22" x2="17.66" y2="6.34" />
+      <line x1="22" y1="12" x2="19" y2="12" />
+      <line x1="19.78" y1="19.78" x2="17.66" y2="17.66" />
+      <line x1="12" y1="22" x2="12" y2="19" />
+      <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
+      <line x1="2" y1="12" x2="5" y2="12" />
+      <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" />
     </svg>
   );
 }
@@ -119,41 +92,38 @@ export function Header() {
   const currentTheme = mounted ? theme : "dark";
 
   const toggleTheme = (e) => {
-    // if (isTransitioning) return;
-    // setIsTransitioning(true);
+    if (isTransitioning) return;
+    setIsTransitioning(true);
 
     const next = theme === "dark" ? "light" : "dark";
 
-    // ── Full-page clip-path transition (temporarily disabled) ──────────────
-    // const overlay = transitionRef.current;
-    // const button = e.currentTarget;
-    // const buttonRect = button.getBoundingClientRect();
-    // const x = buttonRect.left + buttonRect.width / 2;
-    // const y = buttonRect.top + buttonRect.height / 2;
-    // const oldThemeColor = theme === "dark" ? "#0F0F1A" : "#ffffff";
-    // gsap.set(overlay, {
-    //   display: "block",
-    //   backgroundColor: oldThemeColor,
-    //   clipPath: `circle(150% at ${x}px ${y}px)`,
-    // });
-    // ───────────────────────────────────────────────────────────────────────
+    const overlay = transitionRef.current;
+    const button = e.currentTarget;
+    const buttonRect = button.getBoundingClientRect();
+    const x = buttonRect.left + buttonRect.width / 2;
+    const y = buttonRect.top + buttonRect.height / 2;
+    const oldThemeColor = theme === "dark" ? "#0F0F1A" : "#F5F4FE";
+
+    gsap.set(overlay, {
+      display: "block",
+      backgroundColor: oldThemeColor,
+      clipPath: `circle(150% at ${x}px ${y}px)`,
+    });
 
     setTheme(next);
     document.documentElement.classList.toggle("light", next === "light");
     document.documentElement.dataset.theme = next;
     localStorage.setItem("theme", next);
 
-    // ── Complete the overlay transition (temporarily disabled) ─────────────
-    // gsap.to(overlay, {
-    //   clipPath: `circle(0% at ${x}px ${y}px)`,
-    //   duration: 0.7,
-    //   ease: "power2.out",
-    //   onComplete: () => {
-    //     setIsTransitioning(false);
-    //     gsap.set(overlay, { display: "none" });
-    //   },
-    // });
-    // ───────────────────────────────────────────────────────────────────────
+    gsap.to(overlay, {
+      clipPath: `circle(0% at ${x}px ${y}px)`,
+      duration: 0.7,
+      ease: "power2.out",
+      onComplete: () => {
+        setIsTransitioning(false);
+        gsap.set(overlay, { display: "none" });
+      },
+    });
   };
 
   useEffect(() => {
@@ -244,18 +214,25 @@ export function Header() {
           <div className="flex-1 flex items-center justify-end gap-4">
             <button
               onClick={toggleTheme}
-              className="theme-toggle"
+              className={`theme-toggle-pill${currentTheme === "light" ? " is-light" : ""}`}
               aria-label={
                 currentTheme === "light"
                   ? "Switch to dark mode"
                   : "Switch to light mode"
               }
             >
-              {mounted ? (
-                <span key={theme} className="theme-toggle-icon">
-                  {currentTheme === "dark" ? <SunIcon /> : <MoonIcon />}
-                </span>
-              ) : null}
+              <span className="toggle-bg-decoration" aria-hidden="true">
+                <span className="toggle-star star-1" />
+                <span className="toggle-star star-2" />
+                <span className="toggle-star star-3" />
+              </span>
+              <span className="toggle-knob">
+                {mounted ? (
+                  currentTheme === "dark" ? <MoonIcon /> : <SunIcon />
+                ) : (
+                  <MoonIcon />
+                )}
+              </span>
             </button>
 
             <button
@@ -347,7 +324,7 @@ export function Header() {
       {/* Transition overlay */}
       <div
         ref={transitionRef}
-        className="fixed inset-0 z-[9999] pointer-events-none hidden"
+        className="fixed inset-0 z-[999] pointer-events-none hidden"
       />
     </>
   );
