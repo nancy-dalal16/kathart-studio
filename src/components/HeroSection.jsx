@@ -38,7 +38,7 @@ export default function HeroSection() {
     const maskElevatedEl = maskElevatedRef.current;
 
     const ctx = gsap.context(() => {
-      const totalScroll = 5500;
+      const totalScroll = 400;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -51,7 +51,7 @@ export default function HeroSection() {
           snap: {
             snapTo: [0, 1],
             directional: true,
-            duration: { min: 0.15, max: 0.2 },
+            duration: { min: 0.1, max: 0.15 },
             delay: 0,
             ease: "power1.inOut",
           },
@@ -121,7 +121,7 @@ export default function HeroSection() {
   // ── Scroll-driven pin + transition (rest of code below) ─────────────────
 
   return (
-    <div ref={masterRef} className={styles.masterContainer}>
+    <div ref={masterRef} className={`${styles.masterContainer} snap-section`}>
       {/* ════ SCENE 1: HERO ════ */}
       <div ref={scene1Ref} className={`${styles.scene} ${styles.scene1}`}>
         {/* Video */}

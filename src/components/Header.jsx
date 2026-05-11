@@ -228,7 +228,11 @@ export function Header() {
               </span>
               <span className="toggle-knob">
                 {mounted ? (
-                  currentTheme === "dark" ? <MoonIcon /> : <SunIcon />
+                  currentTheme === "dark" ? (
+                    <MoonIcon />
+                  ) : (
+                    <SunIcon />
+                  )
                 ) : (
                   <MoonIcon />
                 )}

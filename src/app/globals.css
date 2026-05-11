@@ -82,14 +82,23 @@ html {
   overscroll-behavior-y: none;
 }
 
+html {
+  scroll-snap-type: y mandatory;
+}
+
 body {
   overflow-x: hidden;
 }
 
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
 /* DISABLED to allow natural trackpad scrolling */
 .snap-section {
-  /* scroll-snap-align: start; */
-  /* scroll-snap-stop: always; */
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 body {
@@ -172,7 +181,8 @@ p, span, label{
 
 .theme-toggle-pill.is-light .toggle-knob {
   transform: translateX(30px);
-  background: #0F0F1A;
+  /* background: #0F0F1A; */
+  background: #b88bff;
 }
 
 /* ── Header sparkle dots (sit on the top/bottom border lines) ── */
