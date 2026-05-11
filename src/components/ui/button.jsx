@@ -7,32 +7,29 @@ export default function Button({
   className = "",
   ...props
 }) {
-  const isPrimaryBtn = className.includes("primary-btn");
-
   const variantClasses = {
-    default: "bg-primary text-white hover:shadow-[0_0_25px_rgba(184,139,255,0.5)]",
-    outline: "border border-primary/50 text-foreground hover:bg-primary/10 hover:border-primary",
-    secondary: "bg-secondary text-foreground hover:bg-secondary/80",
+    default:
+      "bg-[#F0EEFF] text-[#0C0A1E] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_4px_16px_rgba(0,0,0,0.12)] hover:bg-white hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(0,0,0,0.08),0_10px_28px_rgba(0,0,0,0.16)] active:translate-y-0",
+    outline:
+      "border border-white/20 text-foreground bg-transparent hover:bg-white/5 hover:border-white/40 hover:-translate-y-0.5",
+    secondary: "bg-secondary text-foreground hover:bg-secondary/80 hover:-translate-y-0.5",
     ghost: "bg-transparent text-foreground hover:bg-foreground/10",
     destructive: "bg-red-600 text-white hover:bg-red-700",
     link: "text-primary underline hover:text-primary/80",
   };
 
   const sizeClasses = {
-    default: "h-10 px-5 py-2.5 text-sm",
-    sm: "h-8 px-3 text-xs",
-    lg: "h-12 px-6 text-base",
+    default: "px-4 py-[0.8rem] pl-[1.875rem] text-[0.9375rem] tracking-[0.02em] font-semibold",
+    sm: "px-3 py-2 text-xs tracking-wider font-semibold",
+    lg: "px-5 py-3.5 pl-7 text-base tracking-[0.02em] font-semibold",
     icon: "h-10 w-10 p-2",
   };
 
-  const finalClass = `inline-flex items-center justify-center rounded-full font-medium transition-all duration-300 cursor-pointer relative overflow-visible group ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  const finalClass = `inline-flex items-center justify-center gap-3 rounded-full transition-all duration-300 cursor-pointer whitespace-nowrap select-none ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
   return (
     <button type="button" className={finalClass} {...props}>
-      <span className="relative z-10">{children}</span>
-      {!isPrimaryBtn && (
-        <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary/0 via-white/10 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out pointer-events-none" />
-      )}
+      {children}
     </button>
   );
 }

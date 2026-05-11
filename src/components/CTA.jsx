@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { MailIcon, PhoneIcon } from "lucide-react";
-import Button from "./ui/button";
+import Link from "next/link";
+import { MailIcon, PhoneIcon, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
-import { CircleArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -28,7 +27,6 @@ const contactCards = [
 ];
 
 export function CTA() {
-  
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
   const textRef = useRef(null);
@@ -77,9 +75,7 @@ export function CTA() {
       {/* Right glow like screenshot */}
       <div className="pointer-events-none absolute inset-y-0 right-0 w-[45%] max-w-[480px] bg-[radial-gradient(circle_at_top,#4F37FF_0%,rgba(79,55,255,0)_60%)] opacity-60 blur-3xl overflow-hidden" />
 
-      <div
-        className="relative z-10 flex w-full flex-col gap-10 lg:flex-row lg:items-center"
-      >
+      <div className="relative z-10 flex w-full flex-col gap-10 lg:flex-row lg:items-center">
         {/* Left: Text + Button */}
         <div className="flex flex-1 flex-col items-start gap-6 text-left">
           <div className="space-y-3">
@@ -87,7 +83,7 @@ export function CTA() {
               ref={headingRef}
               className="font-semibold text-foreground text-3xl sm:text-4xl md:text-5xl lg:text-[56px] leading-tight"
             >
-              Let&apos;s tell your story
+              Ready to be impossible to ignore?
             </h2>
             <p
               ref={textRef}
@@ -98,11 +94,12 @@ export function CTA() {
             </p>
           </div>
 
-          <Button className="primary-btn">
-            <span className="text-base font-medium text-white">
-              Get In Touch
+          <Link href="/contact" className="primary-btn">
+            Let&apos;s Talk
+            <span className="btn-icon">
+              <ArrowRight size={13} strokeWidth={2.5} />
             </span>
-          </Button>
+          </Link>
         </div>
 
         {/* Right: Cards */}

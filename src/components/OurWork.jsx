@@ -6,7 +6,7 @@ import Image from "next/image";
 import Badge from "./ui/badge";
 import Button from "./ui/button";
 import { Card, CardContent } from "./ui/card";
-import { CircleArrowRight, ArrowUpRightIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const slides = [
   {
@@ -264,7 +264,9 @@ export default function OurWork() {
             className="btn-border-gradient"
           >
             View Case Study
-            <ArrowUpRightIcon className="w-6 h-6 ml-2" />
+            <span className="btn-icon">
+              <ArrowRight size={13} strokeWidth={2.5} />
+            </span>
           </Button>
         </article>
       </div>
@@ -277,8 +279,9 @@ export default function OurWork() {
           </p>
 
           <Button className="primary-btn">
-            <span className="text-base font-medium text-white">
-              View All Projects
+            View All Projects
+            <span className="btn-icon">
+              <ArrowRight size={13} strokeWidth={2.5} />
             </span>
           </Button>
         </CardContent>

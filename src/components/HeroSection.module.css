@@ -29,6 +29,11 @@
   overflow: hidden;
 }
 
+.scene2 {
+  pointer-events: auto;
+  z-index: 10;
+}
+
 .scene1 { z-index: 1; }
 
 :global(.light) .scene1 { 
@@ -43,6 +48,7 @@
   justify-content: center;
   transform-origin: center center;
   will-change: transform, opacity;
+  pointer-events: auto;
 }
 
 /* ════════════════════════

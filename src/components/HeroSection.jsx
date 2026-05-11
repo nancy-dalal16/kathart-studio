@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CircleArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import Button from "./ui/button";
 import styles from "./HeroSection.module.css";
 
 if (typeof window !== "undefined") {
@@ -169,36 +169,35 @@ export default function HeroSection() {
       >
         {/* Content */}
         <div className="flex flex-col items-center w-full relative px-4 sm:px-8 md:px-20 pb-16 pt-24">
-          <div className="flex flex-col items-center gap-8 md:gap-12 relative max-w-4xl w-full">
-            <div className="flex flex-col items-center gap-6 sm:gap-8 w-full">
+          <div className="flex flex-col items-center gap-8 md:gap-8 relative max-w-4xl w-full">
+            <div className="flex flex-col items-center gap-2 sm:gap-8 w-full">
               <Image
                 alt="Kathart logo icon"
                 width={100}
                 height={100}
-                className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32"
+                className="w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24"
                 src="/images/Kathart_logo-light.svg"
               />
-              <div className="flex flex-col items-center gap-4 w-full">
-                <h2 className="font-semibold text-3xl sm:text-4xl md:text-6xl text-center leading-tight">
-                  We are
-                </h2>
-                <h2 className="font-semibold text-3xl sm:text-4xl md:text-6xl text-center leading-1">
-                  Kathart Studios
+              <div className="flex flex-col items-center gap-2 w-full">
+                <h2 className="font-semibold text-center text-foreground text-4xl sm:text-5xl lg:text-[64px] leading-tight">
+                  We are Kathart Studios
                 </h2>
               </div>
-              <p className="text-center text-base sm:text-lg md:text-xl max-w-2xl leading-relaxed mt-3">
-                At Kathart Studios, we believe every story deserves to be seen,
-                felt, and remembered. We combine creativity, strategy, and craft
-                across design, marketing, and film to create experiences that
-                engage audiences, inspire action, and build brands that last.
+              <p className="text-center text-base sm:text-lg md:text-xl  leading-relaxed">
+                Some brands get noticed. Others get remembered. We work with
+                founders and companies who know the difference. We bring
+                together design, film, and marketing - not as separate services,
+                but as one integrated creative force - to build brands that hold
+                their ground long after the campaign ends.
               </p>
             </div>
-            <div>
-              <Button className="primary-btn">
-                <span className="text-base font-medium text-white">
-                  Know more About us
+            <div className="relative z-10">
+              <Link href="/about" className="primary-btn">
+                Our Story
+                <span className="btn-icon">
+                  <ArrowRight size={13} strokeWidth={2.5} />
                 </span>
-              </Button>
+              </Link>
             </div>
           </div>
         </div>

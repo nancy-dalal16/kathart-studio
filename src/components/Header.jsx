@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 function MoonIcon() {
@@ -55,6 +55,19 @@ const navItems = [
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
 ];
+
+function RollingText({ text }) {
+  const letters = text.split("");
+  return (
+    <span className="rolling-text">
+      {letters.map((letter, i) => (
+        <span key={i} className="rolling-letter">
+          {letter === " " ? "\u00A0" : letter}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -200,7 +213,7 @@ export function Header() {
                   onClick={() => handleNavClick(index, item.href)}
                   className={`nav-link px-4 py-1 text-sm lg:text-[15px] cursor-pointer${index === activeIndex ? " active" : ""}`}
                 >
-                  {item.label}
+                  <RollingText text={item.label} />
                 </button>
                 {index < navItems.length - 1 && <span className="nav-dot" />}
               </div>
@@ -220,7 +233,7 @@ export function Header() {
             >
               {mounted ? (
                 <span key={theme} className="theme-toggle-icon">
-                  {currentTheme === "dark" ? <MoonIcon /> : <SunIcon />}
+                  {currentTheme === "dark" ? <SunIcon /> : <MoonIcon />}
                 </span>
               ) : null}
             </button>
@@ -301,7 +314,10 @@ export function Header() {
               onClick={() => handleNavClick(navItems.length - 1, "/contact")}
               className="mobile-sheet-cta"
             >
-              Start a Project →
+              Start a Project
+              <span className="btn-icon">
+                <ArrowRight size={13} strokeWidth={2.5} />
+              </span>
             </button>
             <p className="mobile-sheet-tagline">Your Brand. Elevated.</p>
           </div>

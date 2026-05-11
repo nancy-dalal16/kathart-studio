@@ -156,10 +156,10 @@ export default function OurClients() {
         <h2 className="font-semibold text-foreground text-4xl md:text-6xl">
           Our Clients
         </h2>
-        <p className="text-foreground text-lg md:text-xl">
+        {/* <p className="text-foreground text-lg md:text-xl">
           {`Stories we’ve shaped, identities we've built, and brands we’ve helped
           grow.`}
-        </p>
+        </p> */}
       </div>
 
       {/* Row 1 — Scroll Left */}
@@ -173,8 +173,18 @@ export default function OurClients() {
       </Marquee>
 
       {/* Left and Right Fade Edges */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-[30rem]" style={{ background: 'linear-gradient(to right, var(--bg-base), transparent)' }} />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-[30rem]" style={{ background: 'linear-gradient(to left, var(--bg-base), transparent)' }} />
+      <div
+        className="pointer-events-none absolute inset-y-0 left-0 w-[30rem]"
+        style={{
+          background: "linear-gradient(to right, var(--bg-base), transparent)",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 w-[30rem]"
+        style={{
+          background: "linear-gradient(to left, var(--bg-base), transparent)",
+        }}
+      />
     </section>
   );
 }

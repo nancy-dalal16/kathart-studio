@@ -51,7 +51,8 @@ export default function SuccessStories() {
     if (cards.length === 0) return;
 
     // Stack offsets
-    const offsets = [0, 28, 56, 84];
+    // const offsets = [0, 28, 56, 84];
+    const offsets = [84, 56, 28, 0];
 
     // Initial positions
     cards.forEach((card, i) => {
@@ -80,48 +81,64 @@ export default function SuccessStories() {
         const time = i / N;
 
         // Top card flies up
-        tl.to(cards[i], {
-          y: -250,
-          opacity: 0,
-          scale: 0.7,
-          ease: "power2.in",
-          duration: 0.25,
-        }, time);
+        tl.to(
+          cards[i],
+          {
+            y: -250,
+            opacity: 0,
+            scale: 0.7,
+            ease: "power2.in",
+            duration: 0.25,
+          },
+          time,
+        );
 
         // Second card comes to front
         if (cards[i + 1]) {
-          tl.to(cards[i + 1], {
-            y: 0,
-            scale: 1,
-            opacity: 1,
-            ease: "power2.out",
-            duration: 0.25,
-          }, time);
+          tl.to(
+            cards[i + 1],
+            {
+              y: 0,
+              scale: 1,
+              opacity: 1,
+              ease: "power2.out",
+              duration: 0.25,
+            },
+            time,
+          );
         }
 
         // Other cards slide up
         for (let j = i + 2; j < N; j++) {
           const newOffset = offsets[j - i - 1] ?? 84;
-          tl.to(cards[j], {
-            y: newOffset,
-            scale: 1 - (j - i - 1) * 0.04,
-            opacity: 1 - (j - i - 1) * 0.15,
-            ease: "power2.out",
-            duration: 0.25,
-          }, time);
+          tl.to(
+            cards[j],
+            {
+              y: newOffset,
+              scale: 1 - (j - i - 1) * 0.04,
+              opacity: 1 - (j - i - 1) * 0.15,
+              ease: "power2.out",
+              duration: 0.25,
+            },
+            time,
+          );
         }
 
         // Update dots
-        tl.call(() => {
-          const activeIdx = (i + 1) % N;
-          dots.forEach((dot, di) => {
-            gsap.to(dot, {
-              height: di === activeIdx ? 40 : 14,
-              opacity: di === activeIdx ? 1 : 0.35,
-              duration: 0.2,
+        tl.call(
+          () => {
+            const activeIdx = (i + 1) % N;
+            dots.forEach((dot, di) => {
+              gsap.to(dot, {
+                height: di === activeIdx ? 40 : 14,
+                opacity: di === activeIdx ? 1 : 0.35,
+                duration: 0.2,
+              });
             });
-          });
-        }, [], time + 0.1);
+          },
+          [],
+          time + 0.1,
+        );
       }
 
       // Reset all
@@ -135,7 +152,6 @@ export default function SuccessStories() {
           });
         });
       });
-
     }, sectionRef);
 
     return () => ctx.revert();

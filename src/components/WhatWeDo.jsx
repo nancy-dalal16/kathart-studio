@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CircleArrowRight } from "lucide-react";
-import Button from "./ui/button";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 // Register ScrollTrigger outside the component
@@ -20,9 +20,7 @@ function WhatWeDo() {
     if (!sectionRef.current) return;
 
     // --- 1. Staggered Text Entrance (Left Side) ---
-    const textElements = gsap.utils.selector(textContentRef.current)(
-      "h1, p, .primary-btn" // Target the main heading, paragraphs, and the button
-    );
+    const textElements = gsap.utils.selector(textContentRef.current)("h1, p");
 
     gsap.from(textElements, {
       y: 50, // Start 50px below
@@ -79,21 +77,21 @@ function WhatWeDo() {
 
           <div className="flex flex-col gap-3">
             <p className="text-textColor text-lg sm:text-xl leading-7 sm:leading-8 max-w-100">
-              We combine <strong>design, marketing, and film</strong> into one powerful
-              creative offering.
+              {` We don't hand you a logo and walk away. We think in systems - brand identity, film, content, marketing - so every touchpoint says the same true thing about your business.`}
             </p>
 
-            <p className="text-textColor text-lg sm:text-xl leading-7 sm:leading-8 max-w-100">
+            {/* <p className="text-textColor text-lg sm:text-xl leading-7 sm:leading-8 max-w-100">
               Our work helps brands express who they are, connect deeply with
               their audiences, and <strong>grow with purpose</strong>.
-            </p>
+            </p> */}
           </div>
 
-          <Button className="primary-btn">
-            <span className="text-base font-medium text-white">
-              Explore Capabilities
+          <Link href="/capabilities" className="primary-btn">
+            Our Capabilities
+            <span className="btn-icon">
+              <ArrowRight size={13} strokeWidth={2.5} />
             </span>
-          </Button>
+          </Link>
         </div>
 
         {/* RIGHT 50% - Image */}

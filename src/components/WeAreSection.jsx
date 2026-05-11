@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CircleArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Button from "./ui/button";
 import Image from "next/image";
 
@@ -107,8 +107,9 @@ export default function WeAreSection() {
             {/* Button */}
             <div>
               <Button className="primary-btn">
-                <span className="text-base font-medium text-white">
-                  Know more About us
+                Know more About us
+                <span className="btn-icon">
+                  <ArrowRight size={13} strokeWidth={2.5} />
                 </span>
               </Button>
             </div>
