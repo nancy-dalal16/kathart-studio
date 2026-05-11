@@ -165,6 +165,7 @@
   justify-content: center;
   height: 100%;
   width: 100%;
+  padding-top: clamp(60px, 8vh, 90px);
 }
 
 .title {
@@ -174,6 +175,7 @@
   justify-content: center;
   text-align: center;
   position: relative;
+  width: 100%;
   font-family: var(--font-geologica);
   font-weight: 700;
   line-height: 1;

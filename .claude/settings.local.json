@@ -7,7 +7,11 @@
       "Bash(Format-Table FullName)",
       "Bash(git checkout *)",
       "Bash(Get-ChildItem -Path \"N:\\\\albatross\\\\Kathart2.0\\\\kathart-studio\\\\src\\\\app\" -Recurse -Include \"page.*\")",
-      "WebFetch(domain:dribbble.com)"
+      "WebFetch(domain:dribbble.com)",
+      "WebFetch(domain:www.yvdh.com)",
+      "Bash(curl -s \"https://www.yvdh.com/\")",
+      "Bash(curl -s \"https://cdn.prod.website-files.com/669bcb58c85a34a57325b96a/css/youri-van-den-hurk.webflow.shared.0764d0b22.css\")",
+      "Bash(curl -s https://www.yvdh.com/)"
     ]
   }
 }

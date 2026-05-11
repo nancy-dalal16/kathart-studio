@@ -113,7 +113,7 @@ html {
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .snap-section {
@@ -133,16 +133,32 @@ p, span, label{
 /* ── Theme toggle pill ── */
 .theme-toggle-pill {
   position: relative;
-  width: 60px;
-  height: 30px;
+  width: 74px;
+  height: 36px;
   border-radius: 100px;
-  background: #1A1733;
+  background: linear-gradient(145deg, #0A0818 0%, #1A1733 100%);
   border: 1px solid rgba(184, 139, 255, 0.35);
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
   overflow: hidden;
-  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.3s ease;
+  transition: background 0.45s ease, border-color 0.4s ease, box-shadow 0.3s ease;
+}
+
+/* subtle aurora glow at bottom of pill in dark mode */
+.theme-toggle-pill::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55%;
+  height: 14px;
+  background: rgba(184, 139, 255, 0.18);
+  filter: blur(7px);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
 .theme-toggle-pill:hover {
@@ -150,58 +166,191 @@ p, span, label{
 }
 
 .theme-toggle-pill.is-light {
-  background: #EDE9FF;
-  border-color: rgba(15, 15, 26, 0.18);
+  /* background: linear-gradient(145deg, #B88BFF 0%, #9B6FE0 100%); */
+  background: #d9b3ff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.theme-toggle-pill.is-light::after {
+  opacity: 0;
 }
 
 .theme-toggle-pill.is-light:hover {
-  box-shadow: 0 0 0 3px rgba(15, 15, 26, 0.08);
+  box-shadow: 0 0 0 3px rgba(184, 139, 255, 0.35);
 }
 
-/* Stars (visible in dark mode) */
+/* Stars + clouds decoration layer */
 .toggle-bg-decoration {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
+/* Stars (visible in dark mode) */
 .toggle-star {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   transition: opacity 0.35s ease, transform 0.35s ease;
+  animation: toggle-twinkle 2.4s ease-in-out infinite;
 }
 
-.star-1 { width: 2.5px; height: 2.5px; top: 7px;  right: 13px; }
-.star-2 { width: 1.5px; height: 1.5px; top: 16px; right: 20px; }
-.star-3 { width: 2px;   height: 2px;   top: 21px; right: 12px; }
+.star-1 { width: 2.5px; height: 2.5px; top: 8px;  left: 14px; animation-delay: 0s; }
+.star-2 { width: 1.5px; height: 1.5px; top: 18px; left: 22px; animation-delay: 0.8s; }
+.star-3 { width: 2px;   height: 2px;   top: 26px; left: 14px; animation-delay: 1.6s; }
+.star-4 { width: 1.5px; height: 1.5px; top: 12px; left: 7px;  animation-delay: 1.2s; }
+
+@keyframes toggle-twinkle {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50%       { opacity: 0.3; transform: scale(0.6); }
+}
 
 .theme-toggle-pill.is-light .toggle-star {
   opacity: 0;
   transform: scale(0);
+  animation: none;
+}
+
+/* Clouds (visible + animated in light mode) */
+.toggle-cloud {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 20'%3E%3Cpath d='M5 16 A4 4 0 0 1 5 8 A6 6 0 0 1 12 3 A8 8 0 0 1 28 3 A5 5 0 0 1 35 8 A4 4 0 0 1 35 16 Z' fill='white'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.cloud-1 { width: 20px; height: 10px; top: 8px; right: 7px; }
+
+.theme-toggle-pill.is-light .toggle-cloud {
+  opacity: 1;
+  animation: toggle-cloud-drift 2.8s ease-in-out infinite;
+}
+
+@keyframes toggle-cloud-drift {
+  0%, 100% { transform: translateX(0);    opacity: 1; }
+  50%       { transform: translateX(2px); opacity: 0.65; }
+}
+
+/* Birds (visible + animated in light mode) */
+.toggle-bird {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 8'%3E%3Cpath d='M0 6 Q3.5 0 7 3.5 Q10.5 0 14 6' fill='none' stroke='%23000000' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.38s ease;
+}
+
+.bird-1 { width: 12px; height: 7px; top: 8px;    right: 20px; }
+.bird-2 { width: 10px; height: 6px; bottom: 8px;  right: 10px; }
+
+.theme-toggle-pill.is-light .toggle-bird {
+  opacity: 1;
+  animation: toggle-bird-bob 1.9s ease-in-out infinite;
+}
+.theme-toggle-pill.is-light .bird-2 { animation-delay: 0.95s; }
+
+@keyframes toggle-bird-bob {
+  0%, 100% { transform: translateY(0);     opacity: 1; }
+  50%       { transform: translateY(-2px); opacity: 0.45; }
 }
 
 /* Sliding knob */
 .toggle-knob {
   position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 22px;
-  height: 22px;
+  top: 5px;
+  left: 5px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  background: #B88BFF;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-              background 0.4s ease;
+  z-index: 2;
+  transform: translateX(38px);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .theme-toggle-pill.is-light .toggle-knob {
-  transform: translateX(30px);
-  /* background: #0F0F1A; */
-  background: #b88bff;
+  transform: translateX(0);
+}
+
+/* ── Nav pill ── */
+
+/* Default: flat full-width header (same as original design) */
+.nav-pill {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 0;
+  padding: 16px 16px;
+  background: transparent;
+  border: none;
+  margin-top: 0;
+  transition:
+    width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.45s ease,
+    padding 0.45s ease,
+    background 0.35s ease,
+    margin-top 0.45s ease,
+    backdrop-filter 0.35s ease;
+  will-change: width, border-radius;
+}
+
+@media (min-width: 768px) {
+  .nav-pill { padding: 20px 40px; }
+}
+
+@media (min-width: 1024px) {
+  .nav-pill { padding: 20px 80px; }
+}
+
+/* Scrolled: shrinking pill */
+.nav-pill.is-scrolled {
+  border-radius: 100px;
+  background: rgba(15, 15, 26, 0.55);
+  padding: 10px 20px;
+  margin-top: 16px;
+  width: calc(100% - 32px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+}
+
+@media (min-width: 768px) {
+  .nav-pill.is-scrolled {
+    width: 72%;
+    padding: 5px 20px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .nav-pill.is-scrolled { width: 62%; }
+}
+
+[data-theme="light"] .nav-pill.is-scrolled,
+.light .nav-pill.is-scrolled {
+  background: rgba(245, 244, 254, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Nav border — shows at rest, fades out in pill */
+.nav-center {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 32px;
+  transition: border-color 0.35s ease, padding 0.35s ease;
+}
+
+.is-scrolled .nav-center {
+  border-color: transparent;
+  padding: 4px 16px;
 }
 
 /* ── Header sparkle dots (sit on the top/bottom border lines) ── */

@@ -8,33 +8,27 @@ import Image from "next/image";
 
 function MoonIcon() {
   return (
-    <svg viewBox="0 0 24 24" width="12" height="12" stroke="none">
-      <path fill="white" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      style={{ transform: "scaleX(-1)" }}
+    >
+      <defs>
+        <mask id="moon-thick">
+          <rect width="24" height="24" fill="white" />
+          <circle cx="20" cy="10" r="7" fill="black" />
+        </mask>
+      </defs>
+      <circle cx="12" cy="12" r="12" fill="#B88BFF" mask="url(#moon-thick)" />
     </svg>
   );
 }
 
 function SunIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      width="13"
-      height="13"
-      fill="none"
-      stroke="white"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="4" fill="white" />
-      <line x1="12" y1="2" x2="12" y2="5" />
-      <line x1="19.78" y1="4.22" x2="17.66" y2="6.34" />
-      <line x1="22" y1="12" x2="19" y2="12" />
-      <line x1="19.78" y1="19.78" x2="17.66" y2="17.66" />
-      <line x1="12" y1="22" x2="12" y2="19" />
-      <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
-      <line x1="2" y1="12" x2="5" y2="12" />
-      <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" />
+    <svg viewBox="0 0 24 24" width="20" height="20">
+      <circle cx="12" cy="12" r="12" fill="white" />
     </svg>
   );
 }
@@ -79,6 +73,14 @@ export function Header() {
       saved || document.documentElement.dataset.theme || "dark";
     setTheme(currentTheme);
     setMounted(true);
+  }, []);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -167,8 +169,8 @@ export function Header() {
   return (
     <>
       {/* ── HEADER ── */}
-      <header className="fixed top-0 left-0 w-full z-[1000]">
-        <div className="flex items-center w-full px-4 md:px-10 lg:px-20 py-4 md:py-5">
+      <header className="fixed top-0 left-0 w-full z-[1000] flex justify-center">
+        <div className={`nav-pill${isScrolled ? " is-scrolled" : ""}`}>
           {/* LEFT — Logo */}
           <div className="flex-1 flex items-center">
             {mounted ? (
@@ -195,8 +197,8 @@ export function Header() {
             )}
           </div>
 
-          {/* CENTER — Nav with top + bottom border only */}
-          <nav className="relative hidden md:flex items-center border-y border-[var(--border)] px-8 py-4">
+          {/* CENTER — Nav */}
+          <nav className="nav-center relative hidden md:flex items-center">
             {navItems.map((item, index) => (
               <div key={item.label} className="flex items-center">
                 <button
@@ -225,6 +227,10 @@ export function Header() {
                 <span className="toggle-star star-1" />
                 <span className="toggle-star star-2" />
                 <span className="toggle-star star-3" />
+                <span className="toggle-star star-4" />
+                <span className="toggle-cloud cloud-1" />
+                <span className="toggle-bird bird-1" />
+                <span className="toggle-bird bird-2" />
               </span>
               <span className="toggle-knob">
                 {mounted ? (
