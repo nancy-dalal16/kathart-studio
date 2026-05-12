@@ -9,12 +9,12 @@ import styles from "./HeroSection.module.css";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
-  ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
 }
 
 export default function HeroSection() {
   useEffect(() => {
     window.scrollTo(0, 0);
+    setTimeout(() => ScrollTrigger.refresh(), 100);
   }, []);
 
   // Master pin container
@@ -42,7 +42,7 @@ export default function HeroSection() {
     const maskElevatedEl = maskElevatedRef.current;
 
     const ctx = gsap.context(() => {
-      const totalScroll = window.innerHeight * 0.8;
+      const totalScroll = window.innerHeight * 1.5; // Adjust as needed for scroll distance
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -51,7 +51,7 @@ export default function HeroSection() {
           end: `+=${totalScroll}`,
           pin: true,
           anticipatePin: 1,
-          scrub: 1.5,
+          scrub: 1,
           snap: {
             snapTo: [0, 1],
             directional: true,

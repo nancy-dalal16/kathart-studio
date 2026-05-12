@@ -49,13 +49,55 @@ const logoClass = "h-7 sm:h-8 md:h-10 w-auto object-contain flex-shrink-0";
 function LogoRow1() {
   return (
     <>
-      <Image src="/images/clients/creative-market.svg" alt="Creative market" width={500} height={500} className={logoClass} />
-      <Image src="/images/clients/walmart.svg"         alt="Walmart"         width={500} height={500} className={logoClass} />
-      <Image src="/images/clients/maze.svg"            alt="Maze"            width={500} height={500} className={logoClass} />
-      <Image src="/images/clients/bukalapak.svg"       alt="Bukalapak"       width={500} height={500} className={logoClass} />
-      <Image src="/images/clients/grapho.svg"          alt="Grapho"          width={500} height={500} className={logoClass} />
-      <Image src="/images/clients/traveloka.svg"       alt="Traveloka"       width={500} height={500} className={logoClass} />
-      <Image src="/images/clients/ebay.svg"            alt="eBay"            width={500} height={500} className={logoClass} />
+      <Image
+        src="/images/clients/creative-market.svg"
+        alt="Creative market"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/walmart.svg"
+        alt="Walmart"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/maze.svg"
+        alt="Maze"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/bukalapak.svg"
+        alt="Bukalapak"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/grapho.svg"
+        alt="Grapho"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/traveloka.svg"
+        alt="Traveloka"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/ebay.svg"
+        alt="eBay"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
     </>
   );
 }
@@ -63,11 +105,41 @@ function LogoRow1() {
 function LogoRow2() {
   return (
     <>
-      <Image src="/images/clients/emblem.svg"  alt="Emblem"  width={500} height={500} className={logoClass} />
-      <Image src="/images/clients/iconic.svg"  alt="Iconic"  width={500} height={500} className={logoClass} />
-      <Image src="/images/clients/optimal.svg" alt="Optimal" width={500} height={500} className={logoClass} />
-      <Image src="/images/clients/visualy.svg" alt="Visually" width={500} height={500} className={logoClass} />
-      <Image src="/images/clients/signet.svg"  alt="Signet"  width={500} height={500} className={logoClass} />
+      <Image
+        src="/images/clients/emblem.svg"
+        alt="Emblem"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/iconic.svg"
+        alt="Iconic"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/optimal.svg"
+        alt="Optimal"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/visualy.svg"
+        alt="Visually"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/signet.svg"
+        alt="Signet"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
     </>
   );
 }
@@ -84,7 +156,7 @@ export default function OurClients() {
         alt="Background Element"
         width={1440}
         height={328}
-        className="absolute md:top-[250px] top-[500px] left-0 w-full opacity-40 object-contain"
+        className="absolute md:top-[180px] top-[500px] left-0 w-full opacity-40 object-contain"
       />
 
       {/* Headings */}

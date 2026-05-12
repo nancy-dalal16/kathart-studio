@@ -7,7 +7,7 @@
 :root {
   --background: #0F0F1A;
   --foreground: #ffffff;
-  --primary:#B88BFF;
+  --primary:#B88BFF; 
   --secondary:#1A1733;
   --textColor:#A8A6C8;
   --border: #FFFFFF1F;
@@ -412,12 +412,12 @@ button.nav-link:focus-within {
 }
 
 .scrolled-logo {
-  width: 55px !important;
+  width: 45px !important;
 }
 
 @media (min-width: 768px) {
   .scrolled-logo {
-    width: 65px !important;
+    width: 55px !important;
   }
 }
 
@@ -952,7 +952,7 @@ a.primary-btn:active {
 }
 [data-theme="light"] .whatwedo-section,
 .light .whatwedo-section {
-  background: linear-gradient(0deg, rgba(220, 214, 255, 0.4) 0%, transparent 100%);
+  background: linear-gradient(0deg, rgba(181, 116, 232, 0.4) 0%, transparent 100%);
 }
 
 .footer-bg {

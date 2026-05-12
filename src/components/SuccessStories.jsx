@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -44,6 +44,23 @@ export default function SuccessStories() {
   const sectionRef = useRef(null);
   const cardRefs = useRef([]);
   const dotRefs = useRef([]);
+  const [theme, setTheme] = useState("dark");
+
+  useEffect(() => {
+    setTheme(
+      document.documentElement.dataset.theme ||
+        localStorage.getItem("theme") ||
+        "dark",
+    );
+    const observer = new MutationObserver(() => {
+      setTheme(document.documentElement.dataset.theme || "dark");
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+    return () => observer.disconnect();
+  }, []);
 
   useLayoutEffect(() => {
     const cards = cardRefs.current.filter(Boolean);
@@ -64,7 +81,7 @@ export default function SuccessStories() {
 
     const stepSize = 1 / N; // 0.25
     const halfStep = stepSize / 2; // 0.125 — each phase gets half a step
-    const totalScroll = N * 600;
+    const totalScroll = N * 400;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -86,7 +103,7 @@ export default function SuccessStories() {
         tl.to(
           cards[exitIdx],
           {
-            y: 600,
+            y: 400,
             scale: 0.88,
             ease: "power2.in",
             duration: halfStep,
@@ -97,20 +114,20 @@ export default function SuccessStories() {
 
         // While fully off screen, snap position to above the container + lowest z
         // This snap is invisible because the card is at y:600 (below clipping boundary)
-        tl.set(cards[exitIdx], { y: -400, zIndex: 1 }, time + halfStep);
+        tl.set(cards[exitIdx], { y: 0, zIndex: 1 }, time + halfStep);
 
         // Phase B — card drops down from above into the back position (y:0)
-        tl.to(
-          cards[exitIdx],
-          {
-            y: 0,
-            scale: 0.88,
-            ease: "power2.out",
-            duration: halfStep,
-            force3D: true,
-          },
-          time + halfStep,
-        );
+        // tl.to(
+        //   cards[exitIdx],
+        //   {
+        //     y: 0,
+        //     scale: 0.88,
+        //     ease: "power2.out",
+        //     duration: halfStep,
+        //     force3D: true,
+        //   },
+        //   time + halfStep,
+        // );
 
         // All other cards advance one position forward — runs over the full step
         for (let cardIdx = 0; cardIdx < N; cardIdx++) {
@@ -136,7 +153,7 @@ export default function SuccessStories() {
           tl.to(
             dot,
             {
-              height:          di === activeIdx ? 40       : 14,
+              height: di === activeIdx ? 40 : 14,
               backgroundColor: di === activeIdx ? "#B88BFF" : "#ffffff",
               ease: "power2.inOut",
               duration: stepSize * 0.85,
@@ -155,7 +172,7 @@ export default function SuccessStories() {
       ref={sectionRef}
       className="relative w-full min-h-screen flex flex-col items-center pt-16 md:pt-24 pb-16 px-4 md:px-10 lg:px-20 overflow-hidden"
     >
-      <div className="relative z-20 text-center mb-16 md:mb-20 shrink-0">
+      <div className="relative z-20 text-center mb-16 md:mb-8 shrink-0">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-foreground">
           Success Stories
         </h2>
@@ -178,24 +195,26 @@ export default function SuccessStories() {
               style={{ top: 0 }}
             >
               <div
-                className="w-full rounded-2xl border border-white/10 flex flex-col md:flex-row items-center gap-6 md:gap-10 p-6 sm:p-8 md:p-10 overflow-hidden"
+                className="w-full rounded-2xl border-0  flex flex-col md:flex-row items-center gap-6 md:gap-10 p-6 sm:p-8 md:p-10 overflow-hidden"
                 style={{
                   backgroundImage:
-                    "linear-gradient(135deg, rgba(10,8,24,0.78) 0%, rgba(10,8,24,0.68) 100%), url(/images/success-stories-back.jpg)",
+                    theme === "light"
+                      ? "linear-gradient(135deg, rgba(243, 230, 255,1) 0%, rgba(243, 230, 255,0.3) 100%), url(/images/success-stories-back.jpg)"
+                      : "linear-gradient(135deg, rgba(10,8,24,0.78) 0%, rgba(10,8,24,0.68) 100%), url(/images/success-stories-back.jpg)",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   boxShadow: "0 20px 50px rgba(0,0,0,0.45)",
                 }}
               >
                 <div className="flex flex-col gap-4 md:gap-6 flex-1 min-w-0">
-                  <blockquote className="text-white/90 font-light text-lg sm:text-xl md:text-[1.35rem] leading-relaxed">
+                  <blockquote className="text-foreground font-light text-lg sm:text-xl md:text-[1.35rem] leading-relaxed">
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
                   <div>
                     <h4 className="text-primary text-lg md:text-xl font-medium">
                       {t.author}
                     </h4>
-                    <p className="text-white/50 text-xs sm:text-sm mt-1">
+                    <p className="text-foreground text-xs sm:text-sm mt-1">
                       {t.position}
                     </p>
                   </div>
@@ -223,7 +242,7 @@ export default function SuccessStories() {
               ref={(el) => (dotRefs.current[i] = el)}
               className="w-1.5 rounded-full"
               style={{
-                height:          i === 0 ? 40        : 14,
+                height: i === 0 ? 40 : 14,
                 backgroundColor: i === 0 ? "#B88BFF" : "#ffffff",
               }}
             />
