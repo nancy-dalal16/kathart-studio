@@ -417,7 +417,7 @@ button.nav-link:focus-within {
 
 @media (min-width: 768px) {
   .scrolled-logo {
-    width: 55px !important;
+    width: 48px !important;
   }
 }
 
