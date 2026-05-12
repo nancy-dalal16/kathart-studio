@@ -13,6 +13,10 @@ if (typeof window !== "undefined") {
 }
 
 export default function HeroSection() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Master pin container
   const masterRef = useRef(null);
 
@@ -38,7 +42,7 @@ export default function HeroSection() {
     const maskElevatedEl = maskElevatedRef.current;
 
     const ctx = gsap.context(() => {
-      const totalScroll = window.innerHeight * 0.5;
+      const totalScroll = window.innerHeight * 0.8;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -47,12 +51,12 @@ export default function HeroSection() {
           end: `+=${totalScroll}`,
           pin: true,
           anticipatePin: 1,
-          scrub: 0.5,
+          scrub: 1.5,
           snap: {
             snapTo: [0, 1],
             directional: true,
             inertia: false,
-            duration: { min: 0.2, max: 0.3 },
+            duration: { min: 0.1, max: 0.3 },
             delay: 0,
             ease: "power2.out",
           },
@@ -92,6 +96,7 @@ export default function HeroSection() {
 
     return () => {
       ctx.revert();
+      ScrollTrigger.getAll().forEach((t) => t.kill());
       gsap.killTweensOf([
         scene1El,
         aboutSceneEl,
@@ -110,10 +115,10 @@ export default function HeroSection() {
           maskElevatedEl,
         ],
         {
-          opacity: "",
-          scale: "",
-          y: "",
-          transform: "",
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          transform: "none",
         },
       );
     };
@@ -183,8 +188,8 @@ export default function HeroSection() {
                 alt="Kathart logo icon"
                 width={100}
                 height={100}
-                className="w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24"
-                src="/images/Kathart_logo-light.svg"
+                className="w-24 h-20 sm:w-28 sm:h-24 md:w-28 md:h-24"
+                src="/images/resized_logo_transparent.png"
               />
               <div className="flex flex-col items-center gap-2 w-full">
                 <h2 className="font-semibold text-center text-foreground text-4xl sm:text-5xl lg:text-[64px] leading-tight">

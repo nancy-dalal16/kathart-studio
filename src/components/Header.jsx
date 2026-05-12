@@ -175,12 +175,14 @@ export function Header() {
           <div className="flex-1 flex items-center">
             {mounted ? (
               <Image
-                className="w-[60px] h-auto md:w-[75px] cursor-pointer"
+                className={`w-[60px] h-auto md:w-[75px] cursor-pointer header-logo${isScrolled ? " scrolled-logo" : ""}`}
                 alt="Kathart logo"
                 src={
-                  currentTheme === "light"
-                    ? "/images/Kathart-Logo-1.png"
-                    : "/images/Kathart-Logo_2.png"
+                  isScrolled
+                    ? "/images/resized_logo_transparent.png"
+                    : currentTheme === "light"
+                      ? "/images/Kathart-Logo-1.png"
+                      : "/images/Kathart-Logo_2.png"
                 }
                 width={100}
                 height={100}
@@ -188,7 +190,7 @@ export function Header() {
               />
             ) : (
               <Image
-                className="w-[60px] h-auto md:w-[75px]"
+                className="w-[60px] h-auto md:w-[75px] header-logo"
                 alt="Kathart logo"
                 src="/images/Kathart-Logo_2.png"
                 width={100}
