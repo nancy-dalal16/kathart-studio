@@ -137,7 +137,7 @@ export function Footer() {
         </div>
 
         <p className="w-full text-center font-normal text-foreground/70 text-sm md:text-base leading-5 md:leading-6 mt-6">
-          © Copyright 2025, All Rights Reserved by Kathart Studios Pvt Ltd.
+          © Copyright 2026, All Rights Reserved by Kathart Studios Pvt Ltd.
         </p>
       </div>
       {/* END ANIM WRAPPER */}
