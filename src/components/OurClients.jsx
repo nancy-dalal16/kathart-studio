@@ -1,7 +1,13 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 // -----------------------------------------------------------------------------
 // ⭐ Marquee Component (No `cn`, fully rewritten)
@@ -148,8 +154,29 @@ function LogoRow2() {
 // ⭐ Main Component Export — Our Clients Section
 // -----------------------------------------------------------------------------
 export default function OurClients() {
+  const headingRef = useRef(null);
+  const sectionRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(headingRef.current, {
+        y: 30,
+        opacity: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          once: true,
+          invalidateOnRefresh: true,
+        },
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative flex flex-col items-center justify-center py-32 md:py-48 px-4 overflow-hidden w-full">
+    <section ref={sectionRef} className="relative flex flex-col items-center justify-center py-32 md:py-48 px-4 overflow-hidden w-full">
       {/* Background Decorative Image */}
       <Image
         src="/images/our-clients-back.png"
@@ -160,7 +187,7 @@ export default function OurClients() {
       />
 
       {/* Headings */}
-      <div className="max-w-3xl text-center space-y-3 relative z-10">
+      <div ref={headingRef} className="max-w-3xl text-center space-y-3 relative z-10">
         <h2 className="font-semibold text-foreground text-4xl md:text-6xl">
           Our Clients
         </h2>

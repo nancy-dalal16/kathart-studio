@@ -14,7 +14,7 @@ if (typeof window !== "undefined") {
 export default function HeroSection() {
   useEffect(() => {
     window.scrollTo(0, 0);
-    setTimeout(() => ScrollTrigger.refresh(), 100);
+    setTimeout(() => requestAnimationFrame(() => ScrollTrigger.refresh()), 300);
   }, []);
 
   // Master pin container
@@ -43,7 +43,6 @@ export default function HeroSection() {
 
     const ctx = gsap.context(() => {
       const totalScroll = window.innerHeight * 1.5; // Adjust as needed for scroll distance
-
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: masterRef.current,
@@ -51,21 +50,25 @@ export default function HeroSection() {
           end: `+=${totalScroll}`,
           pin: true,
           anticipatePin: 1,
-          scrub: 1,
+          scrub: 0.4,
           snap: {
             snapTo: [0, 1],
             directional: true,
             inertia: false,
-            duration: { min: 0.1, max: 0.3 },
-            delay: 0,
-            ease: "power2.out",
+            duration: { min: 0.35, max: 0.55 },
+            delay: 0.02,
+            ease: "power2.inOut",
           },
         },
       });
 
       // ── ACT 1: Hero departs ──────────────────────────────
-      tl.to(scrollCueEl, { opacity: 0, duration: 0.1 }, 0)
-        .to(yourBrandEl, { opacity: 0, y: -50, duration: 0.07 }, 0)
+      tl.to(scrollCueEl, { opacity: 0, duration: 0.1, ease: "none" }, 0)
+        .to(
+          yourBrandEl,
+          { opacity: 0, y: -40, duration: 0.15, ease: "power2.in" },
+          0,
+        )
         .to(
           maskElevatedEl,
           {
@@ -73,55 +76,37 @@ export default function HeroSection() {
             opacity: 0,
             duration: 0.25,
             transformOrigin: "53% 53%",
+            ease: "power2.in",
           },
           0,
         );
 
       // ── ACT 2: White flash burst ──────────────────────────
-      tl.to(scene1El, { opacity: 0, duration: 0.1 }, 0.15).fromTo(
+      tl.to(
+        scene1El,
+        { opacity: 0, duration: 0.12, ease: "none" },
+        0.18,
+      ).fromTo(
         whiteFlashEl,
         { opacity: 0 },
-        { opacity: 1, duration: 0.08 },
-        0.2,
+        { opacity: 1, duration: 0.1, ease: "none" },
+        0.22,
       );
 
       // ── ACT 3: We Are scene materialises ─────────────────
-      tl.to(whiteFlashEl, { opacity: 0, duration: 0.1 }, 0.28).fromTo(
+      tl.to(
+        whiteFlashEl,
+        { opacity: 0, duration: 0.12, ease: "none" },
+        0.32,
+      ).fromTo(
         aboutSceneEl,
-        { scale: 1.1, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.25 },
-        0.28,
+        { scale: 1.05, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" },
+        0.32,
       );
     }, masterRef);
 
-    return () => {
-      ctx.revert();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-      gsap.killTweensOf([
-        scene1El,
-        aboutSceneEl,
-        whiteFlashEl,
-        scrollCueEl,
-        yourBrandEl,
-        maskElevatedEl,
-      ]);
-      gsap.set(
-        [
-          scene1El,
-          aboutSceneEl,
-          whiteFlashEl,
-          scrollCueEl,
-          yourBrandEl,
-          maskElevatedEl,
-        ],
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          transform: "none",
-        },
-      );
-    };
+    return () => ctx.revert();
   }, []);
 
   // ── Scroll-driven pin + transition (rest of code below) ─────────────────

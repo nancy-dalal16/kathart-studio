@@ -79,9 +79,9 @@ export default function SuccessStories() {
       gsap.set(card, { ...positions[i], opacity: 1, force3D: true }),
     );
 
-    const stepSize = 1 / N; // 0.25
-    const halfStep = stepSize / 2; // 0.125 — each phase gets half a step
-    const totalScroll = N * 400;
+    const stepSize = 1 / (N - 1);
+    const halfStep = stepSize / 2;
+    const totalScroll = (N - 1) * 400;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -91,10 +91,12 @@ export default function SuccessStories() {
           end: `+=${totalScroll}`,
           scrub: 1.5,
           pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
-      for (let step = 0; step < N; step++) {
+      for (let step = 0; step < N - 1; step++) {
         const time = step * stepSize;
         const exitIdx = step % N; // card currently at front
         const activeIdx = (step + 1) % N;
@@ -154,7 +156,8 @@ export default function SuccessStories() {
             dot,
             {
               height: di === activeIdx ? 40 : 14,
-              backgroundColor: di === activeIdx ? "#B88BFF" : "#ffffff",
+              backgroundColor:
+                di === activeIdx ? "#B88BFF" : "rgba(255,255,255,0.35)",
               ease: "power2.inOut",
               duration: stepSize * 0.85,
             },
@@ -192,7 +195,7 @@ export default function SuccessStories() {
               key={i}
               ref={(el) => (cardRefs.current[i] = el)}
               className="absolute inset-x-0"
-              style={{ top: 0 }}
+              style={{ top: 0, willChange: "transform" }}
             >
               <div
                 className="w-full rounded-2xl border-0  flex flex-col md:flex-row items-center gap-6 md:gap-10 p-6 sm:p-8 md:p-10 overflow-hidden"
@@ -243,17 +246,17 @@ export default function SuccessStories() {
               className="w-1.5 rounded-full"
               style={{
                 height: i === 0 ? 40 : 14,
-                backgroundColor: i === 0 ? "#B88BFF" : "#ffffff",
+                backgroundColor: i === 0 ? "#B88BFF" : "rgba(255,255,255,0.35)",
               }}
             />
           ))}
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-2 mt-8 text-textColor">
+      {/* <div className="flex flex-col items-center gap-2 mt-8 text-textColor">
         <span className="text-xs tracking-widest uppercase">Scroll</span>
         <div className="w-px h-8 bg-gradient-to-b from-textColor/50 to-transparent" />
-      </div>
+      </div> */}
     </section>
   );
 }

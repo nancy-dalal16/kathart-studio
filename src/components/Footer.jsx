@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FacebookIcon, InstagramIcon, LinkedinIcon } from "lucide-react";
 import { Separator } from "./ui/seperator";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const socialLinks = [
   { icon: FacebookIcon, alt: "Facebook" },
@@ -42,19 +44,21 @@ const footerColumns = [
 export function Footer() {
   const animRef = useRef(null);
 
-  useEffect(() => {
-    gsap.from(animRef.current, {
-      opacity: 0,
-      y: 40,
-      duration: 1.2,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: animRef.current,
-        start: "top 85%",
-        // toggleActions: "play none none none",
-        pin: false, // IMPORTANT: prevents double scrollbars
-      },
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(animRef.current, {
+        opacity: 0,
+        y: 40,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: animRef.current,
+          start: "top 85%",
+          once: true,
+        },
+      });
     });
+    return () => ctx.revert();
   }, []);
 
   return (

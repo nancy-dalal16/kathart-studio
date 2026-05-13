@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import Link from "next/link";
 import { MailIcon, PhoneIcon, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const contactCards = [
   {
@@ -32,9 +34,8 @@ export function CTA() {
   const textRef = useRef(null);
   const cardRefs = useRef([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // Fade-up animation for content
       const items = [
         headingRef.current,
         textRef.current,
@@ -50,18 +51,9 @@ export function CTA() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 80%",
+          once: true,
         },
       });
-
-      // 3D movable / tilt effect for cards (on hover)
-      const listeners = [];
-
-      return () => {
-        listeners.forEach(({ card, handleMouseMove, handleMouseLeave }) => {
-          card.removeEventListener("mousemove", handleMouseMove);
-          card.removeEventListener("mouseleave", handleMouseLeave);
-        });
-      };
     }, sectionRef);
 
     return () => ctx.revert();
