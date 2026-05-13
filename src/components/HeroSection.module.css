@@ -17,6 +17,7 @@
   z-index: 20;
   pointer-events: none;
   opacity: 0;
+  will-change: opacity;
 }
 
 /* ── Scenes ── */
@@ -139,6 +140,7 @@
   mix-blend-mode: darken;
   pointer-events: none;
   backface-visibility: hidden;
+  will-change: opacity;
 }
 
 :global(.light) .maskLayer {
@@ -198,6 +200,7 @@
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--color-white);
+  will-change: transform, opacity;
 }
 
 :global(.light) .yourBrandSolid {
@@ -209,6 +212,8 @@
   display: inline-block;
   position: relative;
   line-height: 0.85;
+  white-space: nowrap;
+  will-change: opacity; /* removed transform to prevent blurry text on scale */
 }
 
 /* Mask version — near-white so multiply(near-white, video) ≈ video in dark mode */
@@ -221,6 +226,7 @@
   letter-spacing: 5px;
   line-height: 1;
   color: #EEECEA;
+  white-space: nowrap;
 }
 
 :global(.light) .elevatedTextMask {
@@ -236,6 +242,7 @@
   font-weight: 700;
   letter-spacing: 5px;
   color: transparent;
+  white-space: nowrap;
 }
 
 /* Scroll cue — drip animation */

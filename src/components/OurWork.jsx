@@ -53,6 +53,7 @@ export default function OurWork() {
   const trackRef = useRef(null);
   const dotRefs = useRef([]);
   const imageRefs = useRef([]);
+  const ctaRef = useRef(null);
 
   const handleMouseMove = (e, idx) => {
     const el = imageRefs.current[idx];
@@ -91,8 +92,13 @@ export default function OurWork() {
           end: `+=${totalScroll}`,
           pin: true,
           scrub: 0.6,
-          anticipatePin: 1,
           invalidateOnRefresh: true,
+          snap: {
+            snapTo: 1 / (N - 1), // Automatically calculates the exact points for each slide
+            duration: { min: 0.2, max: 0.4 }, // Smooth snapping duration
+            delay: 0.02, // Wait a tiny fraction of a second after scrolling stops before snapping
+            ease: "power2.inOut",
+          },
         },
       });
 
@@ -125,7 +131,27 @@ export default function OurWork() {
           t - d,
         );
       }
-    }, section);
+
+      // CTA Banner Entrance Animation
+      if (ctaRef.current) {
+        gsap.fromTo(
+          ctaRef.current,
+          { opacity: 0, y: 40, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ctaRef.current,
+              start: "top 85%", // Trigger when top of banner hits 85% down viewport
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+    });
 
     return () => ctx.revert();
   }, []);
@@ -249,7 +275,7 @@ export default function OurWork() {
       </section>
 
       {/* CTA Banner — sits below the pinned section, visible after all slides */}
-      <div className="px-6 sm:px-10 lg:px-20 py-10">
+      <div ref={ctaRef} className="px-6 sm:px-10 lg:px-20 py-10">
         <div className="flex justify-between items-center flex-col sm:flex-row gap-6 bg-secondary rounded-2xl px-6 py-5">
           <p className="text-xl sm:text-2xl">
             We&apos;ve got more cool stuff waiting for you — go explore!

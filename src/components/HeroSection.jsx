@@ -9,6 +9,7 @@ import styles from "./HeroSection.module.css";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
+  gsap.ticker.lagSmoothing(0);
 }
 
 export default function HeroSection() {
@@ -49,16 +50,7 @@ export default function HeroSection() {
           start: "top top",
           end: `+=${totalScroll}`,
           pin: true,
-          anticipatePin: 1,
-          scrub: 0.4,
-          snap: {
-            snapTo: [0, 1],
-            directional: true,
-            inertia: false,
-            duration: { min: 0.35, max: 0.55 },
-            delay: 0.02,
-            ease: "power2.inOut",
-          },
+          scrub: 0.5, // Reduced from 1.2 to prevent scroll-disconnect feeling
         },
       });
 
@@ -66,43 +58,44 @@ export default function HeroSection() {
       tl.to(scrollCueEl, { opacity: 0, duration: 0.1, ease: "none" }, 0)
         .to(
           yourBrandEl,
-          { opacity: 0, y: -40, duration: 0.15, ease: "power2.in" },
+          { opacity: 0, y: -40, duration: 0.2, ease: "power2.inOut" },
           0,
         )
         .to(
           maskElevatedEl,
           {
-            scale: 30,
+            scale: 45, // Deeper zoom for a true "fly-through" feel
             opacity: 0,
-            duration: 0.25,
+            duration: 0.35,
             transformOrigin: "53% 53%",
-            ease: "power2.in",
+            ease: "power3.in", // Exponential curve mimics real camera dolly
+            force3D: false,
           },
           0,
         );
 
-      // ── ACT 2: White flash burst ──────────────────────────
+      // ── ACT 2: White flash burst & Scene cross-fade ──────
       tl.to(
         scene1El,
-        { opacity: 0, duration: 0.12, ease: "none" },
-        0.18,
+        { opacity: 0, duration: 0.2, ease: "power2.inOut" },
+        0.15, // Starts fading out halfway through the dive
       ).fromTo(
         whiteFlashEl,
         { opacity: 0 },
-        { opacity: 1, duration: 0.1, ease: "none" },
-        0.22,
+        { opacity: 1, duration: 0.15, ease: "power2.inOut" },
+        0.2,
       );
 
       // ── ACT 3: We Are scene materialises ─────────────────
       tl.to(
         whiteFlashEl,
-        { opacity: 0, duration: 0.12, ease: "none" },
-        0.32,
+        { opacity: 0, duration: 0.2, ease: "power2.inOut" },
+        0.35,
       ).fromTo(
         aboutSceneEl,
-        { scale: 1.05, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" },
-        0.32,
+        { scale: 1.08, opacity: 0, y: 30 }, // Added y-axis drop for elegance
+        { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
+        0.35,
       );
     }, masterRef);
 

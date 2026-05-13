@@ -89,10 +89,15 @@ export default function SuccessStories() {
           trigger: sectionRef.current,
           start: "top top",
           end: `+=${totalScroll}`,
-          scrub: 1.5,
+          scrub: 0.6,
           pin: true,
-          anticipatePin: 1,
           invalidateOnRefresh: true,
+          snap: {
+            snapTo: 1 / (N - 1),
+            duration: { min: 0.2, max: 0.4 },
+            delay: 0.05,
+            ease: "power2.inOut",
+          },
         },
       });
 
