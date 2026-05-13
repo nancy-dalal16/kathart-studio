@@ -675,7 +675,7 @@ a.primary-btn::before {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(#b88bff73 -40%, #0000 100%);
+  background: radial-gradient(#b88bff73 -70%, #0000 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -991,7 +991,7 @@ a.primary-btn:active {
 }
 
 .footer-bg {
-  background: linear-gradient(180deg, rgba(72, 43, 255, 0) 50%, rgba(72, 43, 255, 0.9) 100%);
+  background: linear-gradient(180deg, rgba(72, 43, 255, 0) 50%, rgba(129, 83, 255, 0.9) 100%);
 }
 [data-theme="light"] .footer-bg,
 .light .footer-bg {

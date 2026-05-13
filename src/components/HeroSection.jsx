@@ -43,14 +43,14 @@ export default function HeroSection() {
     const maskElevatedEl = maskElevatedRef.current;
 
     const ctx = gsap.context(() => {
-      const totalScroll = window.innerHeight * 1.5; // Adjust as needed for scroll distance
+      const totalScroll = window.innerHeight * 3; // Adjust as needed for scroll distance
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: masterRef.current,
           start: "top top",
           end: `+=${totalScroll}`,
           pin: true,
-          scrub: 0.5, // Reduced from 1.2 to prevent scroll-disconnect feeling
+          scrub: 1, // Reduced from 1.2 to prevent scroll-disconnect feeling
         },
       });
 
@@ -66,7 +66,7 @@ export default function HeroSection() {
           {
             scale: 45, // Deeper zoom for a true "fly-through" feel
             opacity: 0,
-            duration: 0.35,
+            duration: 0.50,
             transformOrigin: "53% 53%",
             ease: "power3.in", // Exponential curve mimics real camera dolly
             force3D: false,
