@@ -43,14 +43,14 @@ export default function HeroSection() {
     const maskElevatedEl = maskElevatedRef.current;
 
     const ctx = gsap.context(() => {
-      const totalScroll = window.innerHeight * 3; // Adjust as needed for scroll distance
+      const totalScroll = window.innerHeight * 2.2; // Reduced for snappier feel
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: masterRef.current,
           start: "top top",
           end: `+=${totalScroll}`,
           pin: true,
-          scrub: 1, // Reduced from 1.2 to prevent scroll-disconnect feeling
+          scrub: 0.8, // Slightly faster scrub for responsive feel
         },
       });
 

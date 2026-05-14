@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { X, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 function MoonIcon() {
@@ -29,6 +29,35 @@ function SunIcon() {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20">
       <circle cx="12" cy="12" r="12" fill="white" />
+    </svg>
+  );
+}
+
+function ModernMenuIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="26"
+      height="26"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="modern-menu-icon"
+    >
+      <defs>
+        <linearGradient id="menuGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="1" />
+        </linearGradient>
+      </defs>
+      {/* Top line - full opacity */}
+      <line x1="3" y1="6" x2="21" y2="6" strokeOpacity="1" />
+      {/* Middle line - medium opacity */}
+      <line x1="3" y1="12" x2="18" y2="12" strokeOpacity="0.75" />
+      {/* Bottom line - full opacity */}
+      <line x1="3" y1="18" x2="21" y2="18" strokeOpacity="1" />
     </svg>
   );
 }
@@ -249,10 +278,10 @@ export function Header() {
 
             <button
               onClick={() => setIsMobileOpen(true)}
-              className="md:hidden text-[var(--foreground)]"
+              className="md:hidden text-[var(--foreground)] hover:opacity-75 transition-opacity duration-300"
               aria-label="Open navigation"
             >
-              <Menu size={26} />
+              <ModernMenuIcon />
             </button>
           </div>
         </div>

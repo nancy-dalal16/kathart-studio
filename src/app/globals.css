@@ -98,7 +98,7 @@
   --sales-card-border: rgba(0, 0, 0, 0.15);
 }
 :root {
-  /* scroll-behavior: smooth; */ /* DISABLED - may interfere with trackpad */
+  scroll-behavior: smooth;
 }
 @theme inline {
   --color-background: var(--background);
@@ -283,6 +283,38 @@ p, span, label{
 
 .theme-toggle-pill.is-light .toggle-knob {
   transform: translateX(0);
+}
+
+/* ── Modern Menu Icon (Mobile Hamburger) ── */
+.modern-menu-icon {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  stroke: currentColor;
+}
+
+.md\:hidden:hover .modern-menu-icon,
+button[aria-label="Open navigation"]:hover .modern-menu-icon {
+  opacity: 0.7;
+  transform: scaleX(1.1);
+}
+
+button[aria-label="Open navigation"] {
+  position: relative;
+  padding: 4px 2px;
+}
+
+button[aria-label="Open navigation"]::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184, 139, 255, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+button[aria-label="Open navigation"]:hover::after {
+  opacity: 1;
 }
 
 /* ── Nav pill ── */

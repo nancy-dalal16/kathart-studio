@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -51,9 +51,12 @@ const N = slides.length;
 export default function OurWork() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
-  const dotRefs = useRef([]);
-  const imageRefs = useRef([]);
   const ctaRef = useRef(null);
+  const imageRefs = useRef([]);
+  const activeIndexRef = useRef(0);
+  const isAnimatingRef = useRef(false);
+  const pinRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const handleMouseMove = (e, idx) => {
     const el = imageRefs.current[idx];
@@ -78,61 +81,17 @@ export default function OurWork() {
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const track = trackRef.current;
-    if (!section || !track) return;
-
-    const totalScroll = window.innerHeight * 1.2 * (N - 1);
-    const xDist = -((N - 1) * window.innerWidth);
+    if (!section) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: `+=${totalScroll}`,
-          pin: true,
-          scrub: 0.6,
-          invalidateOnRefresh: true,
-          snap: {
-            snapTo: 1 / (N - 1), // Automatically calculates the exact points for each slide
-            duration: { min: 0.2, max: 0.4 }, // Smooth snapping duration
-            delay: 0.02, // Wait a tiny fraction of a second after scrolling stops before snapping
-            ease: "power2.inOut",
-          },
-        },
+      pinRef.current = ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: `+=${window.innerHeight}`,
+        pin: true,
+        pinSpacing: true,
       });
 
-      // Slide track moves right → left
-      tl.to(track, { x: xDist, ease: "none", duration: 1 });
-
-      // Dots: deactivate previous, activate current at each slide boundary
-      for (let i = 1; i < N; i++) {
-        const t = i / (N - 1);
-        const d = 0.08;
-
-        tl.to(
-          dotRefs.current[i - 1],
-          {
-            width: 16,
-            backgroundColor: "rgba(255,255,255,0.35)",
-            duration: d,
-            ease: "power2.inOut",
-          },
-          t - d,
-        );
-        tl.to(
-          dotRefs.current[i],
-          {
-            width: 48,
-            backgroundColor: "#B88BFF",
-            duration: d,
-            ease: "power2.inOut",
-          },
-          t - d,
-        );
-      }
-
-      // CTA Banner Entrance Animation
       if (ctaRef.current) {
         gsap.fromTo(
           ctaRef.current,
@@ -145,7 +104,7 @@ export default function OurWork() {
             ease: "power3.out",
             scrollTrigger: {
               trigger: ctaRef.current,
-              start: "top 85%", // Trigger when top of banner hits 85% down viewport
+              start: "top 90%",
               toggleActions: "play none none reverse",
             },
           }
@@ -156,6 +115,114 @@ export default function OurWork() {
     return () => ctx.revert();
   }, []);
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track) return;
+
+    const goToSlide = (index) => {
+      if (isAnimatingRef.current || index < 0 || index >= N) return;
+
+      isAnimatingRef.current = true;
+      activeIndexRef.current = index;
+      setActiveIndex(index);
+
+      gsap.to(track, {
+        x: -index * window.innerWidth,
+        duration: 0.75,
+        ease: "power3.inOut",
+        onComplete: () => {
+          setTimeout(() => {
+            isAnimatingRef.current = false;
+          }, 200);
+        },
+      });
+    };
+
+    const exitSection = () => {
+      // Smoothly transition to the CTA element after exiting OurWork carousel.
+      isAnimatingRef.current = true;
+      const cta = ctaRef.current;
+      if (cta) {
+        const ctaDocTop = cta.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: ctaDocTop, behavior: "smooth" });
+      } else if (pinRef.current) {
+        // Fallback: scroll past pin end + spacer (spacer == innerHeight)
+        window.scrollTo({
+          top: pinRef.current.end + window.innerHeight,
+          behavior: "smooth",
+        });
+      }
+      setTimeout(() => {
+        isAnimatingRef.current = false;
+      }, 600);
+    };
+
+    const onWheel = (e) => {
+      const rect = section.getBoundingClientRect();
+      if (Math.abs(rect.top) > 5) return;
+
+      if (isAnimatingRef.current) {
+        e.preventDefault();
+        return;
+      }
+
+      const dir = e.deltaY > 0 ? 1 : -1;
+      const current = activeIndexRef.current;
+
+      if (dir > 0) {
+        e.preventDefault();
+        if (current < N - 1) {
+          goToSlide(current + 1);
+        } else {
+          exitSection();
+        }
+      } else {
+        if (current > 0) {
+          e.preventDefault();
+          goToSlide(current - 1);
+        }
+        // current === 0 + scroll up → no preventDefault → natural scroll upward
+      }
+    };
+
+    let touchStartY = 0;
+
+    const onTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const onTouchEnd = (e) => {
+      const rect = section.getBoundingClientRect();
+      if (Math.abs(rect.top) > 5) return;
+      if (isAnimatingRef.current) return;
+
+      const dy = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(dy) < 40) return;
+
+      const dir = dy > 0 ? 1 : -1;
+      const current = activeIndexRef.current;
+
+      if (dir > 0 && current < N - 1) {
+        goToSlide(current + 1);
+      } else if (dir > 0 && current === N - 1) {
+        exitSection();
+      } else if (dir < 0 && current > 0) {
+        goToSlide(current - 1);
+      }
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchend", onTouchEnd);
+    };
+  }, []);
+
   return (
     <>
       <section
@@ -163,7 +230,7 @@ export default function OurWork() {
         className="relative w-full flex flex-col overflow-hidden"
         style={{ height: "100svh" }}
       >
-        {/* Header — natural flow, height determines slide start */}
+        {/* Header */}
         <div className="flex-shrink-0 z-20 px-6 sm:px-10 lg:px-20 pt-14 md:pt-20 pb-6 flex justify-between items-start flex-col lg:flex-row gap-4">
           <div>
             <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-semibold leading-tight">
@@ -175,24 +242,23 @@ export default function OurWork() {
             </p>
           </div>
 
-          {/* Progress dots — top right */}
+          {/* Progress dots */}
           <div className="flex gap-3 items-center lg:pt-4">
             {slides.map((_, i) => (
               <div
                 key={i}
-                ref={(el) => (dotRefs.current[i] = el)}
-                className="h-2 rounded-full"
+                className="h-2 rounded-full transition-all duration-300"
                 style={{
-                  width: i === 0 ? 48 : 16,
+                  width: i === activeIndex ? 48 : 16,
                   backgroundColor:
-                    i === 0 ? "#B88BFF" : "rgba(255,255,255,0.35)",
+                    i === activeIndex ? "#B88BFF" : "rgba(255,255,255,0.35)",
                 }}
               />
             ))}
           </div>
         </div>
 
-        {/* Slide area — takes all remaining height, clips horizontal overflow */}
+        {/* Slide track */}
         <div className="flex-1 overflow-hidden">
           <div
             ref={trackRef}
@@ -274,7 +340,7 @@ export default function OurWork() {
         </div>
       </section>
 
-      {/* CTA Banner — sits below the pinned section, visible after all slides */}
+      {/* CTA Banner */}
       <div ref={ctaRef} className="px-6 sm:px-10 lg:px-20 py-10">
         <div className="flex justify-between items-center flex-col sm:flex-row gap-6 bg-secondary rounded-2xl px-6 py-5">
           <p className="text-xl sm:text-2xl">
