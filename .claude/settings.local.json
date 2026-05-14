@@ -11,7 +11,11 @@
       "WebFetch(domain:www.yvdh.com)",
       "Bash(curl -s \"https://www.yvdh.com/\")",
       "Bash(curl -s \"https://cdn.prod.website-files.com/669bcb58c85a34a57325b96a/css/youri-van-den-hurk.webflow.shared.0764d0b22.css\")",
-      "Bash(curl -s https://www.yvdh.com/)"
+      "Bash(curl -s https://www.yvdh.com/)",
+      "Bash(Get-ChildItem *)",
+      "PowerShell(taskkill *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

@@ -231,19 +231,19 @@ export default function OurWork() {
         style={{ height: "100svh" }}
       >
         {/* Header */}
-        <div className="flex-shrink-0 z-20 px-6 sm:px-10 lg:px-20 pt-14 md:pt-20 pb-6 flex justify-between items-start flex-col lg:flex-row gap-4">
+        <div className="flex-shrink-0 z-20 px-4 sm:px-8 md:px-12 lg:px-20 pt-10 sm:pt-12 md:pt-16 lg:pt-20 pb-4 sm:pb-6 flex justify-between items-start flex-col lg:flex-row gap-4 md:gap-6">
           <div>
-            <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-semibold leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-semibold leading-tight">
               Our Work
             </h2>
-            <p className="text-textColor text-base sm:text-lg mt-2 max-w-xl">
+            <p className="text-textColor text-xs sm:text-sm md:text-base lg:text-lg mt-1.5 md:mt-2 max-w-xl">
               Stories we&apos;ve shaped, identities we&apos;ve built, and brands
               we&apos;ve helped grow.
             </p>
           </div>
 
           {/* Progress dots */}
-          <div className="flex gap-3 items-center lg:pt-4">
+          <div className="flex gap-2 md:gap-3 items-center lg:pt-4">
             {slides.map((_, i) => (
               <div
                 key={i}
@@ -268,10 +268,10 @@ export default function OurWork() {
             {slides.map((slide, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 h-full flex items-center px-6 sm:px-10 lg:px-20 pb-8"
+                className="flex-shrink-0 h-full flex items-center px-4 sm:px-8 md:px-12 lg:px-20 pb-6 sm:pb-8 md:pb-10"
                 style={{ width: "100vw" }}
               >
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 items-center w-full h-full">
+                <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 xl:gap-14 items-center w-full h-full">
                   {/* Image */}
                   <div
                     ref={(el) => (imageRefs.current[i] = el)}
@@ -290,34 +290,35 @@ export default function OurWork() {
                   </div>
 
                   {/* Content */}
-                  <div className="w-full lg:w-[52%] flex flex-col gap-4 lg:gap-5">
+                  <div className="w-full lg:w-[52%] flex flex-col gap-3 md:gap-4 lg:gap-5">
                     <span className="text-xs font-semibold text-primary tracking-[0.18em] uppercase">
                       {slide.badge}
                     </span>
-                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight">
                       {slide.title}
                     </h3>
-                    <p className="text-textColor text-base sm:text-lg leading-relaxed">
+                    <p className="text-textColor text-sm sm:text-base md:text-lg leading-relaxed">
                       {slide.description}
                     </p>
                     <div>
                       <p className="text-xs uppercase tracking-widest text-textColor mb-1">
                         Highlights
                       </p>
-                      <p className="text-foreground text-base">
+                      <p className="text-foreground text-sm sm:text-base">
                         {slide.highlights}
                       </p>
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-1.5 md:gap-2">
                       {slide.impact.map((metric, j) => (
                         <div key={j} className="flex gap-2 items-center">
                           <Image
                             src="/images/check-mark-green.svg"
-                            width={18}
-                            height={18}
+                            width={16}
+                            height={16}
                             alt="check"
+                            className="w-4 sm:w-[18px]"
                           />
-                          <span className="text-textColor text-sm sm:text-base">
+                          <span className="text-textColor text-xs sm:text-sm md:text-base">
                             {metric}
                           </span>
                         </div>
@@ -341,9 +342,9 @@ export default function OurWork() {
       </section>
 
       {/* CTA Banner */}
-      <div ref={ctaRef} className="px-6 sm:px-10 lg:px-20 py-10">
-        <div className="flex justify-between items-center flex-col sm:flex-row gap-6 bg-secondary rounded-2xl px-6 py-5">
-          <p className="text-xl sm:text-2xl">
+      <div ref={ctaRef} className="px-4 sm:px-8 md:px-12 lg:px-20 py-8 md:py-10">
+        <div className="flex justify-between items-center flex-col sm:flex-row gap-4 md:gap-6 bg-secondary rounded-xl sm:rounded-2xl px-4 sm:px-6 md:px-8 py-4 md:py-6">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-center sm:text-left">
             We&apos;ve got more cool stuff waiting for you — go explore!
           </p>
           <Button className="primary-btn">

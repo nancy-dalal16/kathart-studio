@@ -178,13 +178,13 @@ export default function SuccessStories() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center pt-16 md:pt-24 pb-16 px-4 md:px-10 lg:px-20 overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col items-center pt-12 sm:pt-16 md:pt-24 lg:pt-32 pb-12 md:pb-16 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden"
     >
-      <div className="relative z-20 text-center mb-16 md:mb-8 shrink-0">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-foreground">
+      <div className="relative z-20 text-center mb-12 md:mb-16 lg:mb-20 shrink-0">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground">
           Success Stories
         </h2>
-        <p className="text-textColor text-sm sm:text-base md:text-lg mt-3 max-w-3xl mx-auto">
+        <p className="text-textColor text-xs sm:text-sm md:text-base lg:text-lg mt-2 md:mt-3 max-w-3xl mx-auto">
           Stories we&apos;ve shaped, identities we&apos;ve built, and brands
           we&apos;ve helped grow.
         </p>
@@ -203,7 +203,7 @@ export default function SuccessStories() {
               style={{ top: 0, willChange: "transform" }}
             >
               <div
-                className="w-full rounded-2xl border-0  flex flex-col md:flex-row items-center gap-6 md:gap-10 p-6 sm:p-8 md:p-10 overflow-hidden"
+                className="w-full rounded-xl sm:rounded-2xl border-0 flex flex-col md:flex-row items-center gap-4 md:gap-6 lg:gap-10 p-4 sm:p-6 md:p-8 lg:p-10 overflow-hidden"
                 style={{
                   backgroundImage:
                     theme === "light"
@@ -214,20 +214,20 @@ export default function SuccessStories() {
                   boxShadow: "0 20px 50px rgba(0,0,0,0.45)",
                 }}
               >
-                <div className="flex flex-col gap-4 md:gap-6 flex-1 min-w-0">
-                  <blockquote className="text-foreground font-light text-lg sm:text-xl md:text-[1.35rem] leading-relaxed">
+                <div className="flex flex-col gap-3 md:gap-4 lg:gap-6 flex-1 min-w-0">
+                  <blockquote className="text-foreground font-light text-base sm:text-lg md:text-xl lg:text-[1.35rem] leading-relaxed">
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
                   <div>
-                    <h4 className="text-primary text-lg md:text-xl font-medium">
+                    <h4 className="text-primary text-sm sm:text-base md:text-lg lg:text-xl font-medium">
                       {t.author}
                     </h4>
-                    <p className="text-foreground text-xs sm:text-sm mt-1">
+                    <p className="text-foreground text-xs sm:text-sm mt-0.5 md:mt-1">
                       {t.position}
                     </p>
                   </div>
                 </div>
-                <div className="w-28 h-36 sm:w-36 sm:h-44 md:w-60 md:h-72 rounded-xl overflow-hidden flex-shrink-0">
+                <div className="w-24 h-32 sm:w-32 sm:h-40 md:w-48 md:h-60 lg:w-60 lg:h-72 rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0">
                   <img
                     src={t.image}
                     className="w-full h-full object-cover"

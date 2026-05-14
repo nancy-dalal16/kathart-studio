@@ -62,20 +62,20 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="flex flex-col items-center justify-center gap-6 md:gap-8 lg:gap-10 pt-0 pb-6 md:pb-8 lg:pb-10 px-4 md:px-10 lg:px-20 w-full footer-bg">
+    <footer className="flex flex-col items-center justify-center gap-6 md:gap-8 lg:gap-10 pt-0 pb-6 md:pb-8 lg:pb-12 px-4 sm:px-8 md:px-12 lg:px-20 w-full footer-bg">
       {/* ONLY THIS WRAPS ANIMATED CONTENT */}
       <div ref={animRef} className="w-full">
-        <div className="flex flex-col items-start gap-16 md:gap-20 lg:gap-[120px] w-full">
-          <div className="flex flex-col lg:flex-row items-start justify-around gap-10 md:gap-16 lg:gap-[163px] w-full">
-            <div className="flex flex-col lg:flex-row items-start gap-10 md:gap-16 lg:gap-[100px] flex-1 w-full">
+        <div className="flex flex-col items-start gap-12 md:gap-16 lg:gap-20 xl:gap-[120px] w-full">
+          <div className="flex flex-col lg:flex-row items-start justify-start lg:justify-around gap-8 md:gap-12 lg:gap-16 xl:gap-[163px] w-full">
+            <div className="flex flex-col lg:flex-row items-start gap-8 md:gap-12 lg:gap-16 xl:gap-[100px] flex-1 w-full">
               {/* About section */}
-              <div className="w-full lg:w-[418px] gap-4 md:gap-6 flex flex-col items-start">
-                <div className="flex flex-col items-start gap-2 md:gap-[9px] w-full">
-                  <h2 className="mt-[-1px] font-semibold text-foreground text-xl md:text-2xl leading-[32px] md:leading-[38.4px]">
+              <div className="w-full lg:w-[418px] gap-3 md:gap-4 lg:gap-6 flex flex-col items-start">
+                <div className="flex flex-col items-start gap-2 md:gap-3 w-full">
+                  <h2 className="mt-[-1px] font-semibold text-foreground text-lg md:text-xl lg:text-2xl leading-tight">
                     About Kathart
                   </h2>
 
-                  <p className="font-normal text-textColor text-sm md:text-base leading-5 md:leading-6">
+                  <p className="font-normal text-textColor text-xs sm:text-sm md:text-base leading-5 md:leading-6">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Nullam dictum aliquet accumsan porta lectus ridiculus in
                     mattis. Netus sodales in volutpat ullamcorper amet
@@ -108,24 +108,24 @@ export function Footer() {
               </div>
 
               {/* Link columns */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-9 flex-1 w-full">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 flex-1 w-full">
                 {footerColumns.map((column, idx) => (
                   <div
                     key={idx}
-                    className="flex flex-col items-start gap-3 md:gap-[15px]"
+                    className="flex flex-col items-start gap-2 md:gap-3 lg:gap-4"
                   >
-                    <h3 className="mt-[-1px] font-semibold text-foreground text-xl md:text-2xl leading-[32px] md:leading-[38.4px]">
+                    <h3 className="mt-[-1px] font-semibold text-foreground text-base md:text-lg lg:text-xl leading-tight">
                       {column.title}
                     </h3>
 
-                    <nav className="flex flex-col items-start gap-2 md:gap-3">
+                    <nav className="flex flex-col items-start gap-1.5 md:gap-2">
                       {column.links.map((link, lidx) => (
                         <a
                           key={lidx}
                           href="#"
                           className={`${
                             lidx === 0 ? "mt-[-1px]" : ""
-                          } font-normal text-textColor text-sm md:text-base leading-5 md:leading-6 hover:text-primary transition-colors`}
+                          } font-normal text-textColor text-xs sm:text-sm md:text-base leading-5 hover:text-primary transition-colors`}
                         >
                           {link.label}
                         </a>
@@ -140,7 +140,7 @@ export function Footer() {
           <Separator className="w-full h-px bg-border" />
         </div>
 
-        <p className="w-full text-center font-normal text-foreground/70 text-sm md:text-base leading-5 md:leading-6 mt-6">
+        <p className="w-full text-center font-normal text-foreground/70 text-xs sm:text-sm md:text-base leading-5 md:leading-6 mt-6 md:mt-8">
           © Copyright 2026, All Rights Reserved by Kathart Studios Pvt Ltd.
         </p>
       </div>

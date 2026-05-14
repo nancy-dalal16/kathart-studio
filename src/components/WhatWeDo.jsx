@@ -54,17 +54,16 @@ function WhatWeDo() {
 
   return (
     <section
-      ref={sectionRef} // Use sectionRef to define the trigger area
-      className="w-full min-h-screen px-6 sm:px-10 lg:px-20 py-20 sm:py-32 lg:py-40 flex flex-col items-center justify-center gap-16 rounded-[0_0_60px_60px] sm:rounded-[0_0_80px_80px] whatwedo-section"
+      ref={sectionRef}
+      className="w-full min-h-screen px-4 sm:px-8 md:px-12 lg:px-20 py-16 sm:py-24 md:py-32 lg:py-40 flex flex-col items-center justify-center gap-12 md:gap-16 rounded-[0_0_40px_40px] sm:rounded-[0_0_60px_60px] lg:rounded-[0_0_80px_80px] whatwedo-section"
     >
-      <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
+      <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12 lg:gap-16 xl:gap-20">
         {/* LEFT 50% - Text Content */}
-        {/* Added textContentRef and overflow-hidden for smooth entrance */}
         <div
           ref={textContentRef}
-          className="w-full lg:w-1/2 flex flex-col items-center justify-center gap-6 overflow-hidden"
+          className="w-full lg:w-1/2 flex flex-col items-start lg:items-center justify-center gap-6 md:gap-7 overflow-hidden"
         >
-          <div className="flex flex-col items-start gap-6 overflow-hidden">
+          <div className="flex flex-col items-start gap-4 md:gap-6 overflow-hidden">
             <h1 className="font-semibold text-foreground text-4xl sm:text-5xl lg:text-[64px] leading-tight">
               What we do
             </h1>

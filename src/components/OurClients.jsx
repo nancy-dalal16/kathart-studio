@@ -176,19 +176,19 @@ export default function OurClients() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative flex flex-col items-center justify-center py-32 md:py-48 px-4 overflow-hidden w-full">
+    <section ref={sectionRef} className="relative flex flex-col items-center justify-center py-16 sm:py-24 md:py-32 lg:py-48 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden w-full">
       {/* Background Decorative Image */}
       <Image
         src="/images/our-clients-back.png"
         alt="Background Element"
         width={1440}
         height={328}
-        className="absolute md:top-[180px] top-[500px] left-0 w-full opacity-40 object-contain"
+        className="absolute md:top-[180px] top-[400px] left-0 w-full opacity-40 object-contain"
       />
 
       {/* Headings */}
-      <div ref={headingRef} className="max-w-3xl text-center space-y-3 relative z-10">
-        <h2 className="font-semibold text-foreground text-4xl md:text-6xl">
+      <div ref={headingRef} className="max-w-3xl text-center space-y-2 md:space-y-3 relative z-10">
+        <h2 className="font-semibold text-foreground text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
           Our Clients
         </h2>
         {/* <p className="text-foreground text-lg md:text-xl">
@@ -198,12 +198,12 @@ export default function OurClients() {
       </div>
 
       {/* Row 1 — Scroll Left */}
-      <Marquee speed={35} className="mt-16">
+      <Marquee speed={35} className="mt-8 md:mt-12 lg:mt-16">
         <LogoRow1 />
       </Marquee>
 
       {/* Row 2 — Scroll Right */}
-      <Marquee speed={40} reverse className="mt-6">
+      <Marquee speed={40} reverse className="mt-4 md:mt-6 lg:mt-8">
         <LogoRow2 />
       </Marquee>
 
