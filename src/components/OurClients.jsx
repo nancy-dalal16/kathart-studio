@@ -176,7 +176,7 @@ export default function OurClients() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative flex flex-col items-center justify-center py-16 sm:py-24 md:py-32 lg:py-48 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden w-full">
+    <section ref={sectionRef} className="relative flex flex-col items-center justify-center py-8 sm:py-16 md:py-24 lg:py-40 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden w-full">
       {/* Background Decorative Image */}
       <Image
         src="/images/our-clients-back.png"

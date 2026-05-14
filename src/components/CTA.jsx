@@ -62,7 +62,7 @@ export function CTA() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex w-full justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-12 sm:py-16 md:py-24 lg:py-32 "
+      className="relative flex w-full justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-12 md:py-20 lg:py-32 "
     >
       {/* Right glow like screenshot */}
       <div className="pointer-events-none absolute inset-y-0 right-0 w-[45%] max-w-[480px] bg-[radial-gradient(circle_at_top,#4F37FF_0%,rgba(79,55,255,0)_60%)] opacity-60 blur-3xl overflow-hidden" />

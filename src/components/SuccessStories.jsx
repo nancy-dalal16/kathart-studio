@@ -178,9 +178,9 @@ export default function SuccessStories() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center pt-12 sm:pt-16 md:pt-24 lg:pt-32 pb-12 md:pb-16 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col items-center pt-8 sm:pt-12 md:pt-20 lg:pt-32 pb-8 md:pb-12 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden"
     >
-      <div className="relative z-20 text-center mb-12 md:mb-16 lg:mb-20 shrink-0">
+      <div className="relative z-20 text-center mb-8 sm:mb-10 md:mb-16 lg:mb-20 shrink-0">
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground">
           Success Stories
         </h2>
@@ -193,7 +193,7 @@ export default function SuccessStories() {
       <div className="relative w-full max-w-5xl flex-1 flex items-center justify-center">
         <div
           className="relative w-full"
-          style={{ height: "clamp(500px, 62vh, 560px)" }}
+          style={{ height: "clamp(550px, 70vh, 650px)" }}
         >
           {testimonials.map((t, i) => (
             <div
@@ -203,7 +203,7 @@ export default function SuccessStories() {
               style={{ top: 0, willChange: "transform" }}
             >
               <div
-                className="w-full rounded-xl sm:rounded-2xl border-0 flex flex-col md:flex-row items-center gap-4 md:gap-6 lg:gap-10 p-4 sm:p-6 md:p-8 lg:p-10 overflow-hidden"
+                className="w-full rounded-lg sm:rounded-xl md:rounded-2xl border-0 flex flex-col items-center gap-3 sm:gap-4 md:gap-6 lg:gap-10 md:flex-row p-3 sm:p-4 md:p-6 lg:p-8 overflow-hidden"
                 style={{
                   backgroundImage:
                     theme === "light"
@@ -214,20 +214,20 @@ export default function SuccessStories() {
                   boxShadow: "0 20px 50px rgba(0,0,0,0.45)",
                 }}
               >
-                <div className="flex flex-col gap-3 md:gap-4 lg:gap-6 flex-1 min-w-0">
-                  <blockquote className="text-foreground font-light text-base sm:text-lg md:text-xl lg:text-[1.35rem] leading-relaxed">
+                <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 lg:gap-6 flex-1 min-w-0 text-center md:text-left">
+                  <blockquote className="text-foreground font-light text-sm sm:text-base md:text-lg lg:text-[1.35rem] leading-relaxed">
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
                   <div>
-                    <h4 className="text-primary text-sm sm:text-base md:text-lg lg:text-xl font-medium">
+                    <h4 className="text-primary text-xs sm:text-sm md:text-base lg:text-lg font-medium">
                       {t.author}
                     </h4>
-                    <p className="text-foreground text-xs sm:text-sm mt-0.5 md:mt-1">
+                    <p className="text-foreground text-xs sm:text-xs md:text-sm mt-0.5">
                       {t.position}
                     </p>
                   </div>
                 </div>
-                <div className="w-24 h-32 sm:w-32 sm:h-40 md:w-48 md:h-60 lg:w-60 lg:h-72 rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0">
+                <div className="w-20 h-28 sm:w-28 sm:h-36 md:w-40 md:h-52 lg:w-60 lg:h-72 rounded-lg overflow-hidden flex-shrink-0">
                   <img
                     src={t.image}
                     className="w-full h-full object-cover"
@@ -243,12 +243,12 @@ export default function SuccessStories() {
           ))}
         </div>
 
-        <div className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-50">
+        <div className="absolute right-0 md:-right-8 lg:-right-12 top-1/2 -translate-y-1/2 flex flex-col gap-2 md:gap-3 z-50">
           {testimonials.map((_, i) => (
             <div
               key={i}
               ref={(el) => (dotRefs.current[i] = el)}
-              className="w-1.5 rounded-full"
+              className="w-1 md:w-1.5 rounded-full"
               style={{
                 height: i === 0 ? 40 : 14,
                 backgroundColor: i === 0 ? "#B88BFF" : "rgba(255,255,255,0.35)",

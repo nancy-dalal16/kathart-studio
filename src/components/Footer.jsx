@@ -62,12 +62,12 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="flex flex-col items-center justify-center gap-6 md:gap-8 lg:gap-10 pt-0 pb-6 md:pb-8 lg:pb-12 px-4 sm:px-8 md:px-12 lg:px-20 w-full footer-bg">
+    <footer className="flex flex-col items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 pt-0 pb-4 md:pb-6 lg:pb-10 px-4 sm:px-8 md:px-12 lg:px-20 w-full footer-bg">
       {/* ONLY THIS WRAPS ANIMATED CONTENT */}
       <div ref={animRef} className="w-full">
-        <div className="flex flex-col items-start gap-12 md:gap-16 lg:gap-20 xl:gap-[120px] w-full">
-          <div className="flex flex-col lg:flex-row items-start justify-start lg:justify-around gap-8 md:gap-12 lg:gap-16 xl:gap-[163px] w-full">
-            <div className="flex flex-col lg:flex-row items-start gap-8 md:gap-12 lg:gap-16 xl:gap-[100px] flex-1 w-full">
+        <div className="flex flex-col items-start gap-8 md:gap-12 lg:gap-16 xl:gap-20 w-full">
+          <div className="flex flex-col lg:flex-row items-start justify-start lg:justify-around gap-6 md:gap-10 lg:gap-14 xl:gap-[163px] w-full">
+            <div className="flex flex-col lg:flex-row items-start gap-6 md:gap-10 lg:gap-14 xl:gap-[100px] flex-1 w-full">
               {/* About section */}
               <div className="w-full lg:w-[418px] gap-3 md:gap-4 lg:gap-6 flex flex-col items-start">
                 <div className="flex flex-col items-start gap-2 md:gap-3 w-full">

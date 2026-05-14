@@ -231,7 +231,7 @@ export default function OurWork() {
         style={{ height: "100svh" }}
       >
         {/* Header */}
-        <div className="flex-shrink-0 z-20 px-4 sm:px-8 md:px-12 lg:px-20 pt-10 sm:pt-12 md:pt-16 lg:pt-20 pb-4 sm:pb-6 flex justify-between items-start flex-col lg:flex-row gap-4 md:gap-6">
+        <div className="flex-shrink-0 z-20 px-4 sm:px-8 md:px-12 lg:px-20 pt-4 sm:pt-6 md:pt-10 lg:pt-14 pb-4 sm:pb-6 md:pb-8 lg:pb-10 flex justify-between items-start flex-col lg:flex-row gap-4 md:gap-6">
           <div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-semibold leading-tight">
               Our Work
@@ -268,10 +268,10 @@ export default function OurWork() {
             {slides.map((slide, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 h-full flex items-center px-4 sm:px-8 md:px-12 lg:px-20 pb-6 sm:pb-8 md:pb-10"
+                className="flex-shrink-0 h-full flex items-center justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-4 sm:py-6 md:py-8"
                 style={{ width: "100vw" }}
               >
-                <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 xl:gap-14 items-center w-full h-full">
+                <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 xl:gap-14 items-center justify-center lg:justify-start w-full lg:h-full">
                   {/* Image */}
                   <div
                     ref={(el) => (imageRefs.current[i] = el)}
@@ -342,7 +342,7 @@ export default function OurWork() {
       </section>
 
       {/* CTA Banner */}
-      <div ref={ctaRef} className="px-4 sm:px-8 md:px-12 lg:px-20 py-8 md:py-10">
+      <div ref={ctaRef} className="px-4 sm:px-8 md:px-12 lg:px-20 pt-4 sm:pt-6 md:pt-8 lg:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
         <div className="flex justify-between items-center flex-col sm:flex-row gap-4 md:gap-6 bg-secondary rounded-xl sm:rounded-2xl px-4 sm:px-6 md:px-8 py-4 md:py-6">
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-center sm:text-left">
             We&apos;ve got more cool stuff waiting for you — go explore!

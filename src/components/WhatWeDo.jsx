@@ -55,28 +55,23 @@ function WhatWeDo() {
   return (
     <section
       ref={sectionRef}
-      className="w-full min-h-screen px-4 sm:px-8 md:px-12 lg:px-20 py-16 sm:py-24 md:py-32 lg:py-40 flex flex-col items-center justify-center gap-12 md:gap-16 rounded-[0_0_40px_40px] sm:rounded-[0_0_60px_60px] lg:rounded-[0_0_80px_80px] whatwedo-section"
+      className="w-full min-h-screen px-4 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-16 md:py-24 lg:py-40 flex flex-col items-center justify-center gap-6 sm:gap-10 md:gap-12 lg:gap-16 rounded-[0_0_40px_40px] sm:rounded-[0_0_60px_60px] lg:rounded-[0_0_80px_80px] whatwedo-section"
     >
-      <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12 lg:gap-16 xl:gap-20">
+      <div className="w-full flex flex-col-reverse lg:flex-row items-center justify-between gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-20">
         {/* LEFT 50% - Text Content */}
         <div
           ref={textContentRef}
-          className="w-full lg:w-1/2 flex flex-col items-start lg:items-center justify-center gap-6 md:gap-7 overflow-hidden"
+          className="w-full lg:w-1/2 flex flex-col items-center lg:items-start justify-center gap-4 md:gap-6 lg:gap-7 overflow-hidden"
         >
-          <div className="flex flex-col items-start gap-4 md:gap-6 overflow-hidden">
-            <h1 className="font-semibold text-foreground text-4xl sm:text-5xl lg:text-[64px] leading-tight">
+          <div className="flex flex-col items-center lg:items-start gap-3 md:gap-5 lg:gap-6 overflow-hidden text-center lg:text-left">
+            <h1 className="font-semibold text-foreground text-3xl sm:text-4xl md:text-5xl lg:text-[64px] leading-tight">
               What we do
             </h1>
 
-            <div className="flex flex-col gap-3">
-              <p className="text-textColor text-lg sm:text-xl leading-7 sm:leading-8 max-w-100">
+            <div className="flex flex-col gap-2 md:gap-3">
+              <p className="text-textColor text-sm sm:text-base md:text-lg lg:text-xl leading-6 sm:leading-7 md:leading-8 max-w-full lg:max-w-100">
                 {` We don't hand you a logo and walk away. We think in systems - brand identity, film, content, marketing - so every touchpoint says the same true thing about your business.`}
               </p>
-
-              {/* <p className="text-textColor text-lg sm:text-xl leading-7 sm:leading-8 max-w-100">
-              Our work helps brands express who they are, connect deeply with
-              their audiences, and <strong>grow with purpose</strong>.
-            </p> */}
             </div>
 
             <Link href="/capabilities" className="primary-btn">
@@ -88,16 +83,15 @@ function WhatWeDo() {
           </div>
         </div>
 
-        {/* RIGHT 50% - Image */}
-        {/* Added imageRef and overflow-hidden to the parent for smooth slide */}
-        <div className="w-full lg:w-1/2 flex justify-center items-center overflow-hidden">
+        {/* RIGHT 50% - Image (appears first on mobile due to flex-col-reverse) */}
+        <div className="w-full lg:w-1/2 flex justify-center items-center overflow-hidden mb-4 sm:mb-6 md:mb-0">
           <Image
-            ref={imageRef} // Use imageRef to target the image for animation
+            ref={imageRef}
             src="/images/whatwedo.png"
             alt="Concept cinema with film elements"
             width={600}
             height={600}
-            className="w-full h-auto object-contain "
+            className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-none h-auto object-contain"
           />
         </div>
       </div>

@@ -646,11 +646,18 @@ button, a, input, select, textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   flex-shrink: 0;
   transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+@media (min-width: 768px) {
+  .btn-icon {
+    width: 26px;
+    height: 26px;
+  }
 }
 
 .btn-icon svg {
@@ -671,9 +678,9 @@ a.primary-btn {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 12px !important;
+  gap: 8px !important;
   border-radius: 100px !important;
-  padding: 0.8rem 1rem 0.8rem 1.875rem !important;
+  padding: 0.6rem 0.8rem 0.6rem 1.2rem !important;
   overflow: visible !important;
   transition:
     background 0.25s ease,
@@ -681,7 +688,7 @@ a.primary-btn {
     box-shadow 0.3s ease,
     color 0.25s ease !important;
   text-decoration: none !important;
-  font-size: 0.9375rem !important;
+  font-size: 0.8125rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.02em !important;
   cursor: pointer;
@@ -690,6 +697,24 @@ a.primary-btn {
   color: var(--btn-color);
   background: var(--btn-bg);
   box-shadow: var(--btn-shadow);
+}
+
+@media (min-width: 640px) {
+  .primary-btn,
+  a.primary-btn {
+    gap: 10px !important;
+    padding: 0.7rem 0.9rem 0.7rem 1.4rem !important;
+    font-size: 0.875rem !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .primary-btn,
+  a.primary-btn {
+    gap: 12px !important;
+    padding: 0.8rem 1rem 0.8rem 1.875rem !important;
+    font-size: 0.9375rem !important;
+  }
 }
 
 .primary-btn .btn-icon,
@@ -798,9 +823,9 @@ a.primary-btn:active {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 0.8rem 1rem 0.8rem 1.875rem;
-  font-size: 0.9375rem;
+  gap: 8px;
+  padding: 0.6rem 0.8rem 0.6rem 1.2rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   background: transparent;
@@ -815,6 +840,22 @@ a.primary-btn:active {
               box-shadow 0.3s ease,
               color 0.25s ease;
   -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 640px) {
+  .btn-border-gradient {
+    gap: 9px;
+    padding: 0.7rem 0.9rem 0.7rem 1.4rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .btn-border-gradient {
+    gap: 10px;
+    padding: 0.8rem 1rem 0.8rem 1.875rem;
+    font-size: 0.9375rem;
+  }
 }
 
 .btn-border-gradient .btn-icon {
