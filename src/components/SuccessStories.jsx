@@ -178,7 +178,7 @@ export default function SuccessStories() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center pt-8 sm:pt-12 md:pt-20 lg:pt-32 pb-8 md:pb-12 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden"
+      className=" success-stories relative w-full min-h-screen flex flex-col items-center pt-8 sm:pt-12 md:pt-20 lg:pt-32 pb-8 md:pb-12 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden"
     >
       <div className="relative z-20 text-center mb-8 sm:mb-10 md:mb-16 lg:mb-20 shrink-0">
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground">

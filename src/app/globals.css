@@ -25,12 +25,12 @@
 
     --sales-card-bg:
     radial-gradient(
-      120% 120% at 120% 120%,
-      rgba(110, 95, 255, 0.2) 0%,
-      rgba(62, 57, 102, 0.3) 35%,
-      rgba(20, 18, 45, 0.6) 100%
+      120% 120% at 150% 150%,
+      rgba(110, 95, 255, 0.1) 0%,
+      rgba(62, 57, 102, 0.15) 35%,
+      rgba(20, 18, 45, 0.3) 100%
     ),
-    rgba(27, 24, 56, 0.7);
+    rgba(27, 24, 56, 0.4);
 
   --sales-card-border: rgba(255, 255, 255, 0.15);
 }
@@ -54,15 +54,15 @@
   --btn-icon-bg: rgba(255, 255, 255, 0.1);
   --btn-icon-border: rgba(255, 255, 255, 0.16);
   --btn-icon-hover-bg: rgba(255, 255, 255, 0.18);
-  
+
   --sales-card-bg:
     radial-gradient(
-      120% 120% at 0% 0%,
-      rgba(99, 91, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0.75) 40%,
-      rgba(255, 255, 255, 0.9) 100%
+      120% 120% at -30% -30%,
+      rgba(99, 91, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0.5) 40%,
+      rgba(255, 255, 255, 0.6) 100%
     ),
-    rgba(255, 255, 255, 0.6);
+    rgba(255, 255, 255, 0.35);
 
   --sales-card-border: rgba(0, 0, 0, 0.15);
 }
@@ -85,15 +85,15 @@
   --btn-icon-bg: rgba(255, 255, 255, 0.1);
   --btn-icon-border: rgba(255, 255, 255, 0.16);
   --btn-icon-hover-bg: rgba(255, 255, 255, 0.18);
-  
+
   --sales-card-bg:
     radial-gradient(
-      120% 120% at 0% 0%,
-      rgba(99, 91, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0.75) 40%,
-      rgba(255, 255, 255, 0.9) 100%
+      120% 120% at -30% -30%,
+      rgba(99, 91, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0.5) 40%,
+      rgba(255, 255, 255, 0.6) 100%
     ),
-    rgba(255, 255, 255, 0.6);
+    rgba(255, 255, 255, 0.35);
 
   --sales-card-border: rgba(0, 0, 0, 0.15);
 }
@@ -1060,7 +1060,14 @@ a.primary-btn:active {
 }
 [data-theme="light"] .whatwedo-section,
 .light .whatwedo-section {
-  background: linear-gradient(0deg, rgba(181, 116, 232, 0.4) 0%, transparent 100%);
+  /* background: linear-gradient(0deg, rgba(181, 116, 232, 0.4) 0%, transparent 100%); */
+   background: linear-gradient(180deg, #FFFFFF 0%, #F8F8FF 100%);
+;
+}
+
+[data-theme="light"] .success-stories,
+.light .success-stories {
+background: rgba(248, 248, 255, 1);
 }
 
 .footer-bg {
@@ -1069,4 +1076,15 @@ a.primary-btn:active {
 [data-theme="light"] .footer-bg,
 .light .footer-bg {
   background: linear-gradient(180deg, rgba(108, 84, 255, 0) 50%, rgba(108, 84, 255, 0.12) 100%);
+}
+
+/* Hide gradient effects in light theme for contact page */
+[data-theme="light"] .contact-hero-gradient,
+.light .contact-hero-gradient {
+  background: transparent !important;
+}
+
+[data-theme="light"] .contact-glow > div,
+.light .contact-glow > div {
+  display: none !important;
 }

@@ -15,7 +15,8 @@
       "Bash(Get-ChildItem *)",
       "PowerShell(taskkill *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git commit -m 'Fix CTA component JSX syntax error *)"
     ]
   }
 }
