@@ -116,11 +116,10 @@ export function CTA() {
                   </div>
 
                   <p className="mt-2 text-xs sm:text-sm md:text-base text-primary">
-                      <a href={card.link}>{card.contact}</a>
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
+                    <a href={card.link}>{card.contact}</a>
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           ))}
         </div>
