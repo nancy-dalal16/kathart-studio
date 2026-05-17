@@ -38,7 +38,7 @@ const testimonials = [
   },
 ];
 
-const N = testimonials.length;
+const N = 3;
 
 export default function SuccessStories() {
   const sectionRef = useRef(null);
@@ -69,13 +69,9 @@ export default function SuccessStories() {
 
     // Original design preserved: front = y:84 (bottom), back = y:0 (top)
     const positions = [
-      { y: 84, scale: 1, zIndex: N },
-      { y: 56, scale: 0.96, zIndex: N - 1 },
-      { y: 28, scale: 0.92, zIndex: N - 2 },
-      { y: 0, scale: 0.88, zIndex: 1 },
-      // { y: 100, scale: 1, zIndex: N },
-      // { y: 50, scale: 0.88, zIndex: N - 1 },
-      // { y: 0, scale: 0.66, zIndex: 1 },
+      { y: 110, scale: 1, zIndex: N },
+      { y: 60, scale: 0.92, zIndex: N - 1 },
+      { y: 30, scale: 0.76, zIndex: N - 2 },
     ];
 
     cards.forEach((card, i) =>
@@ -114,7 +110,7 @@ export default function SuccessStories() {
           cards[exitIdx],
           {
             y: 400,
-            scale: 0.88,
+            scale: 0.76,
             ease: "power2.in",
             duration: halfStep,
             force3D: true,
@@ -164,10 +160,9 @@ export default function SuccessStories() {
             dot,
             {
               height: di === activeIdx ? 40 : 14,
-              backgroundColor:
-                di === activeIdx
-                  ? "var(--color-dark-purple)"
-                  : "var(--color-textColor)",
+              backgroundColor: theme === "light"
+                ? (di === activeIdx ? "#513CD5" : "#5A5480")
+                : (di === activeIdx ? "#513CD5" : "#A8A6C8"),
               ease: "power2.inOut",
               duration: stepSize * 0.85,
             },
@@ -198,9 +193,9 @@ export default function SuccessStories() {
       <div className="relative w-full max-w-5xl flex-1 flex items-center justify-center">
         <div
           className="relative w-full"
-          style={{ height: "clamp(550px, 70vh, 650px)" }}
+          style={{ height: "clamp(700px, 85vh, 800px)" }}
         >
-          {testimonials.map((t, i) => (
+          {testimonials.slice(0, 3).map((t, i) => (
             <div
               key={i}
               ref={(el) => (cardRefs.current[i] = el)}
@@ -208,15 +203,19 @@ export default function SuccessStories() {
               style={{ top: 0, willChange: "transform" }}
             >
               <div
-                className="w-full rounded-lg sm:rounded-xl md:rounded-2xl border-0 flex flex-col items-center gap-3 sm:gap-4 md:gap-6 lg:gap-10 md:flex-row p-3 sm:p-4 md:p-6 lg:p-8 overflow-hidden"
+                className="w-full rounded-lg sm:rounded-xl md:rounded-2xl flex flex-col items-center gap-3 sm:gap-4 md:gap-6 lg:gap-10 md:flex-row p-3 sm:p-4 md:p-6 lg:p-8 overflow-hidden"
                 style={{
+                  backgroundColor: theme === "light" ? "#FFFFFF" : undefined,
                   backgroundImage:
                     theme === "light"
-                      ? "linear-gradient(135deg, rgba(243, 230, 255,1) 0%, rgba(243, 230, 255,0.3) 100%), url(/images/success-stories-back.jpg)"
+                      ? "none"
                       : "linear-gradient(135deg, rgba(10,8,24,0.78) 0%, rgba(10,8,24,0.68) 100%), url(/images/success-stories-back.jpg)",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
-                  boxShadow: "0 20px 50px rgba(0,0,0,0.45)",
+                  boxShadow: theme === "light" 
+                    ? "0 4px 24px rgba(0,0,0,0.08)" 
+                    : "0 20px 50px rgba(0,0,0,0.45)",
+                  border: "1px solid rgba(108, 84, 255, " + (theme === "light" ? "0.15" : "0.3") + ")",
                 }}
               >
                 <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 lg:gap-6 flex-1 min-w-0 text-center md:text-left">
@@ -249,17 +248,16 @@ export default function SuccessStories() {
         </div>
 
         <div className="absolute right-0 md:-right-8 lg:-right-12 top-1/2 -translate-y-1/2 flex flex-col gap-2 md:gap-3 z-50">
-          {testimonials.map((_, i) => (
+          {testimonials.slice(0, 3).map((_, i) => (
             <div
               key={i}
               ref={(el) => (dotRefs.current[i] = el)}
               className="w-1 md:w-1.5 rounded-full"
               style={{
                 height: i === 0 ? 40 : 14,
-                backgroundColor:
-                  i === 0
-                    ? "var(--color-dark-purple)"
-                    : "var(--color-textColor)",
+                backgroundColor: theme === "light" 
+                  ? (i === 0 ? "#513CD5" : "#5A5480")
+                  : (i === 0 ? "#513CD5" : "#A8A6C8"),
               }}
             />
           ))}

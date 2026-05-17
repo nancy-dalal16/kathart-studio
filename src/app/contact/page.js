@@ -3,8 +3,8 @@ import { useState, useRef, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mail, Phone, ArrowRight } from "lucide-react";
-import { MailIcon, PhoneIcon } from "lucide-react";
+import { Mail, Phone, ArrowRight, MapPin } from "lucide-react";
+import { MailIcon, PhoneIcon, MapPinIcon } from "lucide-react";
 import gsap from "gsap";
 import Button from "@/components/ui/button.jsx";
 import { CircleArrowRight } from "lucide-react";
@@ -23,6 +23,13 @@ const contactCards = [
     description: "Get instant help",
     contact: "+91 8938261901",
     link: "tel:+918938261901",
+  },
+  {
+    icon: MapPinIcon,
+    title: "Visit us",
+    description: "Kathart Studio",
+    contact: "Pune, Maharashtra, India",
+    link: "#",
   },
 ];
 
@@ -104,55 +111,18 @@ export default function ContactPage() {
           className="pt-8 sm:pb-16 px-4 sm:px-8 md:px-12 lg:px-20 md:mb-28 mb-28"
           ref={sectionRef}
         >
-          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-            {/* Left Column - Contact Cards */}
+          <div className="max-w-7xl mx-auto space-y-12">
+            {/* Contact Form - Full Width */}
             <div>
-              <div className="max-w-7xl mx-auto py-8">
+              <div className="max-w-7xl py-8 mx-auto text-center">
                 <h2 className="font-semibold text-foreground text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-[50px] leading-tight">
-                  Contact Details
-                </h2>
-                <p className="text-lg sm:text-md md:text-lg lg:text-lg text-textColor leading-relaxed font-semibold">
-                  Reach out directly.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-6 sm:gap-8">
-                {contactCards.map((card, index) => (
-                  <Card
-                    key={index}
-                    ref={(el) => (cardRefs.current[index] = el)}
-                    className="glass-card rounded-2xl sm:rounded-3xl transition-all duration-300"
-                  >
-                    <CardContent className="flex h-full flex-col gap-3 sm:gap-4 px-5 sm:px-6 md:px-7 py-5 sm:py-6 md:py-7">
-                      <card.icon className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
-                      <div className="space-y-1">
-                        <h3 className="text-base sm:text-lg font-medium text-foreground">
-                          {card.title}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-textColor">
-                          {card.description}
-                        </p>
-                      </div>
-                      <p className="mt-2 text-xs sm:text-sm md:text-base text-primary">
-                        <a href={card.link}>{card.contact}</a>
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column - Contact Form */}
-            <div>
-              <div className="max-w-7xl py-8 mx-auto">
-                <h2 className="font-semibold text-foreground text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-[50px] leading-tight">
-                  Contact Form
-                </h2>
-                <p className="text-lg sm:text-md md:text-lg lg:text-lg text-textColor leading-relaxed font-semibold">
                   Ready to be impossible to ignore?
-                </p>
+                </h2>
+                {/* <p className="text-lg sm:text-md md:text-lg lg:text-lg text-textColor leading-relaxed font-semibold">
+                  Ready to be impossible to ignore?
+                </p> */}
               </div>
-              <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10">
+              <div className="bg-seccolor-cta-cards-bg gradient-border rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10">
                 <form
                   onSubmit={handleSubmit}
                   className="space-y-5 sm:space-y-6"
@@ -243,6 +213,47 @@ export default function ContactPage() {
                     </span>
                   </button>
                 </form>
+              </div>
+            </div>
+
+            {/* Contact Details - Full Row */}
+            <div>
+              <div className="max-w-7xl mx-auto py-8 text-center">
+                <h2 className="font-semibold text-foreground text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-[50px] leading-tight">
+                  Or reach out directly
+                </h2>
+                {/* <p className="text-lg sm:text-md md:text-lg lg:text-lg text-textColor leading-relaxed font-semibold">
+                  Or reach out directly.
+                </p> */}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                {contactCards.map((card, index) => (
+                  <Card
+                    key={index}
+                    ref={(el) => (cardRefs.current[index] = el)}
+                    className="bg-seccolor-cta-cards-bg gradient-border"
+                  >
+                    <CardContent className="flex h-full flex-col gap-3 sm:gap-4 px-5 sm:px-6 md:px-7 py-5 sm:py-6 md:py-7">
+                      <card.icon className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
+                      <div className="space-y-1">
+                        <h3 className="text-base sm:text-lg font-medium text-foreground">
+                          {card.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-textColor">
+                          {card.description}
+                        </p>
+                      </div>
+                      <p className="mt-2 text-xs sm:text-sm md:text-base text-primary">
+                        {card.link !== "#" ? (
+                          <a href={card.link}>{card.contact}</a>
+                        ) : (
+                          card.contact
+                        )}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
           </div>
