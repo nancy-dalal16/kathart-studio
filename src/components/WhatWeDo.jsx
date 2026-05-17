@@ -61,7 +61,7 @@ function WhatWeDo() {
         {/* LEFT 50% - Text Content */}
         <div
           ref={textContentRef}
-          className="w-full lg:w-1/2 flex flex-col items-center lg:items-start justify-center gap-4 md:gap-6 lg:gap-7 overflow-hidden"
+          className="w-full lg:w-1/2 flex flex-col items-center lg:items-center justify-center gap-4 md:gap-6 lg:gap-7 overflow-hidden"
         >
           <div className="flex flex-col items-center lg:items-start gap-3 md:gap-5 lg:gap-6 overflow-hidden text-center lg:text-left">
             <h1 className="font-semibold text-foreground text-3xl sm:text-4xl md:text-5xl lg:text-[64px] leading-tight">

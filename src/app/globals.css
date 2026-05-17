@@ -12,6 +12,7 @@
   --textColor:#A8A6C8;
   --border: #FFFFFF1F;
   --bg-base: #0F0F1A;
+  --dark-purple:#513CD5;
 
   --btn-bg: #F0EEFF;
   --btn-color: #0C0A1E;
@@ -33,17 +34,22 @@
     rgba(27, 24, 56, 0.4);
 
   --sales-card-border: rgba(255, 255, 255, 0.15);
+
+  --cta-cards-bg: linear-gradient(180deg, #1A1733 0%, #1A1733 100%);
+
 }
 
 /* Light mode overrides */
 [data-theme="light"] {
-  --background: linear-gradient(180deg, #F5F4FE 0%, #FFFFFF 12.75%);
+  /* --background: linear-gradient(180deg, #F5F4FE 0%, #FFFFFF 12.75%); */
+  --background: #FFFFFF;
   --foreground: #0F0F1A;
   --primary:#B88BFF;
   --secondary:#EDE9FF;
   --textColor:#5A5480;
   --border: rgba(0,0,0,0.12);
   --bg-base: #F5F4FE;
+  --dark-purple:#513CD5;
 
   --btn-bg: #120239;
   --btn-color: #F5F5F5;
@@ -65,6 +71,7 @@
     rgba(255, 255, 255, 0.35);
 
   --sales-card-border: rgba(0, 0, 0, 0.15);
+  --cta-cards-bg: linear-gradient(180deg, #FFFFFF 0%, #F8F8FE 100%);
 }
 
 .light {
@@ -75,6 +82,7 @@
   --textColor:#5A5480;
   --border: rgba(0,0,0,0.12);
   --bg-base: #F5F4FE;
+  --dark-purple:#513CD5; 
 
   --btn-bg: #120239;
   --btn-color: #F5F5F5;
@@ -96,6 +104,7 @@
     rgba(255, 255, 255, 0.35);
 
   --sales-card-border: rgba(0, 0, 0, 0.15);
+  --cta-cards-bg: linear-gradient(180deg, #FFFFFF 0%, #F8F8FE 100%);
 }
 :root {
   scroll-behavior: smooth;
@@ -107,6 +116,8 @@
   --color-secondary: var(--secondary);
   --color-textColor:var(--textColor);
   --color-border: var(--border);
+  --color-cta-cards-bg: var(--cta-cards-bg);
+  --color-dark-purple: var(--dark-purple);
 }
 html {
   /* scroll-snap-type: y mandatory; */
@@ -743,7 +754,7 @@ a.primary-btn::before {
 a.primary-btn:hover {
   background: var(--btn-hover-bg);
   box-shadow: var(--btn-hover-shadow);
-  transform: translateY(-2px);
+  /* transform: translateY(-2px); */
 }
 
 .primary-btn:hover::before,
@@ -804,7 +815,7 @@ a.primary-btn:active {
 .secondary-btn:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
+  /* transform: translateY(-2px); */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
@@ -820,28 +831,23 @@ a.primary-btn:active {
 
 /* ─── Border / Ghost Button ─── */
 .btn-border-gradient {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 0.6rem 0.8rem 0.6rem 1.2rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  background: transparent;
-  color: var(--foreground);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 100px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.25s ease,
-              border-color 0.25s ease,
-              transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 0.3s ease,
-              color 0.25s ease;
-  -webkit-font-smoothing: antialiased;
-}
 
+  padding: 0.8rem 1.2rem;
+
+  border-radius: 999px;
+  border: 1px solid transparent;
+
+  background:
+    linear-gradient(var(--bg-base), var(--bg-base)) padding-box,
+    linear-gradient(90deg, #6C54FF 0%, #E382FF 100%) border-box;
+
+  color: var(--foreground);
+}
 @media (min-width: 640px) {
   .btn-border-gradient {
     gap: 9px;
@@ -866,9 +872,9 @@ a.primary-btn:active {
 }
 
 .btn-border-gradient:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.42);
-  transform: translateY(-2px);
+  /* background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.42); */
+  /* transform: translateY(-2px); */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
@@ -882,11 +888,12 @@ a.primary-btn:active {
   transition: transform 0.1s ease !important;
 }
 
-[data-theme="light"] .btn-border-gradient,
-.light .btn-border-gradient {
-  border-color: rgba(0, 0, 0, 0.15);
-}
-
+/* [data-theme="light"] .btn-border-gradient:hover,
+.light .btn-border-gradient:hover {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.04)),
+    linear-gradient(90deg, #6C54FF 0%, #E382FF 100%);
+} */
 [data-theme="light"] .btn-border-gradient .btn-icon,
 .light .btn-border-gradient .btn-icon {
   background: rgba(0, 0, 0, 0.05);
@@ -894,11 +901,6 @@ a.primary-btn:active {
   color: var(--foreground);
 }
 
-[data-theme="light"] .btn-border-gradient:hover,
-.light .btn-border-gradient:hover {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.35);
-}
 
 /* Magnetic hover effect container */
 .magnetic-btn {
@@ -956,6 +958,23 @@ a.primary-btn:active {
       }
     }
 
+      @keyframes rotateGradientLight {
+      0% {
+        background-image: linear-gradient(var(--color-white), var(--color-white)), linear-gradient(90deg, #E5E3F3 20%, #F8F8FE 50%);
+      }
+
+      40% {
+        background-image: linear-gradient(var(--color-white), var(--color-white)), linear-gradient(180deg, #E5E3F3 20%, #F8F8FE 50%);
+      }
+
+      80% {
+        background-image: linear-gradient(var(--color-white), var(--color-white)), linear-gradient(270deg, #E5E3F3 20%, #F8F8FE 50%);
+      }
+
+      100% {
+        background-image: linear-gradient(var(--color-white), var(--color-white)), linear-gradient(360deg, #E5E3F3 20%, #F8F8FE 50%);
+      }
+    }
 
     .gradient-border {
       border: 2px solid transparent;
@@ -974,6 +993,24 @@ a.primary-btn:active {
 
     .gradient-border:hover {
       animation: rotateGradient 0.5s ease-in;
+    }
+
+
+    [data-theme="light"] .gradient-border,
+    .light .gradient-border {
+      background-image:
+        linear-gradient(180deg, #FFFFFF 0%, #F8F8FE 100%),
+        linear-gradient(45deg,#E5E3F3 20%, #F8F8FE 50%);
+        border: 2px solid transparent;
+      border-radius: 32px;
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      transition: background-image 0.1s;
+    } 
+
+    [data-theme="light"] .gradient-border:hover,
+    .light .gradient-border:hover {
+      animation: rotateGradientLight 0.5s ease-in;
     }
 
 
@@ -1087,4 +1124,65 @@ background: rgba(248, 248, 255, 1);
 [data-theme="light"] .contact-glow > div,
 .light .contact-glow > div {
   display: none !important;
+}
+
+[data-theme="light"] .cta-cards{
+  background: linear-gradient(180deg, #FFFFFF 0%, #E5E3F3 100%);
+}
+.cta-cards{
+  background: linear-gradient(180deg, #1A1733 0%, #1A1733 100%);
+}
+
+
+/* CSS */
+.right-radial-glow {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 45%;
+  max-width: 480px;
+
+  background-image: radial-gradient(
+    circle at top,
+    #4f37ff 0%,
+    rgba(79, 55, 255, 0) 60%
+  );
+
+  opacity: 0.6;
+  filter: blur(64px);
+  overflow: hidden;
+}
+[data-theme="light"] .right-radial-glow,
+.light .right-radial-glow {
+  display: none;
+}
+
+.our-work-banner-strip{
+  background-color: var(--color-secondary);
+}
+
+[data-theme="light"] .our-work-banner-strip,
+.light .our-work-banner-strip {
+  background-color: var(--color-dark-purple);
+}
+/* Default */
+.clients-bg-dark {
+  display: block;
+}
+
+.clients-bg-light {
+  display: none;
+}
+
+/* Light Theme */
+[data-theme="light"] .clients-bg-dark,
+.light .clients-bg-dark {
+  display: none;
+}
+
+[data-theme="light"] .clients-bg-light,
+.light .clients-bg-light {
+  display: block;
 }

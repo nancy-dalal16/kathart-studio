@@ -73,6 +73,9 @@ export default function SuccessStories() {
       { y: 56, scale: 0.96, zIndex: N - 1 },
       { y: 28, scale: 0.92, zIndex: N - 2 },
       { y: 0, scale: 0.88, zIndex: 1 },
+      // { y: 100, scale: 1, zIndex: N },
+      // { y: 50, scale: 0.88, zIndex: N - 1 },
+      // { y: 0, scale: 0.66, zIndex: 1 },
     ];
 
     cards.forEach((card, i) =>
@@ -162,7 +165,9 @@ export default function SuccessStories() {
             {
               height: di === activeIdx ? 40 : 14,
               backgroundColor:
-                di === activeIdx ? "#B88BFF" : "rgba(255,255,255,0.35)",
+                di === activeIdx
+                  ? "var(--color-dark-purple)"
+                  : "var(--color-textColor)",
               ease: "power2.inOut",
               duration: stepSize * 0.85,
             },
@@ -180,7 +185,7 @@ export default function SuccessStories() {
       ref={sectionRef}
       className=" success-stories relative w-full min-h-screen flex flex-col items-center pt-8 sm:pt-12 md:pt-20 lg:pt-32 pb-8 md:pb-12 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden"
     >
-      <div className="relative z-20 text-center mb-8 sm:mb-10 md:mb-16 lg:mb-20 shrink-0">
+      <div className="relative z-20 text-center mb-8 sm:mb-10 md:mb-8 lg:mb-8 shrink-0">
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground">
           Success Stories
         </h2>
@@ -227,7 +232,7 @@ export default function SuccessStories() {
                     </p>
                   </div>
                 </div>
-                <div className="w-20 h-28 sm:w-28 sm:h-36 md:w-40 md:h-52 lg:w-60 lg:h-72 rounded-lg overflow-hidden flex-shrink-0">
+                <div className="rounded-lg overflow-hidden flex-shrink-0">
                   <img
                     src={t.image}
                     className="w-full h-full object-cover"
@@ -251,7 +256,10 @@ export default function SuccessStories() {
               className="w-1 md:w-1.5 rounded-full"
               style={{
                 height: i === 0 ? 40 : 14,
-                backgroundColor: i === 0 ? "#B88BFF" : "rgba(255,255,255,0.35)",
+                backgroundColor:
+                  i === 0
+                    ? "var(--color-dark-purple)"
+                    : "var(--color-textColor)",
               }}
             />
           ))}

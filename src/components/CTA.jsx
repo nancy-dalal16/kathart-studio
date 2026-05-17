@@ -65,7 +65,8 @@ export function CTA() {
       className="relative flex w-full justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-12 md:py-20 lg:py-32 "
     >
       {/* Right glow like screenshot */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-[45%] max-w-[480px] bg-[radial-gradient(circle_at_top,#4F37FF_0%,rgba(79,55,255,0)_60%)] opacity-60 blur-3xl overflow-hidden" />
+      {/* <div className="pointer-events-none absolute inset-y-0 right-0 w-[45%] max-w-[480px] bg-[radial-gradient(circle_at_top,#4F37FF_0%,rgba(79,55,255,0)_60%)] opacity-60 blur-3xl overflow-hidden" /> */}
+      <div className="right-radial-glow" />
 
       <div className="relative z-10 flex w-full flex-col gap-8 md:gap-10 lg:flex-row lg:items-center lg:gap-12">
         {/* Left: Text + Button */}
@@ -102,17 +103,15 @@ export function CTA() {
               ref={(el) => (cardRefs.current[index] = el)}
               className="flex-1"
             >
-              <Card className="bg-secondary gradient-border">
+              <Card className="bg-seccolor-cta-cards-bg gradient-border">
                 <CardContent className="flex h-full flex-col gap-4 px-5 py-5 sm:px-6 sm:py-6 md:px-7 md:py-7">
-                  <card.icon className="h-6 w-6 sm:h-7 sm:w-7 text-foreground" />
+                  <card.icon className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
 
                   <div className="space-y-1">
                     <h3 className="text-sm sm:text-base md:text-lg font-medium text-foreground">
                       {card.title}
                     </h3>
-                    <p className="text-xs text-textColor">
-                      {card.description}
-                    </p>
+                    <p className="text-xs text-textColor">{card.description}</p>
                   </div>
 
                   <p className="mt-2 text-xs sm:text-sm md:text-base text-primary">

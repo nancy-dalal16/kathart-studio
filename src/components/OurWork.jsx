@@ -107,7 +107,7 @@ export default function OurWork() {
               start: "top 90%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       }
     });
@@ -251,7 +251,9 @@ export default function OurWork() {
                 style={{
                   width: i === activeIndex ? 48 : 16,
                   backgroundColor:
-                    i === activeIndex ? "#B88BFF" : "rgba(255,255,255,0.35)",
+                    i === activeIndex
+                      ? "var(--color-dark-purple)"
+                      : "var(--color-textColor)",
                 }}
               />
             ))}
@@ -291,7 +293,7 @@ export default function OurWork() {
 
                   {/* Content */}
                   <div className="w-full lg:w-[52%] flex flex-col gap-3 md:gap-4 lg:gap-5">
-                    <span className="text-xs font-semibold text-primary tracking-[0.18em] uppercase">
+                    <span className="text-xs font-semibold text-dark-purple tracking-[0.18em] uppercase">
                       {slide.badge}
                     </span>
                     <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight">
@@ -342,17 +344,20 @@ export default function OurWork() {
       </section>
 
       {/* CTA Banner */}
-      <div ref={ctaRef} className="px-4 sm:px-8 md:px-12 lg:px-20 pt-4 sm:pt-6 md:pt-8 lg:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
-        <div className="flex justify-between items-center flex-col sm:flex-row gap-4 md:gap-6 bg-secondary rounded-xl sm:rounded-2xl px-4 sm:px-6 md:px-8 py-4 md:py-6">
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-center sm:text-left">
+      <div
+        ref={ctaRef}
+        className="px-4 sm:px-8 md:px-12 lg:px-20 pt-4 sm:pt-6 md:pt-8 lg:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12"
+      >
+        <div className="flex justify-between items-center flex-col sm:flex-row gap-4 md:gap-6 our-work-banner-strip rounded-xl sm:rounded-2xl px-4 sm:px-6 md:px-8 py-4 md:py-6">
+          <p className="text-white sm:text-lg md:text-xl lg:text-2xl text-center sm:text-left">
             We&apos;ve got more cool stuff waiting for you — go explore!
           </p>
-          <Button className="primary-btn">
+          <Link href="#" className="primary-btn">
             View All Projects
             <span className="btn-icon">
               <ArrowRight size={13} strokeWidth={2.5} />
             </span>
-          </Button>
+          </Link>
         </div>
       </div>
     </>

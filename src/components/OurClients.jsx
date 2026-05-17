@@ -176,18 +176,35 @@ export default function OurClients() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative flex flex-col items-center justify-center py-8 sm:py-16 md:py-24 lg:py-40 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden w-full">
+    <section
+      ref={sectionRef}
+      className="relative flex flex-col items-center justify-center py-8 sm:py-16 md:py-24 lg:py-40 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden w-full"
+    >
       {/* Background Decorative Image */}
-      <Image
-        src="/images/our-clients-back.png"
-        alt="Background Element"
-        width={1440}
-        height={328}
-        className="absolute md:top-[180px] top-[400px] left-0 w-full opacity-40 object-contain"
-      />
+      <>
+        {/* Dark Mode Image */}
+        <Image
+          src="/images/our-clients-back.png"
+          alt="Background Element"
+          width={1440}
+          height={328}
+          className="clients-bg-dark absolute md:top-[180px] top-[400px] left-0 w-full opacity-40 object-contain"
+        />
 
+        {/* Light Mode Image */}
+        <Image
+          src="/images/our-clients-light-bg.png"
+          alt="Background Element"
+          width={1440}
+          height={328}
+          className="clients-bg-light absolute md:top-[180px] top-[400px] left-0 w-full opacity-40 object-contain"
+        />
+      </>
       {/* Headings */}
-      <div ref={headingRef} className="max-w-3xl text-center space-y-2 md:space-y-3 relative z-10">
+      <div
+        ref={headingRef}
+        className="max-w-3xl text-center space-y-2 md:space-y-3 relative z-10"
+      >
         <h2 className="font-semibold text-foreground text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
           Our Clients
         </h2>
