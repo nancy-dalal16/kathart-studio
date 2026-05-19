@@ -130,7 +130,7 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-foreground text-xs sm:text-sm font-medium mb-2"
+                      className="block text-foreground text-xs sm:text-sm font-medium mb-2 [font-family:var(--font-geologica)]"
                     >
                       Full Name
                     </label>
@@ -141,7 +141,7 @@ export default function ContactPage() {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all"
+                      className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 [font-family:var(--font-questrial)] focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all"
                       placeholder="Ex: John Williamsons"
                     />
                   </div>
@@ -149,7 +149,7 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-foreground text-xs sm:text-sm font-medium mb-2"
+                      className="block text-foreground text-xs sm:text-sm font-medium mb-2 [font-family:var(--font-geologica)]"
                     >
                       Email
                     </label>
@@ -160,7 +160,7 @@ export default function ContactPage() {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all"
+                      className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 [font-family:var(--font-questrial)] focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all"
                       placeholder="Ex: john@gmail.com"
                     />
                   </div>
@@ -168,7 +168,7 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="company"
-                      className="block text-foreground text-xs sm:text-sm font-medium mb-2"
+                      className="block text-foreground text-xs sm:text-sm font-medium mb-2 [font-family:var(--font-geologica)]"
                     >
                       Company / Brand Name
                     </label>
@@ -179,7 +179,7 @@ export default function ContactPage() {
                       required
                       value={formData.company}
                       onChange={handleChange}
-                      className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all"
+                      className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 [font-family:var(--font-questrial)] focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all"
                       placeholder="Your company or brand name"
                     />
                   </div>
@@ -187,7 +187,7 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="message"
-                      className="block text-foreground text-xs sm:text-sm font-medium mb-2"
+                      className="block text-foreground text-xs sm:text-sm font-medium mb-2 [font-family:var(--font-geologica)]"
                     >
                       Message
                     </label>
@@ -198,7 +198,7 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={handleChange}
                       rows={5}
-                      className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all resize-none"
+                      className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 [font-family:var(--font-questrial)] focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all resize-none"
                       placeholder="What’s on your mind?"
                     />
                   </div>
