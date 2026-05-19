@@ -1251,3 +1251,8 @@ background: rgba(248, 248, 255, 1);
 .light .clients-bg-light {
   display: block;
 }
+
+[data-theme="light"] .belief-card-icon,
+.light .belief-card-icon {
+  filter: brightness(0) saturate(100%) invert(45%) sepia(56%) saturate(800%) hue-rotate(220deg) brightness(105%) contrast(98%);
+}

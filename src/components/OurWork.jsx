@@ -139,25 +139,6 @@ export default function OurWork() {
       });
     };
 
-    const exitSection = () => {
-      // Smoothly transition to the CTA element after exiting OurWork carousel.
-      isAnimatingRef.current = true;
-      const cta = ctaRef.current;
-      if (cta) {
-        const ctaDocTop = cta.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: ctaDocTop, behavior: "smooth" });
-      } else if (pinRef.current) {
-        // Fallback: scroll past pin end + spacer (spacer == innerHeight)
-        window.scrollTo({
-          top: pinRef.current.end + window.innerHeight,
-          behavior: "smooth",
-        });
-      }
-      setTimeout(() => {
-        isAnimatingRef.current = false;
-      }, 600);
-    };
-
     const onWheel = (e) => {
       const rect = section.getBoundingClientRect();
       if (Math.abs(rect.top) > 5) return;
@@ -171,12 +152,12 @@ export default function OurWork() {
       const current = activeIndexRef.current;
 
       if (dir > 0) {
-        e.preventDefault();
         if (current < N - 1) {
+          e.preventDefault();
           goToSlide(current + 1);
-        } else {
-          exitSection();
         }
+        // Last slide scrolling down: don't preventDefault — let natural scroll
+        // pass through so GSAP's pin can release and show the CTA banner strip.
       } else {
         if (current > 0) {
           e.preventDefault();
@@ -205,11 +186,10 @@ export default function OurWork() {
 
       if (dir > 0 && current < N - 1) {
         goToSlide(current + 1);
-      } else if (dir > 0 && current === N - 1) {
-        exitSection();
       } else if (dir < 0 && current > 0) {
         goToSlide(current - 1);
       }
+      // Last slide swipe-up: no action — natural touch scroll releases the GSAP pin
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });

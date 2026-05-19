@@ -276,7 +276,7 @@ export default function AboutPage() {
                         alt={card.title}
                         width={48}
                         height={48}
-                        className="object-contain"
+                        className="object-contain belief-card-icon"
                       />
                     </div>
                     <h3 className="text-xl sm:text-2xl font-semibold text-foreground">
