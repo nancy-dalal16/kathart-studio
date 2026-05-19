@@ -112,12 +112,9 @@ function RollingText({ text }) {
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    const index = navItems.findIndex((item) => item.href === pathname);
-    if (index !== -1) setActiveIndex(index);
-  }, [pathname]);
+  // Compute activeIndex synchronously — no useEffect delay
+  const activeIndex = Math.max(0, navItems.findIndex((item) => item.href === pathname));
 
   const [mounted, setMounted] = useState(false);
   const [theme, setTheme] = useState("dark");
@@ -131,6 +128,11 @@ export function Header() {
   }, []);
 
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Reset scroll state on every navigation so pill doesn't stay "scrolled" on a new page
+  useEffect(() => {
+    setIsScrolled(window.scrollY > 30);
+  }, [pathname]);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 30);
@@ -216,7 +218,6 @@ export function Header() {
   }, [isMobileOpen]);
 
   const handleNavClick = (index, href) => {
-    setActiveIndex(index);
     router.push(href);
     setIsMobileOpen(false);
   };
@@ -228,30 +229,24 @@ export function Header() {
         <div className={`nav-pill${isScrolled ? " is-scrolled" : ""}`}>
           {/* LEFT — Logo */}
           <div className="flex-1 flex items-center">
-            {mounted ? (
-              <Image
-                className={`w-[60px] h-auto md:w-[75px] cursor-pointer header-logo${isScrolled ? " scrolled-logo" : ""}`}
-                alt="Kathart logo"
-                src={
-                  isScrolled
-                    ? "/images/resized_logo_transparent.png"
-                    : currentTheme === "light"
-                      ? "/images/Kathart-Logo-1.png"
-                      : "/images/Kathart-Logo_2.png"
-                }
-                width={100}
-                height={100}
-                onClick={() => handleNavClick(0, "/")}
-              />
-            ) : (
-              <Image
-                className="w-[60px] h-auto md:w-[75px] header-logo"
-                alt="Kathart logo"
-                src="/images/Kathart-Logo_2.png"
-                width={100}
-                height={100}
-              />
-            )}
+            {/* Dark-mode logo (default) */}
+            <Image
+              className={`w-[60px] h-auto md:w-[75px] cursor-pointer header-logo logo-dark-theme${isScrolled ? " scrolled-logo" : ""}`}
+              alt="Kathart logo"
+              src={isScrolled ? "/images/resized_logo_transparent.png" : "/images/Kathart-Logo_2.png"}
+              width={100}
+              height={100}
+              onClick={() => handleNavClick(0, "/")}
+            />
+            {/* Light-mode logo — hidden by default, shown via CSS when data-theme=light */}
+            <Image
+              className={`w-[60px] h-auto md:w-[75px] cursor-pointer header-logo logo-light-theme${isScrolled ? " scrolled-logo" : ""}`}
+              alt="Kathart logo"
+              src={isScrolled ? "/images/resized_logo_transparent.png" : "/images/Kathart-Logo-1.png"}
+              width={100}
+              height={100}
+              onClick={() => handleNavClick(0, "/")}
+            />
           </div>
 
           {/* CENTER — Nav */}
@@ -291,15 +286,8 @@ export function Header() {
                 <span className="toggle-bird bird-2" />
               </span>
               <span className="toggle-knob">
-                {mounted ? (
-                  currentTheme === "dark" ? (
-                    <MoonIcon />
-                  ) : (
-                    <SunIcon />
-                  )
-                ) : (
-                  <MoonIcon />
-                )}
+                <span className="toggle-icon-dark"><MoonIcon /></span>
+                <span className="toggle-icon-light"><SunIcon /></span>
               </span>
             </button>
 
@@ -336,27 +324,20 @@ export function Header() {
 
           {/* Logo */}
           <div className="mb-10 flex-shrink-0">
-            {mounted ? (
-              <Image
-                className="w-[55px] h-auto"
-                alt="Kathart logo"
-                src={
-                  currentTheme === "light"
-                    ? "/images/Kathart-Logo-1.png"
-                    : "/images/Kathart-Logo_2.png"
-                }
-                width={60}
-                height={60}
-              />
-            ) : (
-              <Image
-                className="w-[55px] h-auto"
-                alt="Kathart logo"
-                src="/images/Kathart-Logo_2.png"
-                width={60}
-                height={60}
-              />
-            )}
+            <Image
+              className="w-[55px] h-auto logo-dark-theme"
+              alt="Kathart logo"
+              src="/images/Kathart-Logo_2.png"
+              width={60}
+              height={60}
+            />
+            <Image
+              className="w-[55px] h-auto logo-light-theme"
+              alt="Kathart logo"
+              src="/images/Kathart-Logo-1.png"
+              width={60}
+              height={60}
+            />
           </div>
 
           {/* Nav items */}

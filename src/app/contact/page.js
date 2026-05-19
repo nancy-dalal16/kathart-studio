@@ -1,7 +1,5 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, ArrowRight, MapPin } from "lucide-react";
 import { MailIcon, PhoneIcon, MapPinIcon } from "lucide-react";
@@ -89,7 +87,6 @@ export default function ContactPage() {
 
   return (
     <>
-      <Header />
       {/* Gradient overlay at top */}
       {/* <div className="absolute inset-x-0 top-0 h-[20%] bg-[linear-gradient(180deg,#482BFF_0%,rgba(81,60,213,0.6)_35%,rgba(81,60,213,0)_100%)]" /> */}
       <main className="min-h-screen relative overflow-hidden">
@@ -259,7 +256,6 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 }

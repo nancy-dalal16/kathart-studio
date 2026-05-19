@@ -3,6 +3,8 @@ import { ThemeScript } from "./theme-script";
 import localFont from "next/font/local";
 import { Questrial } from "next/font/google";
 import AmbientMusic from "@/components/AmbientMusic";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 const questrial = Questrial({
   weight: "400",
@@ -80,7 +82,9 @@ export default function RootLayout({ children }) {
         <ThemeScript />
       </head>
       <body className="bg-background text-foreground" suppressHydrationWarning>
+        <Header />
         {children}
+        <Footer />
         {/* <AmbientMusic /> */}
       </body>
     </html>

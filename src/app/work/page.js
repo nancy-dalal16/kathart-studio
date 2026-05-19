@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { CTA } from "@/components/CTA";
 import Image from "next/image";
 import { BsBriefcase } from "react-icons/bs";
@@ -163,7 +161,6 @@ export default function WorkPage() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen relative overflow-hidden">
         {/* Hero Section */}
         <section className="pt-50 pb-20 px-4 sm:px-8">
@@ -308,7 +305,6 @@ export default function WorkPage() {
         {/* CTA Section */}
         <CTA />
       </main>
-      <Footer />
     </>
   );
 }

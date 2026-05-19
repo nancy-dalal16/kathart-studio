@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone } from "lucide-react";
 import gsap from "gsap";
@@ -164,7 +162,6 @@ export default function AboutPage() {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen relative overflow-hidden">
         {/* Full-Height Hero Section with Video */}
         <section className="relative h-screen w-full overflow-hidden">
@@ -341,8 +338,6 @@ export default function AboutPage() {
         {/* Extra spacing before footer */}
         <CTA />
       </main>
-
-      <Footer />
     </>
   );
 }

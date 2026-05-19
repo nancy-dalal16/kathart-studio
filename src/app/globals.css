@@ -346,6 +346,84 @@ p, span, label{
   transform: translateX(2px);
 }
 
+/* ── Logo theme visibility (CSS-driven, works before React hydration) ── */
+.logo-light-theme { display: none; }
+.light .logo-light-theme,
+[data-theme="light"] .logo-light-theme { display: block; }
+.light .logo-dark-theme,
+[data-theme="light"] .logo-dark-theme { display: none; }
+/* ── Toggle icon visibility (CSS-driven, works before React hydration) ── */
+.toggle-icon-dark,
+.toggle-icon-light {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.toggle-icon-light { display: none; }
+.light .toggle-icon-light,
+[data-theme="light"] .toggle-icon-light { display: flex; }
+.light .toggle-icon-dark,
+[data-theme="light"] .toggle-icon-dark { display: none; }
+
+/* ── Toggle pill light-mode state via html.light (works before React hydration) ── */
+.light .theme-toggle-pill,
+[data-theme="light"] .theme-toggle-pill {
+  background: linear-gradient(180deg, #FFFFFF 0%, #e9dbff 100%);
+  border-color: rgba(184, 139, 255, 0.4);
+}
+
+.light .theme-toggle-pill::after,
+[data-theme="light"] .theme-toggle-pill::after {
+  opacity: 0;
+}
+
+.light .theme-toggle-pill::before,
+[data-theme="light"] .theme-toggle-pill::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, #fff 0%, #B88BFF 55%, #B88BFF 100%);
+  box-shadow: 0 0 10px rgba(184, 139, 255, 0.45), 0 0 22px rgba(184, 139, 255, 0.2);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.light .theme-toggle-pill:hover,
+[data-theme="light"] .theme-toggle-pill:hover {
+  box-shadow: 0 0 0 3px rgba(184, 139, 255, 0.25);
+}
+
+.light .theme-toggle-pill .toggle-star,
+[data-theme="light"] .theme-toggle-pill .toggle-star {
+  opacity: 0;
+  transform: scale(0);
+  animation: none;
+}
+
+.light .theme-toggle-pill .toggle-knob,
+[data-theme="light"] .theme-toggle-pill .toggle-knob {
+  opacity: 0;
+  transform: translateX(2px);
+}
+
+.light .theme-toggle-pill .toggle-bird,
+[data-theme="light"] .theme-toggle-pill .toggle-bird {
+  opacity: 1;
+  animation: toggle-bird-bob 2.2s ease-in-out infinite;
+}
+
+.light .theme-toggle-pill .bird-2,
+[data-theme="light"] .theme-toggle-pill .bird-2 {
+  animation-delay: 1.1s;
+}
+
 /* ── Modern Menu Icon (Mobile Hamburger) ── */
 .modern-menu-icon {
   transition: opacity 0.3s ease, transform 0.3s ease;
