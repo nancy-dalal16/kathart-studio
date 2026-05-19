@@ -57,6 +57,10 @@
   pointer-events: auto;
 }
 
+:global(.light) .aboutScene {
+  background: var(--cta-cards-bg);
+}
+
 /* ════════════════════════
    SCENE 1 — HERO
    ════════════════════════ */
@@ -120,7 +124,19 @@
 }
 
 :global(.light) .heroVignette {
-  background: radial-gradient(ellipse 88% 88% at 50% 50%, transparent 40%, rgba(181, 116, 232,0.28) 100%);
+  display: none;
+}
+
+:global(.light) .heroTopScrim {
+  background: none;
+}
+
+:global(.light) .heroGrain {
+  display: none;
+}
+
+:global(.light) .heroSpotlight {
+  display: none;
 }
 
 /*

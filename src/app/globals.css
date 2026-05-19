@@ -182,17 +182,32 @@ p, span, label{
 }
 
 .theme-toggle-pill.is-light {
-  /* background: linear-gradient(145deg, #B88BFF 0%, #9B6FE0 100%); */
-  background: #d9b3ff;
-  border-color: rgba(255, 255, 255, 0.25);
+  background: #FFFFFF;
+  border-color: rgba(184, 139, 255, 0.4);
 }
 
 .theme-toggle-pill.is-light::after {
   opacity: 0;
 }
 
+/* Sun — large circle clipped by pill's overflow+border-radius on the left */
+.theme-toggle-pill.is-light::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 52%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, #FFD54F 0%, #FFA726 55%, #FB8C00 100%);
+  box-shadow: 0 0 10px rgba(255, 160, 0, 0.45), 0 0 22px rgba(255, 193, 7, 0.2);
+  z-index: 4;
+  pointer-events: none;
+}
+
 .theme-toggle-pill.is-light:hover {
-  box-shadow: 0 0 0 3px rgba(184, 139, 255, 0.35);
+  box-shadow: 0 0 0 3px rgba(184, 139, 255, 0.25);
 }
 
 /* Stars + clouds decoration layer */
@@ -227,30 +242,59 @@ p, span, label{
   animation: none;
 }
 
-/* Clouds (visible + animated in light mode) */
-.toggle-cloud {
+/* Cloud shared base */
+.toggle-sky-cloud,
+.toggle-sky-cloud-2 {
   position: absolute;
   background-repeat: no-repeat;
   background-size: contain;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 20'%3E%3Cpath d='M5 16 A4 4 0 0 1 5 8 A6 6 0 0 1 12 3 A8 8 0 0 1 28 3 A5 5 0 0 1 35 8 A4 4 0 0 1 35 16 Z' fill='white'/%3E%3C/svg%3E");
+  background-position: center;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s ease;
 }
 
-.cloud-1 { width: 20px; height: 10px; top: 8px; right: 7px; }
+/* Cloud 1 — large foreground cloud, medium purple, lower-right */
+.toggle-sky-cloud {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 18'%3E%3Cpath d='M2 16 Q0 16 0 12 Q0 8 4 8 Q6 2 9 3 Q13 0 17 3 Q21 1 22 6 Q27 7 27 10 Q27 16 23 16 Z' fill='%23DDD0FF' stroke='%23B88BFF' stroke-width='0.7' stroke-linejoin='round'/%3E%3C/svg%3E");
+  width: 75px;
+  height: 25px;
+  bottom: -4px;
+  right: -20px;
+  z-index: 3;
+}
 
-.theme-toggle-pill.is-light .toggle-cloud {
+/* Cloud 2 — lighter background cloud, soft lavender, upper-right */
+.toggle-sky-cloud-2 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 18'%3E%3Cpath d='M2 16 Q0 16 0 12 Q0 8 4 8 Q6 2 9 3 Q13 0 17 3 Q21 1 22 6 Q27 7 27 10 Q27 16 23 16 Z' fill='%23EDE9FF' stroke='%23C4B5FF' stroke-width='0.7' stroke-linejoin='round'/%3E%3C/svg%3E");
+  width: 62px;
+  height: 26px;
+  top: 2px;
+  right: -20px;
+  z-index: 2;
+}
+
+.theme-toggle-pill.is-light .toggle-sky-cloud {
   opacity: 1;
-  animation: toggle-cloud-drift 2.8s ease-in-out infinite;
+  animation: toggle-cloud-drift 4.5s ease-in-out infinite;
+}
+
+.theme-toggle-pill.is-light .toggle-sky-cloud-2 {
+  opacity: 0.85;
+  animation: toggle-cloud-drift-2 3.2s ease-in-out infinite;
 }
 
 @keyframes toggle-cloud-drift {
-  0%, 100% { transform: translateX(0);    opacity: 1; }
-  50%       { transform: translateX(2px); opacity: 0.65; }
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(-3px); }
 }
 
-/* Birds (visible + animated in light mode) */
+@keyframes toggle-cloud-drift-2 {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(2px); }
+}
+
+/* Birds — visible + animated in light mode */
 .toggle-bird {
   position: absolute;
   background-repeat: no-repeat;
@@ -261,18 +305,21 @@ p, span, label{
   transition: opacity 0.38s ease;
 }
 
-.bird-1 { width: 12px; height: 7px; top: 8px;    right: 20px; }
-.bird-2 { width: 10px; height: 6px; bottom: 8px;  right: 10px; }
+.bird-1 { width: 10px; height: 6px; top: 7px;  left: 34px; z-index: 5; }
+.bird-2 { width: 8px;  height: 5px; top: 20px; left: 48px; z-index: 5; }
 
 .theme-toggle-pill.is-light .toggle-bird {
   opacity: 1;
-  animation: toggle-bird-bob 1.9s ease-in-out infinite;
+  animation: toggle-bird-bob 2.2s ease-in-out infinite;
 }
-.theme-toggle-pill.is-light .bird-2 { animation-delay: 0.95s; }
+
+.theme-toggle-pill.is-light .bird-2 {
+  animation-delay: 1.1s;
+}
 
 @keyframes toggle-bird-bob {
-  0%, 100% { transform: translateY(0);     opacity: 1; }
-  50%       { transform: translateY(-2px); opacity: 0.45; }
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-2px); }
 }
 
 /* Sliding knob */
@@ -293,7 +340,8 @@ p, span, label{
 }
 
 .theme-toggle-pill.is-light .toggle-knob {
-  transform: translateX(0);
+  opacity: 0;
+  transform: translateX(2px);
 }
 
 /* ── Modern Menu Icon (Mobile Hamburger) ── */

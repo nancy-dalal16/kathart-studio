@@ -26,9 +26,30 @@ function MoonIcon() {
 }
 
 function SunIcon() {
+  // Sun upper-right (r=5.5), large cloud lower-left — fills full 26px knob
   return (
-    <svg viewBox="0 0 24 24" width="20" height="20">
-      <circle cx="12" cy="12" r="12" fill="white" />
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+      {/* 8 rays from center (15,8) — cloud covers lower ones naturally */}
+      <g stroke="#FFA000" strokeWidth="1.5" strokeLinecap="round">
+        <line x1="15" y1="1" x2="15" y2="0" />
+        <line x1="20" y1="3.1" x2="21.7" y2="1.6" />
+        <line x1="22" y1="8" x2="24" y2="8" />
+        <line x1="20" y1="12.9" x2="21.7" y2="14.4" />
+        <line x1="15" y1="15" x2="15" y2="17.5" />
+        <line x1="10" y1="12.9" x2="8.3" y2="14.4" />
+        <line x1="8" y1="8" x2="5.5" y2="8" />
+        <line x1="10" y1="3.1" x2="8.3" y2="1.6" />
+      </g>
+      {/* Sun disc */}
+      <circle cx="15" cy="8" r="5.5" fill="#FFC107" />
+      {/* Cloud — larger, lower-left, overlapping sun */}
+      <path
+        d="M1 23 Q0 23 0 18.5 Q0 15 4 14.3 Q5.5 10.5 11 10.5 Q16.5 10.5 18 14.3 Q22 15 22 18.5 Q22 23 18.5 23 Z"
+        fill="#EDE9FF"
+        stroke="#B88BFF"
+        strokeWidth="0.7"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -259,9 +280,10 @@ export function Header() {
                 <span className="toggle-star star-2" />
                 <span className="toggle-star star-3" />
                 <span className="toggle-star star-4" />
-                <span className="toggle-cloud cloud-1" />
-                <span className="toggle-bird bird-1" />
-                <span className="toggle-bird bird-2" />
+                <span className="toggle-sky-cloud" />
+                <span className="toggle-sky-cloud-2" />
+                {/* <span className="toggle-bird bird-1" />
+                <span className="toggle-bird bird-2" /> */}
               </span>
               <span className="toggle-knob">
                 {mounted ? (

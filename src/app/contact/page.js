@@ -24,13 +24,13 @@ const contactCards = [
     contact: "+91 8938261901",
     link: "tel:+918938261901",
   },
-  {
-    icon: MapPinIcon,
-    title: "Visit us",
-    description: "Kathart Studio",
-    contact: "Pune, Maharashtra, India",
-    link: "#",
-  },
+  // {
+  //   icon: MapPinIcon,
+  //   title: "Visit us",
+  //   description: "Kathart Studio",
+  //   contact: "Pune, Maharashtra, India",
+  //   link: "#",
+  // },
 ];
 
 export default function ContactPage() {
@@ -111,7 +111,7 @@ export default function ContactPage() {
           className="pt-8 sm:pb-16 px-4 sm:px-8 md:px-12 lg:px-20 md:mb-28 mb-28"
           ref={sectionRef}
         >
-          <div className="max-w-7xl mx-auto space-y-12">
+          <div className="max-w-5xl mx-auto space-y-12">
             {/* Contact Form - Full Width */}
             <div>
               <div className="max-w-7xl py-8 mx-auto text-center">
@@ -227,7 +227,7 @@ export default function ContactPage() {
                 </p> */}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                 {contactCards.map((card, index) => (
                   <Card
                     key={index}
