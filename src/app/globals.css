@@ -516,6 +516,17 @@ button[aria-label="Open navigation"]:hover::after {
   -webkit-backdrop-filter: blur(20px);
 }
 
+/* About page: solid header (top/non-scrolled state only) so it's visible over the hero video */
+ .nav-pill.about-page-header:not(.is-scrolled) {
+  background: #0d0d0d !important;
+}
+
+[data-theme="light"] .nav-pill.about-page-header:not(.is-scrolled),
+.light .nav-pill.about-page-header:not(.is-scrolled){
+  /* background: #FFF !important; */
+   background: linear-gradient(180deg, #F8F8FE 0%, #F8F8FE 100%) !important; 
+}
+
 /* Nav border — shows at rest, fades out in pill */
 .nav-center {
   border-top: 1px solid var(--border);

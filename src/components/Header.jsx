@@ -19,13 +19,26 @@ function MoonIcon() {
           <rect width="24" height="24" fill="white" />
           <circle cx="20" cy="10" r="7" fill="black" />
         </mask>
-        <radialGradient id="moon-grad" cx="35%" cy="32%" r="68%" fx="35%" fy="32%">
+        <radialGradient
+          id="moon-grad"
+          cx="35%"
+          cy="32%"
+          r="68%"
+          fx="35%"
+          fy="32%"
+        >
           <stop offset="0%" stopColor="#F0E6FF" />
           <stop offset="42%" stopColor="#B88BFF" />
           <stop offset="100%" stopColor="#6830C0" />
         </radialGradient>
       </defs>
-      <circle cx="12" cy="12" r="12" fill="url(#moon-grad)" mask="url(#moon-thick)" />
+      <circle
+        cx="12"
+        cy="12"
+        r="12"
+        fill="url(#moon-grad)"
+        mask="url(#moon-thick)"
+      />
     </svg>
   );
 }
@@ -114,7 +127,10 @@ export function Header() {
   const router = useRouter();
 
   // Compute activeIndex synchronously — no useEffect delay
-  const activeIndex = Math.max(0, navItems.findIndex((item) => item.href === pathname));
+  const activeIndex = Math.max(
+    0,
+    navItems.findIndex((item) => item.href === pathname),
+  );
 
   const [mounted, setMounted] = useState(false);
   const [theme, setTheme] = useState("dark");
@@ -226,14 +242,20 @@ export function Header() {
     <>
       {/* ── HEADER ── */}
       <header className="fixed top-0 left-0 w-full z-[1000] flex justify-center">
-        <div className={`nav-pill${isScrolled ? " is-scrolled" : ""}`}>
+        <div
+          className={`nav-pill${isScrolled ? " is-scrolled" : ""}${pathname === "/about" ? " about-page-header" : ""}`}
+        >
           {/* LEFT — Logo */}
           <div className="flex-1 flex items-center">
             {/* Dark-mode logo (default) */}
             <Image
               className={`w-[60px] h-auto md:w-[75px] cursor-pointer header-logo logo-dark-theme${isScrolled ? " scrolled-logo" : ""}`}
               alt="Kathart logo"
-              src={isScrolled ? "/images/resized_logo_transparent.png" : "/images/Kathart-Logo_2.png"}
+              src={
+                isScrolled
+                  ? "/images/resized_logo_transparent.png"
+                  : "/images/Kathart-Logo_2.png"
+              }
               width={100}
               height={100}
               onClick={() => handleNavClick(0, "/")}
@@ -242,7 +264,11 @@ export function Header() {
             <Image
               className={`w-[60px] h-auto md:w-[75px] cursor-pointer header-logo logo-light-theme${isScrolled ? " scrolled-logo" : ""}`}
               alt="Kathart logo"
-              src={isScrolled ? "/images/resized_logo_transparent.png" : "/images/Kathart-Logo-1.png"}
+              src={
+                isScrolled
+                  ? "/images/resized_logo_transparent.png"
+                  : "/images/Kathart-Logo-1.png"
+              }
               width={100}
               height={100}
               onClick={() => handleNavClick(0, "/")}
@@ -286,8 +312,12 @@ export function Header() {
                 <span className="toggle-bird bird-2" />
               </span>
               <span className="toggle-knob">
-                <span className="toggle-icon-dark"><MoonIcon /></span>
-                <span className="toggle-icon-light"><SunIcon /></span>
+                <span className="toggle-icon-dark">
+                  <MoonIcon />
+                </span>
+                <span className="toggle-icon-light">
+                  <SunIcon />
+                </span>
               </span>
             </button>
 

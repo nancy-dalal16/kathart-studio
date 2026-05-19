@@ -164,7 +164,7 @@ export default function AboutPage() {
     <>
       <main className="min-h-screen relative overflow-hidden">
         {/* Full-Height Hero Section with Video */}
-        <section className="relative h-screen w-full overflow-hidden">
+        <section className="relative w-full overflow-hidden h-auto md:h-[85vh] lg:h-[90vh] mt-[70px] md:mt-[80px]">
           <video
             ref={videoRef}
             src="/images/about/hero-video.mp4"
@@ -172,7 +172,7 @@ export default function AboutPage() {
             muted
             loop
             playsInline
-            className="absolute inset-0 w-full h-full object-cover"
+            className="w-full h-auto md:absolute md:inset-0 md:w-full md:h-full md:object-cover"
           />
           {/* Mute/Unmute toggle */}
           <button
@@ -212,7 +212,7 @@ export default function AboutPage() {
         <section className="py-20 px-4 sm:px-8 text-center">
           <div ref={essenceSectionRef} className="max-w-5xl mx-auto">
             {/* Lotus Icon */}
-            <div className="mb-8 flex justify-center">
+            {/* <div className="mb-8 flex justify-center">
               <div className="w-20 h-20 relative">
                 <svg viewBox="0 0 100 100" className="w-full h-full">
                   <path
@@ -222,14 +222,20 @@ export default function AboutPage() {
                     strokeWidth="2"
                   />
                   <defs>
-                    {/* <linearGradient id="lotus-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient
+                      id="lotus-gradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="100%"
+                    >
                       <stop offset="0%" stopColor="#B88BFF" />
                       <stop offset="100%" stopColor="#E382FF" />
-                    </linearGradient> */}
+                    </linearGradient>
                   </defs>
                 </svg>
               </div>
-            </div>
+            </div> */}
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-8">
               The Essence of Kathart
