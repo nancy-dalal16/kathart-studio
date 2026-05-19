@@ -110,8 +110,33 @@
   height: 180px;
   z-index: 5;
   pointer-events: none;
-  /* background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 100%); */
   background: linear-gradient(to bottom, rgba(181, 116, 232,0.2) 0%, transparent 100%);
+}
+
+/* Purple glow at top — light mode only, matches contact page exactly */
+.heroPurpleGlow {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 220px;
+  z-index: 7;
+  pointer-events: none;
+  display: none;
+}
+
+:global(.light) .heroPurpleGlow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroPurpleGlowInner {
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 192px;
+  background: linear-gradient(to bottom, rgba(106, 83, 255, 0.20) 0%, rgba(106, 83, 255, 0.05) 50%, transparent 100%);
+  filter: blur(80px);
 }
 
 /* Edge vignette */

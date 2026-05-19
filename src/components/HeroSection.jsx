@@ -66,7 +66,7 @@ export default function HeroSection() {
           {
             scale: 45, // Deeper zoom for a true "fly-through" feel
             opacity: 0,
-            duration: 0.50,
+            duration: 0.5,
             transformOrigin: "53% 53%",
             ease: "power3.in", // Exponential curve mimics real camera dolly
             force3D: false,
@@ -107,6 +107,7 @@ export default function HeroSection() {
   return (
     <div ref={masterRef} className={styles.masterContainer}>
       {/* ════ SCENE 1: HERO ════ */}
+
       <div ref={scene1Ref} className={`${styles.scene} ${styles.scene1}`}>
         {/* Video */}
         <video className={styles.video} autoPlay muted loop playsInline>
@@ -147,6 +148,11 @@ export default function HeroSection() {
         <div ref={scrollCueRef} className={styles.scrollCue} aria-hidden="true">
           <span className={styles.scrollLabel}>Scroll</span>
           <span className={styles.scrollLine} />
+        </div>
+
+        {/* Purple glow — light mode only, on top of all layers */}
+        <div className={styles.heroPurpleGlow} aria-hidden="true">
+          <div className={styles.heroPurpleGlowInner} />
         </div>
       </div>
 

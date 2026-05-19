@@ -17,7 +17,13 @@
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
       "Bash(git commit -m 'Fix CTA component JSX syntax error *)",
-      "Bash(Select-String -Pattern \"\\(work|portfolio|carousel|slider\\)\" -SimpleMatch)"
+      "Bash(Select-String -Pattern \"\\(work|portfolio|carousel|slider\\)\" -SimpleMatch)",
+      "Bash(curl -L \"https://drive.google.com/uc?export=download&id=1E0onwqIVnif3dABVvWzA5xforbDJlTMM\" -o \"N:/albatross/Kathart2.0/kathart-studio/public/images/about/hero-video.mp4\")",
+      "Bash(curl -L \"https://images.unsplash.com/photo-1455390582262-044cdead277a?w=900&q=80&auto=format&fit=crop\" -o \"N:/albatross/Kathart2.0/kathart-studio/public/images/about/approach-1.jpg\")",
+      "Bash(curl -L \"https://images.unsplash.com/photo-1494253109108-2e30c049369b?w=900&q=80&auto=format&fit=crop\" -o \"N:/albatross/Kathart2.0/kathart-studio/public/images/about/approach-2.jpg\")",
+      "Bash(curl -L \"https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=900&q=80&auto=format&fit=crop\" -o \"N:/albatross/Kathart2.0/kathart-studio/public/images/about/approach-3.jpg\")",
+      "Bash(curl -L \"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80&auto=format&fit=crop\" -o \"N:/albatross/Kathart2.0/kathart-studio/public/images/about/approach-4.jpg\")",
+      "Bash(file *)"
     ]
   }
 }

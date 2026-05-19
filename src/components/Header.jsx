@@ -19,8 +19,13 @@ function MoonIcon() {
           <rect width="24" height="24" fill="white" />
           <circle cx="20" cy="10" r="7" fill="black" />
         </mask>
+        <radialGradient id="moon-grad" cx="35%" cy="32%" r="68%" fx="35%" fy="32%">
+          <stop offset="0%" stopColor="#F0E6FF" />
+          <stop offset="42%" stopColor="#B88BFF" />
+          <stop offset="100%" stopColor="#6830C0" />
+        </radialGradient>
       </defs>
-      <circle cx="12" cy="12" r="12" fill="#B88BFF" mask="url(#moon-thick)" />
+      <circle cx="12" cy="12" r="12" fill="url(#moon-grad)" mask="url(#moon-thick)" />
     </svg>
   );
 }
@@ -280,10 +285,10 @@ export function Header() {
                 <span className="toggle-star star-2" />
                 <span className="toggle-star star-3" />
                 <span className="toggle-star star-4" />
-                <span className="toggle-sky-cloud" />
-                <span className="toggle-sky-cloud-2" />
-                {/* <span className="toggle-bird bird-1" />
-                <span className="toggle-bird bird-2" /> */}
+                {/* <span className="toggle-sky-cloud" />
+                <span className="toggle-sky-cloud-2" /> */}
+                <span className="toggle-bird bird-1" />
+                <span className="toggle-bird bird-2" />
               </span>
               <span className="toggle-knob">
                 {mounted ? (
