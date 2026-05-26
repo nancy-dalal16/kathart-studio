@@ -9,7 +9,6 @@ import styles from "./HeroSection.module.css";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
-  gsap.ticker.lagSmoothing(0);
 }
 
 export default function HeroSection() {

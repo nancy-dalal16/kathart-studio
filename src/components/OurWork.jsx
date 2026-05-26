@@ -57,6 +57,7 @@ export default function OurWork() {
   const isAnimatingRef = useRef(false);
   const pinRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const goToSlideRef = useRef(null);
 
   const handleMouseMove = (e, idx) => {
     const el = imageRefs.current[idx];
@@ -87,9 +88,21 @@ export default function OurWork() {
       pinRef.current = ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${window.innerHeight}`,
+        end: `+=${window.innerHeight * N}`,
         pin: true,
         pinSpacing: true,
+        onLeaveBack: () => {
+          activeIndexRef.current = 0;
+          setActiveIndex(0);
+          gsap.set(trackRef.current, { x: 0 });
+        },
+        onUpdate: (self) => {
+          if (!self.isActive || !goToSlideRef.current) return;
+          const newIndex = Math.min(N - 1, Math.floor(self.progress * N));
+          if (newIndex !== activeIndexRef.current) {
+            goToSlideRef.current(newIndex);
+          }
+        },
       });
 
       if (ctaRef.current) {
@@ -116,88 +129,41 @@ export default function OurWork() {
   }, []);
 
   useEffect(() => {
-    const section = sectionRef.current;
     const track = trackRef.current;
-    if (!section || !track) return;
+    if (!track) return;
 
     const goToSlide = (index) => {
       if (isAnimatingRef.current || index < 0 || index >= N) return;
-
       isAnimatingRef.current = true;
       activeIndexRef.current = index;
       setActiveIndex(index);
-
       gsap.to(track, {
         x: -index * window.innerWidth,
-        duration: 0.75,
+        duration: 0.6,
         ease: "power3.inOut",
-        onComplete: () => {
-          setTimeout(() => {
-            isAnimatingRef.current = false;
-          }, 200);
-        },
+        onComplete: () => { isAnimatingRef.current = false; },
       });
     };
 
-    const onWheel = (e) => {
-      const rect = section.getBoundingClientRect();
-      if (Math.abs(rect.top) > 5) return;
+    goToSlideRef.current = goToSlide;
 
-      if (isAnimatingRef.current) {
-        e.preventDefault();
-        return;
-      }
-
-      const dir = e.deltaY > 0 ? 1 : -1;
-      const current = activeIndexRef.current;
-
-      if (dir > 0) {
-        if (current < N - 1) {
-          e.preventDefault();
-          goToSlide(current + 1);
-        }
-        // Last slide scrolling down: don't preventDefault — let natural scroll
-        // pass through so GSAP's pin can release and show the CTA banner strip.
-      } else {
-        if (current > 0) {
-          e.preventDefault();
-          goToSlide(current - 1);
-        }
-        // current === 0 + scroll up → no preventDefault → natural scroll upward
-      }
-    };
-
+    // Touch support for mobile
     let touchStartY = 0;
-
-    const onTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY;
-    };
-
+    const onTouchStart = (e) => { touchStartY = e.touches[0].clientY; };
     const onTouchEnd = (e) => {
-      const rect = section.getBoundingClientRect();
-      if (Math.abs(rect.top) > 5) return;
+      if (!pinRef.current?.isActive) return;
       if (isAnimatingRef.current) return;
-
       const dy = touchStartY - e.changedTouches[0].clientY;
       if (Math.abs(dy) < 40) return;
-
       const dir = dy > 0 ? 1 : -1;
-      const current = activeIndexRef.current;
-
-      if (dir > 0 && current < N - 1) {
-        goToSlide(current + 1);
-      } else if (dir < 0 && current > 0) {
-        goToSlide(current - 1);
-      }
-      // Last slide swipe-up: no action — natural touch scroll releases the GSAP pin
+      const newIndex = Math.max(0, Math.min(N - 1, activeIndexRef.current + dir));
+      goToSlide(newIndex);
     };
 
-    window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
 
     return () => {
-      window.removeEventListener("wheel", onWheel);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchend", onTouchEnd);
     };

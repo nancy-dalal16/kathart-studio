@@ -69,9 +69,9 @@ export default function SuccessStories() {
 
     // Original design preserved: front = y:84 (bottom), back = y:0 (top)
     const positions = [
-      { y: 110, scale: 1, zIndex: N },
-      { y: 60, scale: 0.92, zIndex: N - 1 },
-      { y: 30, scale: 0.76, zIndex: N - 2 },
+      { y: 56, scale: 1, zIndex: N },
+      { y: 30, scale: 0.93, zIndex: N - 1 },
+      { y: 12, scale: 0.78, zIndex: N - 2 },
     ];
 
     cards.forEach((card, i) =>
@@ -109,7 +109,7 @@ export default function SuccessStories() {
         tl.to(
           cards[exitIdx],
           {
-            y: 400,
+            y: 480,
             scale: 0.76,
             ease: "power2.in",
             duration: halfStep,
@@ -160,9 +160,14 @@ export default function SuccessStories() {
             dot,
             {
               height: di === activeIdx ? 40 : 14,
-              backgroundColor: theme === "light"
-                ? (di === activeIdx ? "#513CD5" : "#5A5480")
-                : (di === activeIdx ? "#513CD5" : "#A8A6C8"),
+              backgroundColor:
+                theme === "light"
+                  ? di === activeIdx
+                    ? "#513CD5"
+                    : "#5A5480"
+                  : di === activeIdx
+                    ? "#513CD5"
+                    : "#A8A6C8",
               ease: "power2.inOut",
               duration: stepSize * 0.85,
             },
@@ -178,9 +183,9 @@ export default function SuccessStories() {
   return (
     <section
       ref={sectionRef}
-      className=" success-stories relative w-full min-h-screen flex flex-col items-center pt-8 sm:pt-12 md:pt-20 lg:pt-32 pb-8 md:pb-12 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden"
+      className=" success-stories relative w-full min-h-screen flex flex-col items-center pt-20 sm:pt-24 md:pt-28 lg:pt-28 pb-6 md:pb-8 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden"
     >
-      <div className="relative z-20 text-center mb-8 sm:mb-10 md:mb-8 lg:mb-8 shrink-0">
+      <div className="relative z-20 text-center mb-4 sm:mb-5 md:mb-6 shrink-0">
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground">
           Success Stories
         </h2>
@@ -190,10 +195,10 @@ export default function SuccessStories() {
         </p>
       </div>
 
-      <div className="relative w-full max-w-5xl flex-1 flex items-center justify-center">
+      <div className="relative w-full max-w-4xl mx-auto">
         <div
           className="relative w-full"
-          style={{ height: "clamp(700px, 85vh, 800px)" }}
+          style={{ height: "clamp(300px, 60vh, 460px)" }}
         >
           {testimonials.slice(0, 3).map((t, i) => (
             <div
@@ -203,7 +208,7 @@ export default function SuccessStories() {
               style={{ top: 0, willChange: "transform" }}
             >
               <div
-                className="w-full rounded-lg sm:rounded-xl md:rounded-2xl flex flex-col items-center gap-3 sm:gap-4 md:gap-6 lg:gap-10 md:flex-row p-3 sm:p-4 md:p-6 lg:p-8 overflow-hidden"
+                className="w-full rounded-lg sm:rounded-xl md:rounded-2xl flex flex-col gap-3 sm:gap-4 md:flex-row md:gap-6 lg:gap-8 p-3 sm:p-4 md:p-6 lg:p-8 overflow-hidden"
                 style={{
                   backgroundColor: theme === "light" ? "#FFFFFF" : undefined,
                   backgroundImage:
@@ -212,14 +217,18 @@ export default function SuccessStories() {
                       : "linear-gradient(135deg, rgba(10,8,24,0.78) 0%, rgba(10,8,24,0.68) 100%), url(/images/success-stories-back.jpg)",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
-                  boxShadow: theme === "light" 
-                    ? "0 4px 24px rgba(0,0,0,0.08)" 
-                    : "0 20px 50px rgba(0,0,0,0.45)",
-                  border: "1px solid rgba(108, 84, 255, " + (theme === "light" ? "0.15" : "0.3") + ")",
+                  boxShadow:
+                    theme === "light"
+                      ? "0 4px 24px rgba(0,0,0,0.08)"
+                      : "0 20px 50px rgba(0,0,0,0.45)",
+                  border:
+                    "1px solid rgba(108, 84, 255, " +
+                    (theme === "light" ? "0.15" : "0.3") +
+                    ")",
                 }}
               >
-                <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 lg:gap-6 flex-1 min-w-0 text-center md:text-left">
-                  <blockquote className="text-foreground font-light text-sm sm:text-base md:text-lg lg:text-[1.35rem] leading-relaxed">
+                <div className="w-full md:w-[60%] flex flex-col justify-center gap-2 md:gap-3 text-center md:text-left">
+                  <blockquote className="text-foreground font-light text-sm sm:text-sm md:text-base lg:text-lg leading-relaxed">
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
                   <div>
@@ -231,7 +240,7 @@ export default function SuccessStories() {
                     </p>
                   </div>
                 </div>
-                <div className="rounded-lg overflow-hidden flex-shrink-0">
+                <div className="w-full md:w-[40%] flex-shrink-0 rounded-lg overflow-hidden h-44 sm:h-52 md:h-[240px] lg:h-[280px]">
                   <img
                     src={t.image}
                     className="w-full h-full object-cover"
@@ -255,9 +264,14 @@ export default function SuccessStories() {
               className="w-1 md:w-1.5 rounded-full"
               style={{
                 height: i === 0 ? 40 : 14,
-                backgroundColor: theme === "light" 
-                  ? (i === 0 ? "#513CD5" : "#5A5480")
-                  : (i === 0 ? "#513CD5" : "#A8A6C8"),
+                backgroundColor:
+                  theme === "light"
+                    ? i === 0
+                      ? "#513CD5"
+                      : "#5A5480"
+                    : i === 0
+                      ? "#513CD5"
+                      : "#A8A6C8",
               }}
             />
           ))}

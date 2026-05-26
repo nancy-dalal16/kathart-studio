@@ -5,6 +5,7 @@ import { Questrial } from "next/font/google";
 import AmbientMusic from "@/components/AmbientMusic";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const questrial = Questrial({
   weight: "400",
@@ -82,10 +83,12 @@ export default function RootLayout({ children }) {
         <ThemeScript />
       </head>
       <body className="bg-background text-foreground" suppressHydrationWarning>
-        <Header />
-        {children}
-        <Footer />
-        {/* <AmbientMusic /> */}
+        <SmoothScroll>
+          <Header />
+          {children}
+          <Footer />
+          {/* <AmbientMusic /> */}
+        </SmoothScroll>
       </body>
     </html>
   );
