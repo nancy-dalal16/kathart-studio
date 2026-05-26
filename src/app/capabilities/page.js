@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-import { ArrowRight, Plus, Minus } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CTA } from "@/components/CTA";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -73,107 +73,9 @@ const services = [
   },
 ];
 
-function AccordionItem({ service, isOpen, onToggle }) {
-  const contentRef = useRef(null);
-  const innerRef = useRef(null);
-
-  useEffect(() => {
-    const content = contentRef.current;
-    const inner = innerRef.current;
-    if (!content || !inner) return;
-
-    if (isOpen) {
-      gsap.set(content, { height: "auto", opacity: 1 });
-      const height = inner.offsetHeight;
-      gsap.fromTo(
-        content,
-        { height: 0, opacity: 0 },
-        { height, opacity: 1, duration: 0.5, ease: "power3.out" }
-      );
-    } else {
-      gsap.to(content, {
-        height: 0,
-        opacity: 0,
-        duration: 0.4,
-        ease: "power3.inOut",
-      });
-    }
-  }, [isOpen]);
-
-  return (
-    <div className="border-t border-border">
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between gap-6 py-7 sm:py-8 text-left group"
-        aria-expanded={isOpen}
-      >
-        {/* Left: number + title */}
-        <div className="flex items-baseline gap-4 sm:gap-6">
-          <span className="text-primary text-xs font-semibold tracking-widest flex-shrink-0">
-            {service.number}
-          </span>
-          <span
-            className={`text-xl sm:text-2xl md:text-3xl font-bold leading-tight transition-colors duration-300 ${
-              isOpen ? "text-primary" : "text-foreground group-hover:text-primary"
-            }`}
-          >
-            {service.title}
-          </span>
-        </div>
-
-        {/* Right: icon */}
-        <span
-          className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-300 ${
-            isOpen
-              ? "border-primary text-primary bg-primary/10"
-              : "border-border text-textColor group-hover:border-primary group-hover:text-primary"
-          }`}
-        >
-          {isOpen ? <Minus size={14} strokeWidth={2} /> : <Plus size={14} strokeWidth={2} />}
-        </span>
-      </button>
-
-      {/* Collapsible content */}
-      <div
-        ref={contentRef}
-        className="overflow-hidden"
-        style={{ height: 0, opacity: 0 }}
-      >
-        <div ref={innerRef} className="pb-10 flex flex-col md:flex-row md:gap-16 lg:gap-24">
-          {/* Tagline */}
-          <p className="md:w-[42%] flex-shrink-0 text-sm italic text-textColor mb-6 md:mb-0 md:pt-1">
-            {service.tagline}
-          </p>
-
-          {/* Description + list */}
-          <div className="md:w-[58%] space-y-6">
-            <p className="text-sm sm:text-base text-textColor leading-relaxed">
-              {service.description}
-            </p>
-            <ul className="space-y-2">
-              {service.tags.map((tag) => (
-                <li key={tag} className="flex items-start gap-3 text-sm text-textColor">
-                  <span className="mt-[7px] w-1 h-1 rounded-full bg-primary flex-shrink-0" />
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function CapabilitiesPage() {
   const heroRef = useRef(null);
   const serviceRefs = useRef([]);
-  const [openIndex, setOpenIndex] = useState(null);
-
-  const handleToggle = useCallback(
-    (index) => setOpenIndex((prev) => (prev === index ? null : index)),
-    []
-  );
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -202,7 +104,7 @@ export default function CapabilitiesPage() {
               start: "top 82%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       });
     });
@@ -218,15 +120,16 @@ export default function CapabilitiesPage() {
           <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-32 sm:h-40 md:h-48 bg-gradient-to-b from-[#6A53FF]/40 via-[#6A53FF]/20 to-transparent blur-3xl" />
         </div>
 
-        <section className="pt-8 pb-12 sm:pb-16 px-4 sm:px-8 text-center">
+        <section className="pt-8 md:pt-0 pb-12 sm:pb-16 px-4 sm:px-8 text-center">
           <div ref={heroRef} className="max-w-4xl mx-auto space-y-6">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground uppercase leading-tight">
-              Everything your brand needs.{" "}
+              Everything your brand needs. <br />
               <em className="not-italic italic">Under one roof.</em>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-textColor max-w-2xl mx-auto leading-relaxed">
               From the first strategy session to the final film frame — we cover
-              every dimension of your brand, so nothing gets lost in translation.
+              every dimension of your brand, so nothing gets lost in
+              translation.
             </p>
             <div className="pt-2">
               <Link href="/contact" className="primary-btn inline-flex">
@@ -247,17 +150,17 @@ export default function CapabilitiesPage() {
             <div
               key={service.number}
               ref={(el) => (serviceRefs.current[index] = el)}
-              className="border-t border-border py-12 sm:py-16 md:py-20 flex flex-col md:flex-row md:gap-16 lg:gap-24"
+              className="group border-t border-border py-12 sm:py-16 md:py-20 flex flex-col md:flex-row md:gap-16 lg:gap-24"
             >
               {/* Left */}
               <div className="md:w-[42%] flex-shrink-0 mb-8 md:mb-0">
                 <span className="svc-animate block text-primary text-xs font-semibold tracking-widest mb-4 md:mb-6">
                   {service.number}
                 </span>
-                <h2 className="svc-animate text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold text-foreground leading-[1.05] mb-3 md:mb-4">
+                <h2 className="svc-animate text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold text-foreground group-hover:text-primary transition-colors duration-300 leading-[1.05] mb-3 md:mb-4">
                   {service.title}
                 </h2>
-                <p className="svc-animate text-sm sm:text-base text-textColor italic">
+                <p className="svc-animate text-sm sm:text-base md:text-lg  text-textColor italic">
                   {service.tagline}
                 </p>
               </div>
@@ -271,7 +174,7 @@ export default function CapabilitiesPage() {
                   {service.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs px-3 py-1.5 rounded-full border border-border text-textColor"
+                      className="service-tag"
                     >
                       {tag}
                     </span>
@@ -281,24 +184,6 @@ export default function CapabilitiesPage() {
             </div>
           ))}
           {/* Bottom border */}
-          <div className="border-t border-border" />
-        </div>
-      </section>
-
-      {/* Services — accordion */}
-      <section className="px-4 sm:px-8 md:px-12 lg:px-20 py-12 sm:py-16 md:py-24">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-12">
-            Quick Look
-          </h2>
-          {services.map((service, index) => (
-            <AccordionItem
-              key={service.number}
-              service={service}
-              isOpen={openIndex === index}
-              onToggle={() => handleToggle(index)}
-            />
-          ))}
           <div className="border-t border-border" />
         </div>
       </section>

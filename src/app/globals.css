@@ -1345,3 +1345,17 @@ background: rgba(248, 248, 255, 1);
 .light .belief-card-icon {
   filter: brightness(0) saturate(100%) invert(45%) sepia(56%) saturate(800%) hue-rotate(220deg) brightness(105%) contrast(98%);
 }
+
+.service-tag {
+  background-color: #ffffff;
+  color: #0F0F1A;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+}
+
+[data-theme="light"] .service-tag,
+.light .service-tag {
+  background-color: #0F0F1A;
+  color: #ffffff;
+}
