@@ -110,7 +110,7 @@ export default function HeroSection() {
       <div ref={scene1Ref} className={`${styles.scene} ${styles.scene1}`}>
         {/* Video */}
         <video className={styles.video} autoPlay muted loop playsInline>
-          <source src="/hero-bg.mp4" type="video/mp4" />
+          <source src="/images/Hero_back_video.mp4" type="video/mp4" />
         </video>
 
         <div className={styles.heroGrain} aria-hidden="true" />
