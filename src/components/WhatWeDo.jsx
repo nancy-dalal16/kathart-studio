@@ -61,17 +61,19 @@ function WhatWeDo() {
         {/* LEFT 50% - Text Content */}
         <div
           ref={textContentRef}
-          className="w-full lg:w-1/2 flex flex-col items-center lg:items-center justify-center gap-4 md:gap-6 lg:gap-7 overflow-hidden"
+          className="w-full lg:w-1/2 flex flex-col items-center lg:items-center justify-center gap-4 md:gap-6 lg:gap-7 "
         >
-          <div className="flex flex-col items-center lg:items-start gap-3 md:gap-5 lg:gap-6 overflow-hidden text-center lg:text-left">
-            <h1 className="font-semibold text-foreground text-3xl sm:text-4xl md:text-5xl lg:text-[64px] leading-tight">
-              What we do
-            </h1>
+          <div className="flex flex-col items-center lg:items-start gap-3 md:gap-5 lg:gap-6 text-center lg:text-left">
+            <div className="overflow-hidden flex flex-col items-center lg:items-start gap-3 md:gap-5">
+              <h1 className="font-semibold text-foreground text-3xl sm:text-4xl md:text-5xl lg:text-[64px] leading-tight">
+                What we do
+              </h1>
 
-            <div className="flex flex-col gap-2 md:gap-3">
-              <p className="text-textColor text-sm sm:text-base md:text-lg lg:text-xl leading-6 sm:leading-7 md:leading-8 max-w-full lg:max-w-100">
-                {` We don't hand you a logo and walk away. We think in systems - brand identity, film, content, marketing - so every touchpoint says the same true thing about your business.`}
-              </p>
+              <div className="flex flex-col gap-2 md:gap-3">
+                <p className="text-textColor text-sm sm:text-base md:text-lg lg:text-xl leading-6 sm:leading-7 md:leading-8 max-w-full lg:max-w-100">
+                  {` We don't hand you a logo and walk away. We think in systems - brand identity, film, content, marketing - so every touchpoint says the same true thing about your business.`}
+                </p>
+              </div>
             </div>
 
             <Link href="/capabilities" className="primary-btn">
