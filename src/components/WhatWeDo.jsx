@@ -1,55 +1,57 @@
 "use client";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 function WhatWeDo() {
   const sectionRef = useRef(null);
   const textContentRef = useRef(null);
   const imageRef = useRef(null);
 
-  useLayoutEffect(() => {
-    if (!sectionRef.current) return;
+  useEffect(() => {
+    if (!sectionRef.current || !textContentRef.current || !imageRef.current)
+      return;
 
-    const ctx = gsap.context(() => {
-      const textElements = gsap.utils.selector(textContentRef.current)("h1, p");
+    let played = false;
 
-      gsap.from(textElements, {
-        y: 30,
-        opacity: 0,
-        duration: 0.9,
-        ease: "power3.out",
-        stagger: 0.12,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          once: true,
-          invalidateOnRefresh: true,
-        },
-      });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !played) {
+            played = true;
+            observer.disconnect();
 
-      gsap.from(imageRef.current, {
-        x: 80,
-        opacity: 0,
-        duration: 1.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          once: true,
-          invalidateOnRefresh: true,
-        },
-      });
-    }, sectionRef);
+            const textElements = gsap.utils.selector(textContentRef.current)(
+              "h1, p, a",
+            );
 
-    return () => ctx.revert();
+            gsap.from(textElements, {
+              y: 30,
+              opacity: 0,
+              duration: 0.9,
+              delay: 0.5,
+              ease: "power3.out",
+              stagger: 0.12,
+            });
+
+            gsap.from(imageRef.current, {
+              x: 80,
+              opacity: 0,
+              duration: 1.1,
+              delay: 0.5,
+              ease: "power3.out",
+            });
+          }
+        });
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(sectionRef.current);
+
+    return () => observer.disconnect();
   }, []);
 
   return (

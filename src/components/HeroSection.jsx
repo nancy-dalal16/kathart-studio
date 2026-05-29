@@ -63,9 +63,8 @@ export default function HeroSection() {
         .to(
           maskElevatedEl,
           {
-            scale: 45,
-            opacity: 0,
-            duration: 0.75, // longer zoom so video stays visible
+            scale: 70,
+            duration: 0.55,
             transformOrigin: "53% 53%",
             ease: "power3.in",
             force3D: false,
@@ -76,25 +75,25 @@ export default function HeroSection() {
       // ── ACT 2: White flash burst & Scene cross-fade ──────
       tl.to(
         scene1El,
-        { opacity: 0, duration: 0.2, ease: "power2.inOut" },
-        0.55, // starts fading only after zoom is ~73% done
+        { opacity: 0, duration: 0.15, ease: "power2.inOut" },
+        0.68,
       ).fromTo(
         whiteFlashEl,
         { opacity: 0 },
-        { opacity: 1, duration: 0.15, ease: "power2.inOut" },
-        0.62, // flash hits slightly after scene starts fading
+        { opacity: 1, duration: 0.12, ease: "power2.inOut" },
+        0.7,
       );
 
       // ── ACT 3: We Are scene materialises ─────────────────
       tl.to(
         whiteFlashEl,
         { opacity: 0, duration: 0.2, ease: "power2.inOut" },
-        0.77,
+        0.82,
       ).fromTo(
         aboutSceneEl,
         { scale: 1.08, opacity: 0, y: 30 },
         { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
-        0.77,
+        0.82,
       );
     }, masterRef);
 

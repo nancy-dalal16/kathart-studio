@@ -594,6 +594,14 @@ button.nav-link:focus-within {
   outline: none;
 }
 
+.header-logo {
+  transition: filter 0.3s ease;
+}
+
+.header-logo:hover {
+  filter: drop-shadow(0 0 4px rgba(184, 139, 255, 0.35));
+}
+
 .header-logo:focus,
 .header-logo:focus-visible {
   outline: none;
