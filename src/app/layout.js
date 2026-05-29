@@ -6,6 +6,7 @@ import AmbientMusic from "@/components/AmbientMusic";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
+import TransitionHandler from "@/components/TransitionHandler";
 
 const questrial = Questrial({
   weight: "400",
@@ -89,6 +90,7 @@ export default function RootLayout({ children }) {
           <Footer />
           {/* <AmbientMusic /> */}
         </SmoothScroll>
+        <TransitionHandler />
       </body>
     </html>
   );

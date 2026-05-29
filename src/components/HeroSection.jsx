@@ -42,14 +42,14 @@ export default function HeroSection() {
     const maskElevatedEl = maskElevatedRef.current;
 
     const ctx = gsap.context(() => {
-      const totalScroll = window.innerHeight * 2.2; // Reduced for snappier feel
+      const totalScroll = window.innerHeight * 3.2;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: masterRef.current,
           start: "top top",
           end: `+=${totalScroll}`,
           pin: true,
-          scrub: 0.8, // Slightly faster scrub for responsive feel
+          scrub: 0.8,
         },
       });
 
@@ -63,11 +63,11 @@ export default function HeroSection() {
         .to(
           maskElevatedEl,
           {
-            scale: 45, // Deeper zoom for a true "fly-through" feel
+            scale: 45,
             opacity: 0,
-            duration: 0.5,
+            duration: 0.75, // longer zoom so video stays visible
             transformOrigin: "53% 53%",
-            ease: "power3.in", // Exponential curve mimics real camera dolly
+            ease: "power3.in",
             force3D: false,
           },
           0,
@@ -77,24 +77,24 @@ export default function HeroSection() {
       tl.to(
         scene1El,
         { opacity: 0, duration: 0.2, ease: "power2.inOut" },
-        0.15, // Starts fading out halfway through the dive
+        0.55, // starts fading only after zoom is ~73% done
       ).fromTo(
         whiteFlashEl,
         { opacity: 0 },
         { opacity: 1, duration: 0.15, ease: "power2.inOut" },
-        0.2,
+        0.62, // flash hits slightly after scene starts fading
       );
 
       // ── ACT 3: We Are scene materialises ─────────────────
       tl.to(
         whiteFlashEl,
         { opacity: 0, duration: 0.2, ease: "power2.inOut" },
-        0.35,
+        0.77,
       ).fromTo(
         aboutSceneEl,
-        { scale: 1.08, opacity: 0, y: 30 }, // Added y-axis drop for elegance
+        { scale: 1.08, opacity: 0, y: 30 },
         { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
-        0.35,
+        0.77,
       );
     }, masterRef);
 

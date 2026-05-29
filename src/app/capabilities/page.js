@@ -16,10 +16,10 @@ const services = [
     description:
       "Most brand problems are not creative problems. They are clarity problems. Before we design anything or shoot a single frame, we establish what your brand truly stands for, what it stands against, and what it delivers. This is the work that makes everything else cohesive.",
     tags: [
-      "Naming",
-      "Logo Design",
-      "Visual Language & Brand Guidelines",
-      "Brand Architecture",
+      "Brand Strategy",
+      "Positioning",
+      "Communications Planning",
+      "Marketing Strategy",
     ],
   },
   {
@@ -106,6 +106,15 @@ export default function CapabilitiesPage() {
             },
           },
         );
+
+        // Direct style — bypasses Tailwind specificity, reliable on Mac/Safari
+        const titleEl = el.querySelector(".svc-title");
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top 65%",
+          end: "top 15%",
+          toggleClass: { targets: titleEl, className: "svc-title--active" },
+        });
       });
     });
 
@@ -150,14 +159,14 @@ export default function CapabilitiesPage() {
             <div
               key={service.number}
               ref={(el) => (serviceRefs.current[index] = el)}
-              className="group border-t border-border py-12 sm:py-16 md:py-20 flex flex-col md:flex-row md:gap-16 lg:gap-24"
+              className="border-t border-border py-12 sm:py-16 md:py-20 flex flex-col md:flex-row md:gap-16 lg:gap-24"
             >
               {/* Left */}
               <div className="md:w-[42%] flex-shrink-0 mb-8 md:mb-0">
                 <span className="svc-animate block text-primary text-xs font-semibold tracking-widest mb-4 md:mb-6">
                   {service.number}
                 </span>
-                <h2 className="svc-animate text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold text-foreground group-hover:text-primary transition-colors duration-300 leading-[1.05] mb-3 md:mb-4">
+                <h2 className="svc-animate svc-title text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold leading-[1.05] mb-3 md:mb-4" style={{ color: 'var(--foreground)' }}>
                   {service.title}
                 </h2>
                 <p className="svc-animate text-sm sm:text-base md:text-lg  text-textColor italic">
@@ -172,10 +181,7 @@ export default function CapabilitiesPage() {
                 </p>
                 <div className="svc-animate flex flex-wrap gap-2">
                   {service.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="service-tag"
-                    >
+                    <span key={tag} className="service-tag">
                       {tag}
                     </span>
                   ))}

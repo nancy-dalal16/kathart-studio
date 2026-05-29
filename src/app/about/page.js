@@ -66,6 +66,8 @@ export default function AboutPage() {
   const cardRefs = useRef([]);
   const essenceSectionRef = useRef(null);
   const approachSectionRef = useRef(null);
+  const approachStepRefs = useRef([]);
+  const approachHeadingRef = useRef(null);
   const videoRef = useRef(null);
   const [muted, setMuted] = useState(true);
 
@@ -131,30 +133,40 @@ export default function AboutPage() {
         );
       }
 
-      // Our Approach Section Animation
-      if (approachSectionRef.current) {
-        const approachElements =
-          approachSectionRef.current.querySelectorAll(".approach-animate");
+      // Our Approach heading
+      if (approachHeadingRef.current) {
         gsap.fromTo(
-          approachElements,
+          approachHeadingRef.current,
+          { y: 40, opacity: 0 },
           {
-            y: 60,
-            opacity: 0,
-          },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power3.out",
-            stagger: 0.3,
+            y: 0, opacity: 1, duration: 0.9, ease: "power3.out",
             scrollTrigger: {
-              trigger: approachSectionRef.current,
-              start: "top 80%",
+              trigger: approachHeadingRef.current,
+              start: "top 85%",
               toggleActions: "play none none reverse",
             },
           },
         );
       }
+
+      // Each approach step triggers individually as it enters the viewport
+      approachStepRefs.current.filter(Boolean).forEach((el) => {
+        const image = el.querySelector(".approach-image");
+        const text  = el.querySelector(".approach-text");
+        gsap.fromTo(
+          [image, text],
+          { y: 60, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: 1, ease: "power3.out",
+            stagger: 0.15,
+            scrollTrigger: {
+              trigger: el,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        );
+      });
     });
 
     return () => ctx.revert();
@@ -298,7 +310,10 @@ export default function AboutPage() {
         {/* Our Approach Section */}
         <section ref={approachSectionRef} className="py-20 px-4 sm:px-8">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-20 text-center approach-animate">
+            <h2
+              ref={approachHeadingRef}
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-20 text-center"
+            >
               Our Approach
             </h2>
             <div className="flex flex-col gap-24">
@@ -307,12 +322,13 @@ export default function AboutPage() {
                 return (
                   <div
                     key={index}
-                    className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-20 approach-animate ${
+                    ref={(el) => (approachStepRefs.current[index] = el)}
+                    className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-20 ${
                       !isEven ? "lg:flex-row-reverse" : ""
                     }`}
                   >
                     {/* Image */}
-                    <div className="w-full lg:w-1/2 relative h-72 sm:h-80 lg:h-[420px] rounded-2xl overflow-hidden flex-shrink-0">
+                    <div className="approach-image w-full lg:w-1/2 relative h-72 sm:h-80 lg:h-[420px] rounded-2xl overflow-hidden flex-shrink-0">
                       <Image
                         src={step.image}
                         alt={step.oneliner}
@@ -321,7 +337,7 @@ export default function AboutPage() {
                       />
                     </div>
                     {/* Text */}
-                    <div className="w-full lg:w-1/2 space-y-5">
+                    <div className="approach-text w-full lg:w-1/2 space-y-5">
                       <span className="text-primary text-sm font-semibold tracking-widest uppercase">
                         0{index + 1}
                       </span>
