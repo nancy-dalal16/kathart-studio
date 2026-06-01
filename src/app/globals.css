@@ -1451,8 +1451,27 @@ a.primary-btn:active {
 background: rgba(248, 248, 255, 1);
 }
 
+/* ── Success Stories progress dots ──
+   --dot-len (unitless px) is animated by GSAP. On mobile the dots form a
+   horizontal row, so the animated length maps to WIDTH; from md up they're a
+   vertical rail, so it maps to HEIGHT. One tween drives both orientations. */
+.ss-dot {
+  --dot-len: 14;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  width: calc(var(--dot-len) * 1px);
+  height: 4px;
+}
+
+@media (min-width: 768px) {
+  .ss-dot {
+    width: 6px;
+    height: calc(var(--dot-len) * 1px);
+  }
+}
+
 .footer-bg {
-  background: linear-gradient(180deg, rgba(72, 43, 255, 0) 50%, rgba(129, 83, 255, 0.9) 100%);
+  background: linear-gradient(180deg, rgba(129, 83, 255, 0) 50%, rgba(129, 83, 255, 0.15) 100%);
 }
 [data-theme="light"] .footer-bg,
 .light .footer-bg {
@@ -1556,6 +1575,27 @@ background: rgba(248, 248, 255, 1);
 [data-theme="light"] .clients-bg-light,
 .light .clients-bg-light {
   display: block;
+}
+
+/* ── Client logos — consistent grayscale in BOTH themes ──
+   The source PNGs are light monochrome art (made for dark backgrounds).
+   Dark theme: show them as light grey directly.
+   Light theme: invert to dark grey so they're visible on the light bg. */
+.client-logo {
+  filter: grayscale(1) brightness(1.15);
+  opacity: 0.7;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+[data-theme="light"] .client-logo,
+.light .client-logo {
+  filter: grayscale(1) invert(1) brightness(0.55);
+  opacity: 0.7;
+}
+
+/* Bring a logo to full strength on hover (marquee pauses on hover) */
+.client-logo:hover {
+  opacity: 1;
 }
 
 [data-theme="light"] .belief-card-icon,

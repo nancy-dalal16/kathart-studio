@@ -42,6 +42,7 @@ const N = 3;
 
 export default function SuccessStories() {
   const sectionRef = useRef(null);
+  const headingRef = useRef(null);
   const cardRefs = useRef([]);
   const dotRefs = useRef([]);
   const [theme, setTheme] = useState("dark");
@@ -83,18 +84,36 @@ export default function SuccessStories() {
     const totalScroll = (N - 1) * 400;
 
     const ctx = gsap.context(() => {
+      if (headingRef.current) {
+        gsap.from(headingRef.current.children, {
+          y: 30,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          stagger: 0.15,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            once: true,
+          },
+        });
+      }
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: `+=${totalScroll}`,
-          scrub: 0.6,
+          end: () => `+=${totalScroll}`,
+          scrub: 1, // single smoothing pass — avoids double-smoothing jitter w/ Lenis
           pin: true,
+          anticipatePin: 1,
+          fastScrollEnd: true,
           invalidateOnRefresh: true,
+          ignoreMobileResize: true,
           snap: {
             snapTo: 1 / (N - 1),
             duration: { min: 0.2, max: 0.4 },
-            delay: 0.05,
+            delay: 0.1,
             ease: "power2.inOut",
           },
         },
@@ -154,12 +173,14 @@ export default function SuccessStories() {
           );
         }
 
-        // Dots — scrubbed timeline, no tl.call
+        // Dots — scrubbed timeline, no tl.call.
+        // Animate a unitless CSS var so the SAME tween elongates the active dot
+        // vertically (desktop) or horizontally (mobile) — see .ss-dot in CSS.
         dots.forEach((dot, di) => {
           tl.to(
             dot,
             {
-              height: di === activeIdx ? 40 : 14,
+              "--dot-len": di === activeIdx ? 40 : 14,
               backgroundColor:
                 theme === "light"
                   ? di === activeIdx
@@ -183,9 +204,12 @@ export default function SuccessStories() {
   return (
     <section
       ref={sectionRef}
-      className=" success-stories relative w-full min-h-screen flex flex-col items-center pt-20 sm:pt-24 md:pt-28 lg:pt-28 pb-6 md:pb-8 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden"
+      className=" success-stories relative w-full min-h-screen flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-24 lg:pt-28 pb-12 sm:pb-16 md:pb-20 lg:pb-24 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden"
     >
-      <div className="relative z-20 text-center mb-4 sm:mb-5 md:mb-6 shrink-0">
+      <div
+        ref={headingRef}
+        className="relative z-20 text-center mb-4 sm:mb-5 md:mb-6 shrink-0"
+      >
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground">
           Success Stories
         </h2>
@@ -198,7 +222,7 @@ export default function SuccessStories() {
       <div className="relative w-full max-w-4xl mx-auto">
         <div
           className="relative w-full"
-          style={{ height: "clamp(300px, 60vh, 460px)" }}
+          style={{ height: "clamp(430px, 58vh, 560px)" }}
         >
           {testimonials.slice(0, 3).map((t, i) => (
             <div
@@ -208,7 +232,7 @@ export default function SuccessStories() {
               style={{ top: 0, willChange: "transform" }}
             >
               <div
-                className="w-full rounded-lg sm:rounded-xl md:rounded-2xl flex flex-col gap-3 sm:gap-4 md:flex-row md:gap-6 lg:gap-8 p-3 sm:p-4 md:p-6 lg:p-8 overflow-hidden"
+                className="w-full rounded-xl md:rounded-2xl flex flex-col gap-4 sm:gap-5 md:flex-row md:gap-6 lg:gap-8 p-5 sm:p-6 md:p-6 lg:p-8 overflow-hidden"
                 style={{
                   backgroundColor: theme === "light" ? "#FFFFFF" : undefined,
                   backgroundImage:
@@ -240,10 +264,10 @@ export default function SuccessStories() {
                     </p>
                   </div>
                 </div>
-                <div className="w-full md:w-[40%] flex-shrink-0 rounded-lg overflow-hidden h-44 sm:h-52 md:h-[240px] lg:h-[280px]">
+                <div className="w-full md:w-[40%] flex-shrink-0 flex justify-center md:block md:rounded-lg md:overflow-hidden md:h-[230px] lg:h-[260px]">
                   <img
                     src={t.image}
-                    className="w-full h-full object-cover"
+                    className="h-[180px] sm:h-[220px] w-auto max-w-full rounded-xl md:w-full md:h-full md:max-w-none md:rounded-none md:object-cover md:object-center"
                     alt={t.author}
                     onError={(e) => {
                       e.target.style.display = "none";
@@ -256,14 +280,16 @@ export default function SuccessStories() {
           ))}
         </div>
 
-        <div className="absolute right-0 md:-right-8 lg:-right-12 top-1/2 -translate-y-1/2 flex flex-col gap-2 md:gap-3 z-50">
+        {/* Progress dots — horizontal row under the cards on mobile,
+            vertical rail on the right from md up */}
+        <div className="flex flex-row md:flex-col justify-center items-center gap-2 md:gap-3 mt-6 md:mt-0 z-50 md:absolute md:-right-8 lg:-right-12 md:top-1/2 md:-translate-y-1/2">
           {testimonials.slice(0, 3).map((_, i) => (
             <div
               key={i}
               ref={(el) => (dotRefs.current[i] = el)}
-              className="w-1 md:w-1.5 rounded-full"
+              className="ss-dot"
               style={{
-                height: i === 0 ? 40 : 14,
+                "--dot-len": i === 0 ? 40 : 14,
                 backgroundColor:
                   theme === "light"
                     ? i === 0

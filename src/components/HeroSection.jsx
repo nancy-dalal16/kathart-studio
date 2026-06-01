@@ -63,7 +63,7 @@ export default function HeroSection() {
         .to(
           maskElevatedEl,
           {
-            scale: 70,
+            scale: 75,
             duration: 0.55,
             transformOrigin: "53% 53%",
             ease: "power3.in",

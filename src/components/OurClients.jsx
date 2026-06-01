@@ -35,7 +35,7 @@ function Marquee({ children, reverse = false, speed = 30, className = "" }) {
     >
       <div
         ref={marqueeRef}
-        className={`flex gap-8 sm:gap-12 md:gap-16 whitespace-nowrap items-center ${
+        className={`flex gap-5 sm:gap-8 md:gap-14 lg:gap-16 whitespace-nowrap items-center ${
           reverse ? "animate-marquee-reverse" : "animate-marquee"
         }`}
         style={{ animationDuration: `${speed}s` }}
@@ -51,7 +51,9 @@ function Marquee({ children, reverse = false, speed = 30, className = "" }) {
 // ⭐ Logo Rows (Inline, same file)
 // -----------------------------------------------------------------------------
 const logoClass =
-  "h-7 sm:h-8 md:h-24 w-auto object-contain flex-shrink-0 filter grayscale-100 brightness-50";
+  // Height-based sizing (auto width hugs each logo — no empty boxes/gaps).
+  // Larger on mobile so only ~3-4 fit across the viewport.
+  "client-logo h-11 sm:h-12 md:h-12 lg:h-16 w-auto max-w-[140px] sm:max-w-[150px] md:max-w-[160px] object-contain flex-shrink-0";
 
 function LogoRow1() {
   return (
@@ -186,7 +188,7 @@ export default function OurClients() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex flex-col items-center justify-center py-8 sm:py-16 md:py-24 lg:py-40 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden w-full"
+      className="relative flex flex-col items-center justify-center py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-8 md:px-12 lg:px-20 overflow-hidden w-full"
     >
       {/* Background Decorative Image */}
       <>
@@ -196,7 +198,7 @@ export default function OurClients() {
           alt="Background Element"
           width={1440}
           height={328}
-          className="clients-bg-dark absolute md:top-[180px] top-[400px] left-0 w-full opacity-40 object-contain"
+          className="clients-bg-dark pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none w-[240%] sm:w-[170%] md:w-[120%] lg:w-full opacity-40 object-contain"
         />
 
         {/* Light Mode Image */}
@@ -205,7 +207,7 @@ export default function OurClients() {
           alt="Background Element"
           width={1440}
           height={328}
-          className="clients-bg-light absolute md:top-[180px] top-[400px] left-0 w-full opacity-40 object-contain"
+          className="clients-bg-light pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none w-[240%] sm:w-[170%] md:w-[120%] lg:w-full opacity-40 object-contain"
         />
       </>
       {/* Headings */}
@@ -234,13 +236,13 @@ export default function OurClients() {
 
       {/* Left and Right Fade Edges */}
       <div
-        className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 md:w-48 lg:w-64 xl:w-[20rem]"
+        className="pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-24 md:w-40 lg:w-56 xl:w-[18rem]"
         style={{
           background: "linear-gradient(to right, var(--bg-base), transparent)",
         }}
       />
       <div
-        className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 md:w-48 lg:w-64 xl:w-[20rem]"
+        className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-24 md:w-40 lg:w-56 xl:w-[18rem]"
         style={{
           background: "linear-gradient(to left, var(--bg-base), transparent)",
         }}

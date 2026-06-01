@@ -52,6 +52,8 @@ export default function OurWork() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const ctaRef = useRef(null);
+  const headerRef = useRef(null);
+  const slideRefs = useRef([]);
   const imageRefs = useRef([]);
   const activeIndexRef = useRef(0);
   const isAnimatingRef = useRef(false);
@@ -84,13 +86,28 @@ export default function OurWork() {
     const section = sectionRef.current;
     if (!section) return;
 
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    // ── DESKTOP (lg+): pinned, horizontal slideshow ──
+    mm.add("(min-width: 1024px)", () => {
+      // The track only needs its multi-viewport width on desktop.
+      gsap.set(trackRef.current, { width: `${N * 100}vw`, x: 0 });
+
       pinRef.current = ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${window.innerHeight * N}`,
+        end: () => `+=${window.innerHeight * N}`,
         pin: true,
         pinSpacing: true,
+        anticipatePin: 1, // smooth the pin engage (no flicker)
+        invalidateOnRefresh: true, // recompute on resize
+        ignoreMobileResize: true, // ignore mobile URL-bar show/hide jitter
+        onRefresh: () => {
+          // Keep the horizontal track aligned to the active slide after a resize
+          gsap.set(trackRef.current, {
+            x: -activeIndexRef.current * window.innerWidth,
+          });
+        },
         onLeaveBack: () => {
           activeIndexRef.current = 0;
           setActiveIndex(0);
@@ -104,6 +121,41 @@ export default function OurWork() {
           }
         },
       });
+    });
+
+    // ── MOBILE/TABLET (<lg): per-card entry animation as each scrolls in ──
+    mm.add("(max-width: 1023px)", () => {
+      slideRefs.current.filter(Boolean).forEach((card) => {
+        gsap.from(card, {
+          opacity: 0,
+          y: 50,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        });
+      });
+    });
+
+    // ── Section header + CTA banner fade-in (all breakpoints) ──
+    const ctx = gsap.context(() => {
+      if (headerRef.current) {
+        gsap.from(headerRef.current.children, {
+          y: 30,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        });
+      }
 
       if (ctaRef.current) {
         gsap.fromTo(
@@ -125,7 +177,10 @@ export default function OurWork() {
       }
     });
 
-    return () => ctx.revert();
+    return () => {
+      mm.revert();
+      ctx.revert();
+    };
   }, []);
 
   useEffect(() => {
@@ -173,12 +228,11 @@ export default function OurWork() {
     <>
       <section
         ref={sectionRef}
-        className="relative w-full flex flex-col overflow-hidden"
-        style={{ height: "100svh" }}
+        className="relative w-full flex flex-col lg:overflow-hidden lg:h-[100svh]"
       >
-        {/* Header */}
-        <div className="flex-shrink-0 z-20 px-4 sm:px-8 md:px-12 lg:px-20 pt-4 sm:pt-6 md:pt-10 lg:pt-14 pb-4 sm:pb-6 md:pb-8 lg:pb-10 flex justify-between items-start flex-col lg:flex-row gap-4 md:gap-6">
-          <div>
+        {/* Header — extra top padding on mobile clears the fixed nav pill */}
+        <div className="flex-shrink-0 z-20 px-4 sm:px-8 md:px-12 lg:px-20 pt-24 sm:pt-28 md:pt-24 lg:pt-14 pb-4 sm:pb-6 md:pb-8 lg:pb-10 flex justify-between items-start flex-col lg:flex-row gap-4 md:gap-6">
+          <div ref={headerRef}>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-semibold leading-tight">
               Our Work
             </h2>
@@ -188,8 +242,8 @@ export default function OurWork() {
             </p>
           </div>
 
-          {/* Progress dots */}
-          <div className="flex gap-2 md:gap-3 items-center lg:pt-4">
+          {/* Progress dots — only meaningful for the horizontal desktop slideshow */}
+          <div className="hidden lg:flex gap-2 md:gap-3 items-center lg:pt-4">
             {slides.map((_, i) => (
               <div
                 key={i}
@@ -206,24 +260,24 @@ export default function OurWork() {
           </div>
         </div>
 
-        {/* Slide track */}
-        <div className="flex-1 overflow-hidden">
+        {/* Slide track — horizontal row on desktop, vertical stack on mobile */}
+        <div className="lg:flex-1 lg:overflow-hidden">
           <div
             ref={trackRef}
-            className="flex h-full"
-            style={{ width: `${N * 100}vw`, willChange: "transform" }}
+            className="flex flex-col lg:flex-row lg:h-full"
+            style={{ willChange: "transform" }}
           >
             {slides.map((slide, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 h-full flex items-center justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-4 sm:py-6 md:py-8"
-                style={{ width: "100vw" }}
+                ref={(el) => (slideRefs.current[i] = el)}
+                className="flex-shrink-0 w-full lg:w-screen lg:h-full flex items-center justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-6 sm:py-8 md:py-10 lg:py-8"
               >
-                <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 xl:gap-14 items-center justify-center lg:justify-start w-full lg:h-full">
-                  {/* Image */}
+                <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-14 items-center justify-center lg:justify-start w-full lg:h-full">
+                  {/* Image — full image shown on mobile (contain), fills frame on desktop (cover) */}
                   <div
                     ref={(el) => (imageRefs.current[i] = el)}
-                    className="w-full lg:w-[48%] rounded-2xl lg:rounded-3xl overflow-hidden flex-shrink-0 h-52 sm:h-72 lg:h-full max-h-[420px]"
+                    className="w-full lg:w-[48%] rounded-2xl lg:rounded-3xl overflow-hidden flex-shrink-0 lg:h-full lg:max-h-[440px]"
                     style={{ transformStyle: "preserve-3d" }}
                     onMouseMove={(e) => handleMouseMove(e, i)}
                     onMouseLeave={() => resetTilt(i)}
@@ -233,7 +287,7 @@ export default function OurWork() {
                       alt={slide.title}
                       width={700}
                       height={500}
-                      className="w-full h-full object-cover"
+                      className="w-full h-auto lg:h-full object-contain lg:object-cover"
                     />
                   </div>
 
@@ -292,7 +346,7 @@ export default function OurWork() {
       {/* CTA Banner */}
       <div
         ref={ctaRef}
-        className="px-4 sm:px-8 md:px-12 lg:px-20 pt-4 sm:pt-6 md:pt-8 lg:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12"
+        className="px-4 sm:px-8 md:px-12 lg:px-20 pt-4 sm:pt-6 md:pt-8 lg:pt-10 pb-20 sm:pb-24 md:pb-24 lg:pb-28"
       >
         <div className="flex justify-between items-center flex-col sm:flex-row gap-4 md:gap-6 our-work-banner-strip rounded-xl sm:rounded-2xl px-4 sm:px-6 md:px-8 py-4 md:py-6">
           <p className="text-white sm:text-lg md:text-xl lg:text-2xl text-center sm:text-left">
