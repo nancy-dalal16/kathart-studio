@@ -10,6 +10,94 @@ const DARK = "/images/What We Do Section_Png/What We Do Section_Png";
 /* ── Light‑mode image paths ── */
 const LIGHT = "/images/What We Do Section_Png/What We Do Section_Png/White";
 
+/**
+ * Renders the orbital system (rings + sun + planets) for a given theme.
+ * Uses CSS classes for responsive sizing so each element has fixed
+ * positions across every breakpoint.
+ */
+function OrbitalSystem({ basePath, darkSunPath, isDark }) {
+  const sunSrc = isDark ? `${basePath}/Sun.png` : `${darkSunPath}/Sun.png`;
+
+  return (
+    <>
+      {/* ─── Concentric rings ─── */}
+      <Image
+        src={`${basePath}/Ring.png`}
+        alt=""
+        width={1200}
+        height={1200}
+        className="absolute max-w-none select-none wwd-ring wwd-ring-1"
+      />
+      <Image
+        src={`${basePath}/Ring.png`}
+        alt=""
+        width={1200}
+        height={1200}
+        className="absolute max-w-none select-none wwd-ring wwd-ring-2"
+      />
+      <Image
+        src={`${basePath}/Ring.png`}
+        alt=""
+        width={1200}
+        height={1200}
+        className="absolute max-w-none select-none wwd-ring wwd-ring-3"
+      />
+      <Image
+        src={`${basePath}/Ring.png`}
+        alt=""
+        width={1200}
+        height={1200}
+        className="absolute max-w-none select-none wwd-ring wwd-ring-4"
+      />
+
+      {/* ─── Sun ─── */}
+      <Image
+        src={sunSrc}
+        alt=""
+        width={700}
+        height={700}
+        className="absolute max-w-none select-none wwd-sun"
+      />
+
+      {/* Film-reel (2.png) — Ring 4 (outermost), upper-left arc */}
+      <Image
+        src={`${basePath}/2.png`}
+        alt="Film & content"
+        width={200}
+        height={200}
+        className="absolute select-none wwd-planet wwd-planet-film"
+      />
+
+      {/* Small empty moon — Ring 2, upper-right arc (near sun) */}
+      <Image
+        src={`${basePath}/Empty.png`}
+        alt=""
+        width={60}
+        height={60}
+        className="absolute select-none wwd-planet wwd-planet-moon-sm"
+      />
+
+      {/* Megaphone (1.png) — Ring 3, lower-left arc */}
+      <Image
+        src={`${basePath}/1.png`}
+        alt="Marketing"
+        width={120}
+        height={120}
+        className="absolute select-none wwd-planet wwd-planet-mega"
+      />
+
+      {/* Larger empty moon — Ring 1 (innermost), lower-right arc */}
+      <Image
+        src={`${basePath}/Empty.png`}
+        alt=""
+        width={80}
+        height={80}
+        className="absolute select-none wwd-planet wwd-planet-moon-lg"
+      />
+    </>
+  );
+}
+
 function WhatWeDo() {
   const sectionRef = useRef(null);
   const textContentRef = useRef(null);
@@ -62,198 +150,31 @@ function WhatWeDo() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden w-full min-h-screen px-4 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-16 md:py-24 lg:py-40 flex flex-col items-center justify-center gap-6 sm:gap-10 md:gap-12 lg:gap-16 rounded-[0_0_40px_40px] sm:rounded-[0_0_60px_60px] lg:rounded-[0_0_80px_80px] whatwedo-section"
+      className="relative overflow-hidden w-full min-h-screen px-4 sm:px-8 md:px-12 lg:px-20 py-8 sm:py-16 md:py-24 lg:py-40 flex flex-col items-center justify-center gap-6 sm:gap-10 md:gap-12 lg:gap-16 rounded-[40px_40px_40px_40px] sm:rounded-[60px_60px_60px_60px] lg:rounded-[80px_80px_80px_80px] whatwedo-section"
     >
       {/*
-        Orbital system — absolute within the full section so arcs span the
-        entire height and the section's overflow-hidden clips them cleanly.
+        DESKTOP (lg+): Orbital system is absolute within the full section
+        so arcs span the entire height and the section's overflow-hidden
+        clips them cleanly at the right edge (half-circle effect).
 
-        Ring centre sits at the right edge of the section, vertically centred.
-        The Ring.png image contains 4 concentric rings.
-        Each of the 4 "planets" sits on one ring:
-
-          Ring 4 (outermost) → Film-reel (2.png) — upper-left arc
-          Ring 3             → Megaphone (1.png) — lower-left arc
-          Ring 2             → Empty moon (Empty.png) — upper-right arc (small)
-          Ring 1 (innermost) → Empty moon (Empty.png) — lower-right arc (larger)
+        MOBILE/TABLET (<lg): Orbital system lives inside a relative
+        container (the spacer div) so it doesn't overlap the text below.
       */}
+
+      {/* ═══ DESKTOP orbital layer (lg+ only) — absolutely positioned ═══ */}
       <div
         ref={imageRef}
-        className="absolute inset-0 pointer-events-none"
+        className="wwd-orbital-layer pointer-events-none"
         aria-hidden="true"
       >
-        {/* ═══ DARK MODE GROUP ═══ */}
+        {/* ── DARK MODE ── */}
         <div className="whatwedo-dark-group absolute inset-0 transition-opacity duration-500">
-          {/* Orbital rings — 4 concentric circles */}
-          <Image
-            src={`${DARK}/Ring.png`}
-            alt=""
-            width={1200}
-            height={1200}
-            className="absolute max-w-none select-none"
-            style={{ top: "50%", left: "100%", transform: "translate(-50%, -50%)", width: "34vw", height: "34vw" }}
-          />
-          <Image
-            src={`${DARK}/Ring.png`}
-            alt=""
-            width={1200}
-            height={1200}
-            className="absolute max-w-none select-none"
-            style={{ top: "50%", left: "100%", transform: "translate(-50%, -50%)", width: "44vw", height: "44vw" }}
-          />
-          <Image
-            src={`${DARK}/Ring.png`}
-            alt=""
-            width={1200}
-            height={1200}
-            className="absolute max-w-none select-none"
-            style={{ top: "50%", left: "100%", transform: "translate(-50%, -50%)", width: "60vw", height: "60vw" }}
-          />
-          <Image
-            src={`${DARK}/Ring.png`}
-            alt=""
-            width={1200}
-            height={1200}
-            className="absolute max-w-none select-none"
-            style={{ top: "50%", left: "100%", transform: "translate(-50%, -50%)", width: "80vw", height: "80vw" }}
-          />
-
-          {/* Sun */}
-          <Image
-            src={`${DARK}/Sun.png`}
-            alt=""
-            width={700}
-            height={700}
-            className="absolute max-w-none select-none"
-            style={{ top: "50%", left: "100%", transform: "translate(-50%, -50%)", width: "24vw", height: "24vw" }}
-          />
-
-          {/* Film-reel (2.png) — Ring 4 (outermost), upper-left arc */}
-          <Image
-            src={`${DARK}/2.png`}
-            alt="Film & content"
-            width={200}
-            height={200}
-            className="absolute select-none"
-            style={{ top: "35%", right: "19%", transform: "translate(-50%, -50%)", width: "clamp(80px, 9vw, 160px)", height: "auto" }}
-          />
-
-          {/* Small empty moon — Ring 2, upper-right arc (near sun) */}
-          <Image
-            src={`${DARK}/Empty.png`}
-            alt=""
-            width={60}
-            height={60}
-            className="absolute select-none"
-            style={{ top: "38%", right: "11.5%", transform: "translate(-50%, -50%)", width: "clamp(30px, 3.8vw, 60px)", height: "auto" }}
-          />
-
-          {/* Megaphone (1.png) — Ring 3, lower-left arc */}
-          <Image
-            src={`${DARK}/1.png`}
-            alt="Marketing"
-            width={120}
-            height={120}
-            className="absolute select-none"
-            style={{ top: "58%", right: "33.5%", transform: "translate(-50%, -50%)", width: "clamp(50px, 5.8vw, 100px)", height: "auto" }}
-          />
-
-          {/* Larger empty moon — Ring 1 (innermost), lower-right arc */}
-          <Image
-            src={`${DARK}/Empty.png`}
-            alt=""
-            width={80}
-            height={80}
-            className="absolute select-none"
-            style={{ top: "75%", right: "12%", transform: "translate(-50%, -50%)", width: "clamp(35px, 4.5vw, 75px)", height: "auto" }}
-          />
+          <OrbitalSystem basePath={DARK} darkSunPath={DARK} isDark />
         </div>
 
-        {/* ═══ LIGHT MODE GROUP ═══ */}
+        {/* ── LIGHT MODE ── */}
         <div className="whatwedo-light-group absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none">
-          {/* Orbital rings — 4 concentric circles (mirrors dark mode) */}
-          <Image
-            src={`${LIGHT}/Ring.png`}
-            alt=""
-            width={1200}
-            height={1200}
-            className="absolute max-w-none select-none"
-            style={{ top: "50%", left: "100%", transform: "translate(-50%, -50%)", width: "34vw", height: "34vw" }}
-          />
-          <Image
-            src={`${LIGHT}/Ring.png`}
-            alt=""
-            width={1200}
-            height={1200}
-            className="absolute max-w-none select-none"
-            style={{ top: "50%", left: "100%", transform: "translate(-50%, -50%)", width: "44vw", height: "44vw" }}
-          />
-          <Image
-            src={`${LIGHT}/Ring.png`}
-            alt=""
-            width={1200}
-            height={1200}
-            className="absolute max-w-none select-none"
-            style={{ top: "50%", left: "100%", transform: "translate(-50%, -50%)", width: "60vw", height: "60vw" }}
-          />
-          <Image
-            src={`${LIGHT}/Ring.png`}
-            alt=""
-            width={1200}
-            height={1200}
-            className="absolute max-w-none select-none"
-            style={{ top: "50%", left: "100%", transform: "translate(-50%, -50%)", width: "80vw", height: "80vw" }}
-          />
-
-          {/* Sun — no light variant, reuse dark sun */}
-          <Image
-            src={`${DARK}/Sun.png`}
-            alt=""
-            width={700}
-            height={700}
-            className="absolute max-w-none select-none"
-            style={{ top: "50%", left: "100%", transform: "translate(-50%, -50%)", width: "24vw", height: "24vw" }}
-          />
-
-          {/* Film-reel (2.png) — Ring 4 (outermost), upper-left arc */}
-          <Image
-            src={`${LIGHT}/2.png`}
-            alt="Film & content"
-            width={200}
-            height={200}
-            className="absolute select-none"
-            style={{ top: "35%", right: "19%", transform: "translate(-50%, -50%)", width: "clamp(80px, 9vw, 160px)", height: "auto" }}
-          />
-
-          {/* Small empty moon — Ring 2, upper-right arc (near sun) */}
-          <Image
-            src={`${LIGHT}/Empty.png`}
-            alt=""
-            width={60}
-            height={60}
-            className="absolute select-none"
-            style={{ top: "38%", right: "11.5%", transform: "translate(-50%, -50%)", width: "clamp(30px, 3.8vw, 60px)", height: "auto" }}
-          />
-
-          {/* Megaphone (1.png) — Ring 3, lower-left arc */}
-          <Image
-            src={`${LIGHT}/1.png`}
-            alt="Marketing"
-            width={120}
-            height={120}
-            className="absolute select-none"
-            style={{ top: "58%", right: "33.5%", transform: "translate(-50%, -50%)", width: "clamp(50px, 5.8vw, 100px)", height: "auto" }}
-          />
-
-          {/* Larger empty moon — Ring 1 (innermost), lower-right arc */}
-          <Image
-            src={`${LIGHT}/Empty.png`}
-            alt=""
-            width={80}
-            height={80}
-            className="absolute select-none"
-            style={{ top: "75%", right: "12%", transform: "translate(-50%, -50%)", width: "clamp(35px, 4.5vw, 75px)", height: "auto" }}
-          />
+          <OrbitalSystem basePath={LIGHT} darkSunPath={DARK} isDark={false} />
         </div>
       </div>
 
@@ -287,7 +208,7 @@ function WhatWeDo() {
         </div>
 
         {/* RIGHT — spacer reserves the right half of the flex row */}
-        <div className="w-full lg:w-1/2 h-[300px] sm:h-[380px] md:h-[460px] lg:h-[520px]" />
+        <div className="w-full lg:w-1/2 wwd-spacer" />
       </div>
     </section>
   );

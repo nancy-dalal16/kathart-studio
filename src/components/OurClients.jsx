@@ -50,60 +50,61 @@ function Marquee({ children, reverse = false, speed = 30, className = "" }) {
 // -----------------------------------------------------------------------------
 // ⭐ Logo Rows (Inline, same file)
 // -----------------------------------------------------------------------------
-const logoClass = "h-7 sm:h-8 md:h-10 w-auto object-contain flex-shrink-0";
+const logoClass =
+  "h-7 sm:h-8 md:h-24 w-auto object-contain flex-shrink-0 filter grayscale-100 brightness-50";
 
 function LogoRow1() {
   return (
     <>
       <Image
-        src="/images/clients/creative-market.svg"
+        src="/images/clients/Murgappa.png"
         alt="Creative market"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/walmart.svg"
+        src="/images/clients/Tide.png"
         alt="Walmart"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/maze.svg"
+        src="/images/clients/Wealthseva.png"
         alt="Maze"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/bukalapak.svg"
+        src="/images/clients/Startup-Factory.png"
         alt="Bukalapak"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/grapho.svg"
+        src="/images/clients/Altizon.png"
         alt="Grapho"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/traveloka.svg"
+        src="/images/clients/Zlade.png"
         alt="Traveloka"
         width={500}
         height={500}
         className={logoClass}
       />
-      <Image
+      {/* <Image
         src="/images/clients/ebay.svg"
         alt="eBay"
         width={500}
         height={500}
         className={logoClass}
-      />
+      /> */}
     </>
   );
 }
@@ -112,35 +113,42 @@ function LogoRow2() {
   return (
     <>
       <Image
-        src="/images/clients/emblem.svg"
+        src="/images/clients/ezest.png"
         alt="Emblem"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/iconic.svg"
+        src="/images/clients/Gyde.png"
         alt="Iconic"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/optimal.svg"
+        src="/images/clients/Indus.png"
         alt="Optimal"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/visualy.svg"
+        src="/images/clients/Purple.png"
         alt="Visually"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/signet.svg"
+        src="/images/clients/Cresa.png"
+        alt="Signet"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/SAPL.png"
         alt="Signet"
         width={500}
         height={500}
