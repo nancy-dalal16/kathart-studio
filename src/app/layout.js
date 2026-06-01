@@ -3,9 +3,7 @@ import { ThemeScript } from "./theme-script";
 import localFont from "next/font/local";
 import { Questrial } from "next/font/google";
 import AmbientMusic from "@/components/AmbientMusic";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import SmoothScroll from "@/components/SmoothScroll";
+import ConditionalLayout from "@/components/ConditionalLayout";
 import TransitionHandler from "@/components/TransitionHandler";
 
 const questrial = Questrial({
@@ -84,12 +82,9 @@ export default function RootLayout({ children }) {
         <ThemeScript />
       </head>
       <body className="bg-background text-foreground" suppressHydrationWarning>
-        <SmoothScroll>
-          <Header />
+        <ConditionalLayout>
           {children}
-          <Footer />
-          {/* <AmbientMusic /> */}
-        </SmoothScroll>
+        </ConditionalLayout>
         <TransitionHandler />
       </body>
     </html>

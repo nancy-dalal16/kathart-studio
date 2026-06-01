@@ -83,19 +83,29 @@ export function Footer() {
   const animRef = useRef(null);
 
   useLayoutEffect(() => {
+    const el = animRef.current;
+    if (!el) return;
+
     const ctx = gsap.context(() => {
-      gsap.from(animRef.current, {
-        opacity: 0,
-        y: 40,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: animRef.current,
-          start: "top 85%",
-          once: true,
-        },
-      });
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top bottom", // fires as soon as footer enters the viewport
+            once: true,
+          },
+        }
+      );
+      // Recalculate positions so footer already in view on load animates in immediately
+      ScrollTrigger.refresh();
     });
+
     return () => ctx.revert();
   }, []);
 
