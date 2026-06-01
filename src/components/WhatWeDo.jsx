@@ -147,6 +147,105 @@ function WhatWeDo() {
     return () => observer.disconnect();
   }, []);
 
+  /*
+    Orbital motion — each planet drifts back-and-forth ALONG its ring.
+    We rotate the planet's offset vector (px, py) about the orbital centre
+    (right edge / vertical centre of the layer). Rotation preserves the
+    vector's length, so the planet stays glued to its ring at every
+    breakpoint without us ever needing the ring's radius. A yoyo tween
+    sweeps the angle from one side to the other and back — continuously.
+  */
+  useEffect(() => {
+    const layer = imageRef.current;
+    if (!layer) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    /* Angular sweep (degrees) + loop duration per ring, each with a unique
+       speed. `dir` alternates so adjacent rings sweep opposite ways. Inner
+       rings drift a wider arc; the big outer ring drifts slowly over a small
+       arc. */
+    const configs = [
+      { sel: ".wwd-planet-film", sweep: 9, duration: 7, dir: 1 }, // ring 4 (outer)
+      { sel: ".wwd-planet-mega", sweep: 13, duration: 5.6, dir: -1 }, // ring 3
+      { sel: ".wwd-planet-moon-sm", sweep: 20, duration: 4.6, dir: 1 }, // ring 2
+      { sel: ".wwd-planet-moon-lg", sweep: 26, duration: 3.8, dir: -1 }, // ring 1 (inner)
+    ];
+
+    let entries = [];
+
+    const build = () => {
+      const layerRect = layer.getBoundingClientRect();
+      const cx = layerRect.width; // left:100% → right edge
+      const cy = layerRect.height / 2; // top:50%
+
+      configs.forEach(({ sel, sweep, duration, dir }) => {
+        // Both the dark- and light-mode copies share these classes; animate all.
+        layer.querySelectorAll(sel).forEach((planet) => {
+          const r = planet.getBoundingClientRect();
+          // Base offset vector from the orbital centre, in pixels.
+          const px0 = r.left - layerRect.left + r.width / 2 - cx;
+          const py0 = r.top - layerRect.top + r.height / 2 - cy;
+
+          // `dir` flips the sweep direction so neighbouring rings counter-rotate.
+          const rad = (dir * sweep * Math.PI) / 180;
+          const proxy = { t: 0 };
+
+          const apply = () => {
+            const cos = Math.cos(proxy.t);
+            const sin = Math.sin(proxy.t);
+            planet.style.setProperty("--px", `${px0 * cos - py0 * sin}px`);
+            planet.style.setProperty("--py", `${px0 * sin + py0 * cos}px`);
+          };
+
+          const tween = gsap.fromTo(
+            proxy,
+            { t: -rad },
+            {
+              t: rad,
+              duration,
+              ease: "sine.inOut",
+              yoyo: true,
+              repeat: -1,
+              onUpdate: apply,
+            },
+          );
+
+          entries.push({ tween, planet });
+        });
+      });
+    };
+
+    const teardown = () => {
+      entries.forEach(({ tween, planet }) => {
+        tween.kill();
+        // Drop the inline overrides so CSS media-query offsets re-apply.
+        planet.style.removeProperty("--px");
+        planet.style.removeProperty("--py");
+      });
+      entries = [];
+    };
+
+    build();
+
+    // Ring radii are responsive (vw on desktop) — re-measure after a resize.
+    let resizeId;
+    const onResize = () => {
+      clearTimeout(resizeId);
+      resizeId = setTimeout(() => {
+        teardown();
+        requestAnimationFrame(build); // let CSS reflow before re-measuring
+      }, 200);
+    };
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      clearTimeout(resizeId);
+      teardown();
+    };
+  }, []);
+
   return (
     <section
       ref={sectionRef}
