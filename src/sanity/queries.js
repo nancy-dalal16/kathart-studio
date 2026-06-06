@@ -1,11 +1,11 @@
-import { sanityClient, isSanityConfigured } from "./client";
+import { getSanityClient, isSanityConfigured } from "./client";
 import { projects as staticProjects } from "@/data/projects";
 
 export async function getAllProjects() {
   if (!isSanityConfigured()) return staticProjects;
 
   try {
-    const data = await sanityClient.fetch(
+    const data = await getSanityClient().fetch(
       `*[_type == "project"] | order(order asc, _createdAt desc) {
         "slug": slug.current,
         category,
@@ -31,7 +31,7 @@ export async function getProjectBySlug(slug) {
   }
 
   try {
-    const data = await sanityClient.fetch(
+    const data = await getSanityClient().fetch(
       `*[_type == "project" && slug.current == $slug][0] {
         "slug": slug.current,
         category,
@@ -64,7 +64,7 @@ export async function getProjectSlugs() {
   }
 
   try {
-    const data = await sanityClient.fetch(
+    const data = await getSanityClient().fetch(
       `*[_type == "project"]{ "slug": slug.current }`
     );
     return data?.length ? data : staticProjects.map((p) => ({ slug: p.slug }));
