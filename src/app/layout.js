@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import { Questrial } from "next/font/google";
 import AmbientMusic from "@/components/AmbientMusic";
 import ConditionalLayout from "@/components/ConditionalLayout";
-import TransitionHandler from "@/components/TransitionHandler";
+import GlowCursor from "@/components/atmosphere/GlowCursor";
 
 const questrial = Questrial({
   weight: "400",
@@ -82,10 +82,10 @@ export default function RootLayout({ children }) {
         <ThemeScript />
       </head>
       <body className="bg-background text-foreground" suppressHydrationWarning>
+        <GlowCursor />
         <ConditionalLayout>
           {children}
         </ConditionalLayout>
-        <TransitionHandler />
       </body>
     </html>
   );
