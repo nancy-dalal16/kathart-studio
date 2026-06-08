@@ -1574,19 +1574,17 @@ background: rgba(248, 248, 255, 1);
    Dark theme: show them as light grey directly.
    Light theme: invert to dark grey so they're visible on the light bg. */
 .client-logo {
-  filter: grayscale(1) brightness(1.15);
-  opacity: 0.7;
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  /* Step 1: brightness(0) collapses every logo to pure black (transparency kept).
+     Step 2: invert(1) flips to white — same result regardless of original colour.
+     Step 3: final brightness sets the gray level on the dark background. */
+  filter: brightness(0) invert(1) brightness(0.65);
+  opacity: 1;
 }
 
 [data-theme="light"] .client-logo,
 .light .client-logo {
-  filter: grayscale(1) invert(1) brightness(0.55);
-  opacity: 0.7;
-}
-
-/* Bring a logo to full strength on hover (marquee pauses on hover) */
-.client-logo:hover {
+  /* Same normalisation; lower final brightness = darker gray on light background. */
+  filter: brightness(0) invert(1) brightness(0.28);
   opacity: 1;
 }
 
@@ -1697,4 +1695,65 @@ background: rgba(248, 248, 255, 1);
 .light .gc-ring.is-hover {
   background: rgba(108, 84, 255, 0.1);
   border-color: rgba(108, 84, 255, 0.95);
+}
+
+/* ══════════════════════════════════════════
+   WHAT WE DO — PHILOSOPHY STYLE
+   ══════════════════════════════════════════ */
+
+.wwd-philosophy-section {
+  background-color: #0F0F1A;
+  z-index: 50;
+}
+[data-theme="light"] .wwd-philosophy-section,
+.light .wwd-philosophy-section {
+  background-color: #F5F4FE;
+}
+
+.wwd-phil-gradient {
+  background: linear-gradient(to right, #B88BFF, #E382FF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ── Typographic utilities ── */
+.display-xl {
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
+
+.overline {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* ── Film-grain texture overlay ── */
+.tex-grain { position: relative; }
+.tex-grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+}
+[data-theme="light"] .tex-grain::before,
+.light .tex-grain::before { opacity: 0.04; mix-blend-mode: multiply; }
+
+/* ── Soft radial glow blob ── */
+.tex-glow {
+  background: radial-gradient(circle at center, rgba(184, 139, 255, 0.30) 0%, rgba(184, 139, 255, 0) 65%);
+  filter: blur(60px);
+}
+[data-theme="light"] .tex-glow,
+.light .tex-glow {
+  background: radial-gradient(circle at center, rgba(108, 84, 255, 0.22) 0%, rgba(108, 84, 255, 0) 65%);
 }

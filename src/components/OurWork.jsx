@@ -196,7 +196,9 @@ export default function OurWork() {
         x: -index * window.innerWidth,
         duration: 0.6,
         ease: "power3.inOut",
-        onComplete: () => { isAnimatingRef.current = false; },
+        onComplete: () => {
+          isAnimatingRef.current = false;
+        },
       });
     };
 
@@ -204,14 +206,19 @@ export default function OurWork() {
 
     // Touch support for mobile
     let touchStartY = 0;
-    const onTouchStart = (e) => { touchStartY = e.touches[0].clientY; };
+    const onTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY;
+    };
     const onTouchEnd = (e) => {
       if (!pinRef.current?.isActive) return;
       if (isAnimatingRef.current) return;
       const dy = touchStartY - e.changedTouches[0].clientY;
       if (Math.abs(dy) < 40) return;
       const dir = dy > 0 ? 1 : -1;
-      const newIndex = Math.max(0, Math.min(N - 1, activeIndexRef.current + dir));
+      const newIndex = Math.max(
+        0,
+        Math.min(N - 1, activeIndexRef.current + dir),
+      );
       goToSlide(newIndex);
     };
 
@@ -293,7 +300,7 @@ export default function OurWork() {
 
                   {/* Content */}
                   <div className="w-full lg:w-[52%] flex flex-col gap-3 md:gap-4 lg:gap-5">
-                    <span className="text-xs font-semibold text-dark-purple tracking-[0.18em] uppercase">
+                    <span className="text-xs font-semibold wwd-phil-gradient tracking-[0.18em] uppercase">
                       {slide.badge}
                     </span>
                     <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight">

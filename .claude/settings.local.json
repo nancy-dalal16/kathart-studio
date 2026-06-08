@@ -32,7 +32,9 @@
       "Bash(npm info *)",
       "PowerShell(winget install *)",
       "mcp__ide__getDiagnostics",
-      "WebFetch(domain:studioalbatross.in)"
+      "WebFetch(domain:studioalbatross.in)",
+      "Bash(Select-Object Name)",
+      "Bash(findstr /V \"^d\")"
     ]
   }
 }

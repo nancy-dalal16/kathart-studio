@@ -3,14 +3,14 @@ import HeroSection from "@/components/HeroSection";
 import OurClients from "@/components/OurClients";
 import OurWork from "@/components/OurWork";
 import SuccessStories from "@/components/SuccessStories";
-import WhatWeDo from "@/components/WhatWeDo";
+import WhatWeDoPhilosophy from "@/components/WhatWeDoPhilosophy";
 
 export default function Home() {
   return (
     <>
       <HeroSection />
       <div className="snap-section">
-        <WhatWeDo />
+        <WhatWeDoPhilosophy />
       </div>
       <div className="snap-section">
         <OurWork />

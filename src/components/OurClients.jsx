@@ -13,35 +13,20 @@ if (typeof window !== "undefined") {
 // ⭐ Marquee Component (No `cn`, fully rewritten)
 // -----------------------------------------------------------------------------
 function Marquee({ children, reverse = false, speed = 30, className = "" }) {
-  const marqueeRef = useRef(null);
-
-  const pause = () => {
-    if (marqueeRef.current)
-      marqueeRef.current.style.animationPlayState = "paused";
-  };
-
-  const resume = () => {
-    if (marqueeRef.current)
-      marqueeRef.current.style.animationPlayState = "running";
-  };
+  // Each copy lives in its own flex group with a trailing padding-right that
+  // matches the inter-logo gap. This makes every group exactly the same width,
+  // so translateX(-50%) lands precisely at the seam — no jump, no blank gap.
+  const groupClass =
+    "flex items-center gap-5 sm:gap-8 md:gap-14 lg:gap-16 flex-shrink-0 pr-5 sm:pr-8 md:pr-14 lg:pr-16";
 
   return (
-    <div
-      className={`relative overflow-hidden w-full select-none ${className}`}
-      onMouseEnter={pause}
-      onMouseLeave={resume}
-      onTouchStart={pause}
-      onTouchEnd={resume}
-    >
+    <div className={`relative overflow-hidden w-full select-none ${className}`}>
       <div
-        ref={marqueeRef}
-        className={`flex gap-5 sm:gap-8 md:gap-14 lg:gap-16 whitespace-nowrap items-center ${
-          reverse ? "animate-marquee-reverse" : "animate-marquee"
-        }`}
+        className={`flex ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}
         style={{ animationDuration: `${speed}s` }}
       >
-        {children}
-        {children}
+        <div className={groupClass}>{children}</div>
+        <div className={groupClass}>{children}</div>
       </div>
     </div>
   );
@@ -51,9 +36,7 @@ function Marquee({ children, reverse = false, speed = 30, className = "" }) {
 // ⭐ Logo Rows (Inline, same file)
 // -----------------------------------------------------------------------------
 const logoClass =
-  // Height-based sizing (auto width hugs each logo — no empty boxes/gaps).
-  // Larger on mobile so only ~3-4 fit across the viewport.
-  "client-logo h-11 sm:h-12 md:h-12 lg:h-16 w-auto max-w-[140px] sm:max-w-[150px] md:max-w-[160px] object-contain flex-shrink-0";
+  "client-logo h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-[160px] sm:max-w-[190px] md:max-w-[220px] lg:max-w-[260px] object-contain flex-shrink-0";
 
 function LogoRow1() {
   return (
