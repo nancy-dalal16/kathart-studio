@@ -36,7 +36,7 @@ function Marquee({ children, reverse = false, speed = 30, className = "" }) {
 // ⭐ Logo Rows (Inline, same file)
 // -----------------------------------------------------------------------------
 const logoClass =
-  "client-logo h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-[160px] sm:max-w-[190px] md:max-w-[220px] lg:max-w-[260px] object-contain flex-shrink-0";
+  "client-logo h-10 sm:h-12 md:h-14 lg:h-16 w-auto max-w-[110px] sm:max-w-[130px] md:max-w-[150px] lg:max-w-[170px] object-contain flex-shrink-0";
 
 function LogoRow1() {
   return (
