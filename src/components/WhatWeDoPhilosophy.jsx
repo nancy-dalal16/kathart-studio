@@ -7,13 +7,11 @@ import { ArrowRight } from "lucide-react";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
-// A static "We" leads every sentence; only the remainder changes.
-// The last two highlight the word "don't" with the gradient.
 const sentences = [
-  { rest: "turn good businesses into believable brands." },
-  { rest: "earn attention instead of demanding it." },
-  { hi: "don’t", post: " confuse being visible with being valuable." },
-  { hi: "don’t", post: " chase attention at the cost of credibility." },
+  [{ t: "turn good businesses into " }, { t: "believable brands", hi: true }, { t: "." }],
+  [{ t: "" }, { t: "earn attention", hi: true }, { t: " instead of demanding it." }],
+  [{ t: "don’t confuse being visible with " }, { t: "being valuable", hi: true }, { t: "." }],
+  [{ t: "don’t chase attention at the cost of " }, { t: "credibility", hi: true }, { t: "." }],
 ];
 
 export default function WhatWeDoPhilosophy() {
@@ -98,21 +96,16 @@ export default function WhatWeDoPhilosophy() {
 
       {/* Cycling sentences — each full sentence is centered as a block */}
       <div className="relative z-10 my-8 h-[40vh] w-full sm:my-10">
-        {sentences.map(({ rest, hi, post }, i) => (
+        {sentences.map((parts, i) => (
           <div
             key={i}
             className="wwd-phil-line absolute inset-0 flex items-center justify-center px-6 text-center sm:px-10 md:px-16"
             style={{ opacity: 0 }}
           >
-            <p className="max-w-[16ch] font-bold leading-[1.1] text-foreground text-4xl [text-wrap:balance] sm:max-w-[20ch] sm:text-5xl md:max-w-[24ch] md:text-6xl lg:text-7xl">
+            <p className="max-w-[16ch] font-bold leading-[1.1] text-foreground text-4xl [text-wrap:balance] [font-family:var(--font-geologica)] sm:max-w-[20ch] sm:text-5xl md:max-w-[24ch] md:text-6xl lg:text-7xl">
               We{" "}
-              {hi ? (
-                <>
-                  <span className="wwd-phil-gradient">{hi}</span>
-                  {post}
-                </>
-              ) : (
-                rest
+              {parts.map(({ t, hi }, j) =>
+                hi ? <span key={j} className="wwd-phil-gradient">{t}</span> : t
               )}
             </p>
           </div>
