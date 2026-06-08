@@ -8,10 +8,26 @@ import { ArrowRight } from "lucide-react";
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 const sentences = [
-  [{ t: "turn good businesses into " }, { t: "believable brands", hi: true }, { t: "." }],
-  [{ t: "" }, { t: "earn attention", hi: true }, { t: " instead of demanding it." }],
-  [{ t: "don’t confuse being visible with " }, { t: "being valuable", hi: true }, { t: "." }],
-  [{ t: "don’t chase attention at the cost of " }, { t: "credibility", hi: true }, { t: "." }],
+  [
+    { t: "turn good businesses into " },
+    { t: "believable brands", hi: true },
+    { t: "." },
+  ],
+  [
+    { t: "" },
+    { t: "earn attention", hi: true },
+    { t: " instead of demanding it." },
+  ],
+  [
+    { t: "don’t confuse being visible with " },
+    { t: "being valuable", hi: true },
+    { t: "." },
+  ],
+  [
+    { t: "don’t chase attention at the cost of " },
+    { t: "credibility", hi: true },
+    { t: "." },
+  ],
 ];
 
 export default function WhatWeDoPhilosophy() {
@@ -102,10 +118,19 @@ export default function WhatWeDoPhilosophy() {
             className="wwd-phil-line absolute inset-0 flex items-center justify-center px-6 text-center sm:px-10 md:px-16"
             style={{ opacity: 0 }}
           >
-            <p className="max-w-[16ch] font-bold leading-[1.1] text-foreground text-4xl [text-wrap:balance] [font-family:var(--font-geologica)] sm:max-w-[20ch] sm:text-5xl md:max-w-[24ch] md:text-6xl lg:text-7xl">
+            <p className="max-w-[16ch] font-medium leading-[1.1] text-foreground text-4xl [text-wrap:balance] ![font-family:var(--font-geologica)] sm:max-w-[20ch] sm:text-5xl md:max-w-[24ch] md:text-6xl lg:text-7xl">
               We{" "}
               {parts.map(({ t, hi }, j) =>
-                hi ? <span key={j} className="wwd-phil-gradient">{t}</span> : t
+                hi ? (
+                  <span
+                    key={j}
+                    className="wwd-phil-gradient ![font-family:var(--font-geologica)]"
+                  >
+                    {t}
+                  </span>
+                ) : (
+                  t
+                ),
               )}
             </p>
           </div>

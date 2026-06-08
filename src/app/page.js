@@ -9,19 +9,19 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <div className="snap-section">
+      <div className="snap-section relative z-[1]">
         <WhatWeDoPhilosophy />
       </div>
-      <div className="snap-section">
+      <div className="snap-section relative z-[2]">
         <OurWork />
       </div>
-      <div className="snap-section">
+      <div className="snap-section relative z-[3]">
         <OurClients />
       </div>
-      <div className="snap-section">
+      <div className="snap-section relative z-[4]">
         <SuccessStories />
       </div>
-      <div className="snap-section">
+      <div className="snap-section relative z-[5]">
         <CTA />
       </div>
     </>
