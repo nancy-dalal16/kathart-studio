@@ -1,46 +1,47 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FacebookIcon, InstagramIcon, LinkedinIcon } from "lucide-react";
 import { Separator } from "./ui/seperator";
 
 const FOOTER_STARS = [
-  { top: 50, left:  4, s: 1.5, d: 0.0, dur: 3.2, o: 0.45 },
-  { top: 58, left: 11, s: 2.0, d: 1.3, dur: 2.7, o: 0.60 },
-  { top: 72, left:  7, s: 1.0, d: 0.6, dur: 4.1, o: 0.35 },
-  { top: 85, left: 14, s: 1.5, d: 2.1, dur: 3.5, o: 0.50 },
-  { top: 93, left:  2, s: 1.0, d: 0.9, dur: 2.9, o: 0.40 },
-  { top: 55, left: 22, s: 1.0, d: 1.7, dur: 3.8, o: 0.30 },
+  { top: 50, left: 4, s: 1.5, d: 0.0, dur: 3.2, o: 0.45 },
+  { top: 58, left: 11, s: 2.0, d: 1.3, dur: 2.7, o: 0.6 },
+  { top: 72, left: 7, s: 1.0, d: 0.6, dur: 4.1, o: 0.35 },
+  { top: 85, left: 14, s: 1.5, d: 2.1, dur: 3.5, o: 0.5 },
+  { top: 93, left: 2, s: 1.0, d: 0.9, dur: 2.9, o: 0.4 },
+  { top: 55, left: 22, s: 1.0, d: 1.7, dur: 3.8, o: 0.3 },
   { top: 66, left: 28, s: 2.0, d: 0.3, dur: 2.5, o: 0.65 },
   { top: 80, left: 19, s: 1.5, d: 2.8, dur: 4.3, o: 0.45 },
   { top: 90, left: 25, s: 1.0, d: 1.1, dur: 3.1, o: 0.55 },
-  { top: 97, left: 33, s: 2.5, d: 0.5, dur: 2.6, o: 0.70 },
+  { top: 97, left: 33, s: 2.5, d: 0.5, dur: 2.6, o: 0.7 },
   { top: 52, left: 38, s: 1.5, d: 3.2, dur: 3.9, o: 0.35 },
-  { top: 63, left: 44, s: 1.0, d: 1.9, dur: 4.0, o: 0.40 },
-  { top: 75, left: 41, s: 2.0, d: 0.8, dur: 2.8, o: 0.60 },
-  { top: 88, left: 48, s: 1.5, d: 2.4, dur: 3.3, o: 0.50 },
+  { top: 63, left: 44, s: 1.0, d: 1.9, dur: 4.0, o: 0.4 },
+  { top: 75, left: 41, s: 2.0, d: 0.8, dur: 2.8, o: 0.6 },
+  { top: 88, left: 48, s: 1.5, d: 2.4, dur: 3.3, o: 0.5 },
   { top: 95, left: 55, s: 1.0, d: 1.0, dur: 4.5, o: 0.35 },
   { top: 57, left: 60, s: 2.0, d: 0.4, dur: 3.0, o: 0.65 },
   { top: 70, left: 53, s: 1.5, d: 2.7, dur: 2.7, o: 0.45 },
-  { top: 82, left: 62, s: 1.0, d: 1.5, dur: 3.6, o: 0.40 },
-  { top: 91, left: 68, s: 2.5, d: 3.5, dur: 3.2, o: 0.70 },
-  { top: 98, left: 58, s: 1.0, d: 0.2, dur: 4.2, o: 0.30 },
-  { top: 54, left: 74, s: 1.5, d: 1.8, dur: 2.9, o: 0.50 },
-  { top: 65, left: 79, s: 2.0, d: 0.7, dur: 3.7, o: 0.60 },
+  { top: 82, left: 62, s: 1.0, d: 1.5, dur: 3.6, o: 0.4 },
+  { top: 91, left: 68, s: 2.5, d: 3.5, dur: 3.2, o: 0.7 },
+  { top: 98, left: 58, s: 1.0, d: 0.2, dur: 4.2, o: 0.3 },
+  { top: 54, left: 74, s: 1.5, d: 1.8, dur: 2.9, o: 0.5 },
+  { top: 65, left: 79, s: 2.0, d: 0.7, dur: 3.7, o: 0.6 },
   { top: 77, left: 72, s: 1.0, d: 2.3, dur: 4.4, o: 0.35 },
   { top: 86, left: 83, s: 1.5, d: 1.2, dur: 3.1, o: 0.55 },
-  { top: 94, left: 77, s: 1.0, d: 3.0, dur: 2.6, o: 0.40 },
+  { top: 94, left: 77, s: 1.0, d: 3.0, dur: 2.6, o: 0.4 },
   { top: 59, left: 88, s: 2.0, d: 0.1, dur: 3.4, o: 0.65 },
   { top: 71, left: 93, s: 1.5, d: 2.0, dur: 4.0, o: 0.45 },
   { top: 84, left: 89, s: 1.0, d: 1.6, dur: 3.8, o: 0.35 },
   { top: 92, left: 96, s: 2.5, d: 2.9, dur: 2.8, o: 0.75 },
   { top: 97, left: 91, s: 1.0, d: 0.4, dur: 3.5, o: 0.45 },
-  { top: 60, left: 35, s: 1.5, d: 3.8, dur: 4.1, o: 0.30 },
-  { top: 79, left: 16, s: 1.0, d: 1.4, dur: 3.0, o: 0.50 },
-  { top: 87, left: 47, s: 2.0, d: 2.6, dur: 2.7, o: 0.60 },
-  { top: 96, left: 65, s: 1.5, d: 0.9, dur: 4.3, o: 0.40 },
+  { top: 60, left: 35, s: 1.5, d: 3.8, dur: 4.1, o: 0.3 },
+  { top: 79, left: 16, s: 1.0, d: 1.4, dur: 3.0, o: 0.5 },
+  { top: 87, left: 47, s: 2.0, d: 2.6, dur: 2.7, o: 0.6 },
+  { top: 96, left: 65, s: 1.5, d: 0.9, dur: 4.3, o: 0.4 },
   { top: 73, left: 86, s: 1.0, d: 1.7, dur: 3.2, o: 0.35 },
 ];
 
@@ -55,28 +56,20 @@ const socialLinks = [
 ];
 
 const companyLinks = [
-  { label: "About" },
-  { label: "Leadership" },
-  { label: "Contact Us" },
-  { label: "Career" },
+  { label: "Our Work", href: "/work" },
+  { label: "Capabilities", href: "/capabilities" },
+  { label: "About Us", href: "/about" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const legalLinks = [
-  { label: "Customer Support" },
-  { label: "Terms & Conditions" },
-  { label: "Privacy Policy" },
-];
-
-const capabilityLinks = [
-  { label: "Capability one" },
-  { label: "Second capability" },
-  { label: "Service number three" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Use", href: "/terms-of-use" },
 ];
 
 const footerColumns = [
-  { title: "Company", links: companyLinks },
+  { title: "Explore", links: companyLinks },
   { title: "Legal", links: legalLinks },
-  { title: "Capabilities", links: capabilityLinks },
 ];
 
 export function Footer() {
@@ -100,7 +93,7 @@ export function Footer() {
             start: "top bottom", // fires as soon as footer enters the viewport
             once: true,
           },
-        }
+        },
       );
       // Recalculate positions so footer already in view on load animates in immediately
       ScrollTrigger.refresh();
@@ -122,7 +115,7 @@ export function Footer() {
               left: `${star.left}%`,
               width: `${star.s}px`,
               height: `${star.s}px`,
-              '--so': star.o,
+              "--so": star.o,
               animationDelay: `${star.d}s`,
               animationDuration: `${star.dur}s`,
             }}
@@ -138,14 +131,11 @@ export function Footer() {
               <div className="w-full lg:w-[418px] gap-3 md:gap-4 lg:gap-6 flex flex-col items-start">
                 <div className="flex flex-col items-start gap-2 md:gap-3 w-full">
                   <h2 className="mt-[-1px] font-semibold text-foreground text-lg md:text-xl lg:text-2xl leading-tight">
-                    About Kathart
+                    Kathart Studios
                   </h2>
 
                   <p className="font-normal text-textColor text-xs sm:text-sm md:text-base leading-5 md:leading-6">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nullam dictum aliquet accumsan porta lectus ridiculus in
-                    mattis. Netus sodales in volutpat ullamcorper amet
-                    adipiscing fermentum.
+                    Elevated. Integrated. Intentional.
                   </p>
                 </div>
 
@@ -174,7 +164,7 @@ export function Footer() {
               </div>
 
               {/* Link columns */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 flex-1 w-full">
+              <div className="grid grid-cols-2 gap-4 md:gap-6 lg:gap-8 flex-1 w-full">
                 {footerColumns.map((column, idx) => (
                   <div
                     key={idx}
@@ -186,15 +176,15 @@ export function Footer() {
 
                     <nav className="flex flex-col items-start gap-1.5 md:gap-2">
                       {column.links.map((link, lidx) => (
-                        <a
+                        <Link
                           key={lidx}
-                          href="#"
+                          href={link.href}
                           className={`${
                             lidx === 0 ? "mt-[-1px]" : ""
                           } font-normal text-textColor text-xs sm:text-sm md:text-base leading-5 hover:text-primary transition-colors`}
                         >
                           {link.label}
-                        </a>
+                        </Link>
                       ))}
                     </nav>
                   </div>
