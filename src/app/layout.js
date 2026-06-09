@@ -2,9 +2,11 @@ import "./globals.css";
 import { ThemeScript } from "./theme-script";
 import localFont from "next/font/local";
 import { Questrial } from "next/font/google";
+import { draftMode } from "next/headers";
 import AmbientMusic from "@/components/AmbientMusic";
 import ConditionalLayout from "@/components/ConditionalLayout";
-import GlowCursor from "@/components/atmosphere/GlowCursor";
+import GlowCursorWrapper from "@/components/atmosphere/GlowCursorWrapper";
+import VisualEditingOverlay from "@/components/VisualEditingOverlay";
 
 const questrial = Questrial({
   weight: "400",
@@ -71,7 +73,9 @@ export const metadata = {
   description: "Creative marketing agency",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const { isEnabled: isDraft } = await draftMode();
+
   return (
     <html
       lang="en"
@@ -82,10 +86,11 @@ export default function RootLayout({ children }) {
         <ThemeScript />
       </head>
       <body className="bg-background text-foreground" suppressHydrationWarning>
-        <GlowCursor />
+        <GlowCursorWrapper />
         <ConditionalLayout>
           {children}
         </ConditionalLayout>
+        {isDraft && <VisualEditingOverlay />}
       </body>
     </html>
   );

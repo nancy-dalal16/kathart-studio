@@ -34,7 +34,20 @@
       "mcp__ide__getDiagnostics",
       "WebFetch(domain:studioalbatross.in)",
       "Bash(Select-Object Name)",
-      "Bash(findstr /V \"^d\")"
+      "Bash(findstr /V \"^d\")",
+      "Bash(bun run *)",
+      "Bash(node -e \"const p = require\\('./node_modules/@sanity/visual-editing/package.json'\\); const exps = p.exports; console.log\\(JSON.stringify\\(Object.keys\\(exps || {}\\)\\)\\)\")",
+      "Bash(node -e \"const ve = require\\('@sanity/visual-editing/react'\\); console.log\\(Object.keys\\(ve\\)\\)\")",
+      "Bash(node -e \"const p=require\\('./node_modules/@dnd-kit/sortable/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(node -e \"const p=require\\('./node_modules/@sanity/ui/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(node -e \"const {randomKey} = require\\('@sanity/util/content'\\); console.log\\(typeof randomKey, randomKey\\(12\\)\\)\")",
+      "Bash(node -e \"const s = require\\('./node_modules/sanity/lib/index.js'\\); console.log\\(typeof s.MemberItem, typeof s.ArrayOfObjectsInput, typeof s.insert, typeof s.PatchEvent\\)\")",
+      "Bash(node -e \"const r=require\\('./node_modules/react/package.json'\\); const rd=require\\('./node_modules/react-dom/package.json'\\); console.log\\('react:',r.version,'react-dom:',rd.version\\)\")",
+      "Bash(grep -oE \".{0,90}createPatchChannel\\\\\\(\\\\\\).{0,140}\" node_modules/sanity/lib/_chunks-es/structureTool.js)",
+      "Bash(grep -oE \"FormBuilder,\\\\{[^}]{0,400}\" node_modules/sanity/lib/_chunks-es/structureTool.js)",
+      "Bash(grep -oE \"\\\\\\(FormBuilder,\\\\s*\\\\{[^\\)]{0,600}\" node_modules/sanity/lib/_chunks-es/structureTool.js)",
+      "Bash(node *)"
     ]
   }
 }

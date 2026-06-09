@@ -1,5 +1,6 @@
 import { getAllProjects } from "@/sanity/queries";
 import WorkPageClient from "./WorkPageClient";
+import { draftMode } from "next/headers";
 
 export const metadata = {
   title: "Our Work — Kathart Studios",
@@ -8,6 +9,7 @@ export const metadata = {
 };
 
 export default async function WorkPage() {
-  const projects = await getAllProjects();
+  const { isEnabled: isDraft } = await draftMode();
+  const projects = await getAllProjects(isDraft);
   return <WorkPageClient projects={projects} />;
 }

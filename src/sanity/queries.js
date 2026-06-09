@@ -1,54 +1,76 @@
-import { getSanityClient, isSanityConfigured } from "./client";
+import { getSanityClient, getPreviewClient, isSanityConfigured } from "./client";
 import { projects as staticProjects } from "@/data/projects";
 
-export async function getAllProjects() {
+export async function getAllProjects(preview = false) {
   if (!isSanityConfigured()) return staticProjects;
 
+  const client = preview ? getPreviewClient() : getSanityClient();
+  if (!client) return staticProjects;
+
   try {
-    const data = await getSanityClient().fetch(
-      `*[_type == "project"] | order(order asc, _createdAt desc) {
+    const data = await client.fetch(
+      `*[_type == "project"] | order(_createdAt desc) {
         "slug": slug.current,
         category,
         tags,
         title,
-        client,
-        year,
-        services,
         description,
-        featured,
         "coverImage": coalesce(coverImage.asset->url, ""),
       }`
     );
-    return data?.length ? data : staticProjects;
+    // Deduplicate by slug — defensive guard in case the API ever returns both a
+    // published doc and its draft counterpart (e.g. during perspective fallback).
+    const seen = new Set();
+    const unique = (data || []).filter((p) => {
+      if (!p.slug || seen.has(p.slug)) return false;
+      seen.add(p.slug);
+      return true;
+    });
+    return unique.length ? unique : staticProjects;
   } catch {
     return staticProjects;
   }
 }
 
-export async function getProjectBySlug(slug) {
+export async function getProjectBySlug(slug, preview = false) {
   if (!isSanityConfigured()) {
     return staticProjects.find((p) => p.slug === slug) ?? null;
   }
 
+  const client = preview ? getPreviewClient() : getSanityClient();
+  if (!client) return staticProjects.find((p) => p.slug === slug) ?? null;
+
   try {
-    const data = await getSanityClient().fetch(
+    const data = await client.fetch(
       `*[_type == "project" && slug.current == $slug][0] {
         "slug": slug.current,
         category,
         tags,
         title,
-        client,
-        year,
-        services,
         description,
-        challenge,
-        approach,
-        outcome,
         "coverImage": coalesce(coverImage.asset->url, ""),
-        "gallery": gallery[].asset->url,
-        metrics,
-        featured,
-        "nextSlug": nextProject->slug.current,
+        "pageBuilder": pageBuilder[] {
+          _type,
+          _key,
+          headline,
+          tagline,
+          layout,
+          "image": image.asset->url,
+          eyebrow,
+          heading,
+          body,
+          caption,
+          aspectRatio,
+          "leftImage": left.asset->url,
+          "rightImage": right.asset->url,
+          ratio,
+          "images": images[] { "url": image.asset->url, caption },
+          columns,
+          "metrics": metrics[] { value, label, _key },
+          quote,
+          attribution,
+          url,
+        },
       }`,
       { slug }
     );
@@ -67,7 +89,14 @@ export async function getProjectSlugs() {
     const data = await getSanityClient().fetch(
       `*[_type == "project"]{ "slug": slug.current }`
     );
-    return data?.length ? data : staticProjects.map((p) => ({ slug: p.slug }));
+    // Deduplicate slugs for the same reason as getAllProjects
+    const seen = new Set();
+    const unique = (data || []).filter((p) => {
+      if (!p.slug || seen.has(p.slug)) return false;
+      seen.add(p.slug);
+      return true;
+    });
+    return unique.length ? unique : staticProjects.map((p) => ({ slug: p.slug }));
   } catch {
     return staticProjects.map((p) => ({ slug: p.slug }));
   }

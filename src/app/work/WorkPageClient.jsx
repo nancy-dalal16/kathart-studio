@@ -12,18 +12,53 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const CATEGORIES = ["All", "Design", "Films", "Marketing"];
+// Categories are derived from the projects present, so any new Creative Field
+// added in the Studio automatically becomes a filter tab.
+function buildCategories(projects) {
+  const seen = [];
+  for (const p of projects) {
+    if (p.category && !seen.includes(p.category)) seen.push(p.category);
+  }
+  return ["All", ...seen];
+}
+
+// Distribute N cards into 3 columns (round-robin) and assign tall/short heights
+// so all columns end at the same total height when N is divisible by 3,
+// and differ by at most one card height otherwise.
+function buildMasonryColumns(items) {
+  const cols = [[], [], []];
+  items.forEach((project, i) => {
+    cols[i % 3].push(project);
+  });
+
+  // Track how many items each column got for height balancing
+  const colCounts = cols.map((c) => c.length);
+  const maxCount = Math.max(...colCounts);
+
+  // Within each column, alternate tall/short.
+  // Longer columns (extra item) start with SHORT to stay close in total height
+  // to the shorter columns that start with TALL.
+  return cols.map((col, ci) => {
+    const startTall = col.length < maxCount; // shorter col → start tall
+    return col.map((project, j) => ({
+      project,
+      tall: startTall ? j % 2 === 0 : j % 2 === 1,
+    }));
+  });
+}
 
 export default function WorkPageClient({ projects }) {
   const [activeCategory, setActiveCategory] = useState("All");
   const wrapRef = useRef(null);
   const heroRef = useRef(null);
-  const filterRef = useRef(null);
 
   const filtered =
     activeCategory === "All"
       ? projects
       : projects.filter((p) => p.category === activeCategory);
+
+  const categories = buildCategories(projects);
+  const masonryColumns = buildMasonryColumns(filtered);
 
   // Hero entrance
   useLayoutEffect(() => {
@@ -39,63 +74,56 @@ export default function WorkPageClient({ projects }) {
           stagger: 0.1,
           ease: "power4.out",
           delay: 0.2,
-        }
+        },
       );
     }, heroRef);
     return () => ctx.revert();
   }, []);
 
-  // Re-animate rows when filter changes
+  // Re-animate cards when filter changes
   useEffect(() => {
     if (!wrapRef.current) return;
-    const rows = wrapRef.current.querySelectorAll(".project-row");
-    if (!rows.length) return;
+    const cards = wrapRef.current.querySelectorAll(".gallery-item");
+    if (!cards.length) return;
     gsap.fromTo(
-      rows,
-      { opacity: 0, y: 24 },
-      { opacity: 1, y: 0, duration: 0.5, stagger: 0.07, ease: "power3.out" }
+      cards,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power3.out" },
     );
   }, [activeCategory]);
 
   return (
     <main className="min-h-screen overflow-hidden">
       {/* ── HERO ── */}
-      <section ref={heroRef} className="px-4 sm:px-8 md:px-12 lg:px-20 pt-36 sm:pt-40 pb-16 sm:pb-20">
-        <div className="h-anim">
+      <section
+        ref={heroRef}
+        className="px-4 sm:px-8 md:px-12 lg:px-20 pt-36 sm:pt-40 pb-16 sm:pb-20"
+      >
+        <div className="h-anim text-center">
           <span className="text-[10px] sm:text-xs font-semibold tracking-[0.25em] uppercase text-dark-purple">
-            Portfolio
+            Our Work
           </span>
         </div>
 
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mt-4">
-          <h1 className="h-anim text-5xl sm:text-6xl md:text-7xl lg:text-[88px] font-semibold leading-[1.0] tracking-tight max-w-2xl">
+        <div className="flex justify-center mt-4">
+          <h1 className="h-anim text-5xl sm:text-6xl md:text-7xl lg:text-[88px] font-semibold leading-[1.0] tracking-tight text-center">
             Crafted&nbsp;With
             <br />
             <span className="text-primary">Purpose.</span>
           </h1>
-
-          {/* Counter card */}
-          <div className="h-anim flex-shrink-0 self-start lg:self-end">
-            <div className="glass-card rounded-2xl px-6 py-5 text-center min-w-[120px]">
-              <span className="block text-4xl sm:text-5xl font-semibold text-foreground leading-none">
-                {String(projects.length).padStart(2, "0")}
-              </span>
-              <span className="block text-textColor text-xs mt-1 tracking-wider uppercase">
-                Projects
-              </span>
-            </div>
-          </div>
         </div>
 
         {/* Stats row */}
-        <div className="h-anim flex flex-wrap gap-8 sm:gap-14 mt-10 sm:mt-12 pt-10 sm:pt-12 border-t border-border">
+        <div className="h-anim flex flex-wrap justify-center gap-8 sm:gap-14 mt-10 sm:mt-12 pt-10 sm:pt-12 border-t border-border">
           {[
             { v: "10+", l: "Years" },
             { v: "50+", l: "Projects Delivered" },
             { v: "99%", l: "Client Satisfaction" },
           ].map(({ v, l }) => (
-            <div key={l}>
-              <div className="text-2xl sm:text-3xl font-semibold text-foreground">{v}</div>
+            <div key={l} className="text-center">
+              <div className="text-2xl sm:text-3xl font-semibold text-foreground">
+                {v}
+              </div>
               <div className="text-textColor text-xs sm:text-sm mt-0.5">{l}</div>
             </div>
           ))}
@@ -103,12 +131,9 @@ export default function WorkPageClient({ projects }) {
       </section>
 
       {/* ── FILTER ── */}
-      <section
-        ref={filterRef}
-        className="px-4 sm:px-8 md:px-12 lg:px-20 pb-6"
-      >
+      <section className="px-4 sm:px-8 md:px-12 lg:px-20 pb-8">
         <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
@@ -124,21 +149,42 @@ export default function WorkPageClient({ projects }) {
         </div>
       </section>
 
-      {/* ── PROJECTS — Editorial alternating rows ── */}
+      {/* ── PROJECTS ── */}
       <section className="px-4 sm:px-8 md:px-12 lg:px-20 pb-28" ref={wrapRef}>
-        {/* Top separator */}
-        <div className="w-full h-px bg-border mb-0" />
-
-        {filtered.map((project, i) => (
-          <ProjectRow key={project.slug} project={project} index={i} />
-        ))}
-
-        {filtered.length === 0 && (
+        {filtered.length === 0 ? (
           <div className="py-28 text-center">
             <p className="text-textColor text-lg">
               No projects in this category yet.
             </p>
           </div>
+        ) : (
+          <>
+            {/* Desktop: 3 explicit flex columns — guarantees consistent endings */}
+            <div className="hidden lg:flex gap-4 items-start">
+              {masonryColumns.map((col, ci) => (
+                <div key={ci} className="flex flex-col gap-4 flex-1 min-w-0">
+                  {col.map(({ project, tall }) => (
+                    <ProjectCard
+                      key={project.slug}
+                      project={project}
+                      tall={tall}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile / tablet: 2-col simple grid */}
+            <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {filtered.map((project, i) => (
+                <ProjectCard
+                  key={project.slug}
+                  project={project}
+                  tall={false}
+                />
+              ))}
+            </div>
+          </>
         )}
       </section>
 
@@ -147,139 +193,90 @@ export default function WorkPageClient({ projects }) {
   );
 }
 
-/* ── Individual project row ── */
-function ProjectRow({ project, index }) {
-  const rowRef = useRef(null);
-  const imgRef = useRef(null);
-  const isEven = index % 2 === 0;
+/* ── Individual project card ── */
+function ProjectCard({ project, tall }) {
+  const cardRef = useRef(null);
 
   useLayoutEffect(() => {
-    if (!rowRef.current) return;
+    if (!cardRef.current) return;
     const ctx = gsap.context(() => {
-      // Content reveal
-      const textEls = rowRef.current.querySelectorAll(".row-anim");
       gsap.fromTo(
-        textEls,
-        { y: 40, opacity: 0 },
+        cardRef.current,
+        { opacity: 0, y: 48 },
         {
-          y: 0,
           opacity: 1,
-          duration: 0.8,
-          stagger: 0.08,
+          y: 0,
+          duration: 0.85,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: rowRef.current,
-            start: "top 82%",
+            trigger: cardRef.current,
+            start: "top 88%",
             once: true,
           },
-        }
+        },
       );
-
-      // Image clip-path reveal
-      gsap.fromTo(
-        imgRef.current,
-        { clipPath: "inset(100% 0% 0% 0%)" },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1,
-          ease: "power4.inOut",
-          scrollTrigger: {
-            trigger: rowRef.current,
-            start: "top 82%",
-            once: true,
-          },
-        }
-      );
-    }, rowRef);
+    }, cardRef);
     return () => ctx.revert();
   }, []);
 
-  const num = String(index + 1).padStart(2, "0");
-
   return (
-    <>
-      <Link href={`/work/${project.slug}`} className="block group">
-        <article
-          ref={rowRef}
-          className={`flex flex-col lg:flex-row gap-0 py-10 sm:py-12 lg:py-14 items-stretch ${
-            isEven ? "lg:flex-row" : "lg:flex-row-reverse"
-          }`}
-        >
-          {/* Image block */}
-          <div
-            ref={imgRef}
-            className="relative w-full lg:w-[58%] aspect-[16/10] lg:aspect-auto lg:min-h-[380px] rounded-2xl lg:rounded-3xl overflow-hidden flex-shrink-0"
-            style={{ clipPath: "inset(0% 0% 0% 0%)" }}
-          >
-            <Image
-              src={project.coverImage || "/images/work/travel-smarter.png"}
-              alt={project.title}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 1024px) 100vw, 60vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          </div>
+    <div
+      ref={cardRef}
+      className={`gallery-item ${tall ? "h-[560px]" : "h-[280px]"}`}
+    >
+      <Link
+        href={`/work/${project.slug}`}
+        className="group relative overflow-hidden rounded-2xl border border-border bg-secondary block h-full"
+      >
+        {/* Image */}
+        <Image
+          src={project.coverImage || "/images/work/travel-smarter.png"}
+          alt={project.title}
+          fill
+          className="object-cover opacity-80 transition-all duration-700 group-hover:scale-105 group-hover:opacity-25"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
 
-          {/* Content block */}
-          <div
-            className={`flex flex-col justify-center w-full lg:w-[42%] ${
-              isEven
-                ? "lg:pl-10 xl:pl-14 pt-6 lg:pt-0"
-                : "lg:pr-10 xl:pr-14 pt-6 lg:pt-0"
-            }`}
-          >
-            {/* Number + category */}
-            <div className="row-anim flex items-baseline gap-4 mb-5">
-              <span
-                className="text-[64px] sm:text-[80px] font-semibold leading-none"
-                style={{ color: "var(--color-border)" }}
-              >
-                {num}
-              </span>
-              <span className="text-xs font-semibold tracking-[0.18em] uppercase text-dark-purple">
-                {project.category}
-              </span>
-            </div>
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-            {/* Title */}
-            <h2 className="row-anim text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground leading-tight mb-4">
-              {project.title}
-            </h2>
+        {/* Content */}
+        <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
+          <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-primary mb-1">
+            {project.category}
+          </span>
+          <h3 className="text-xl sm:text-2xl font-semibold leading-tight">
+            {project.title}
+          </h3>
 
-            {/* Description */}
-            <p className="row-anim text-textColor text-sm sm:text-base leading-relaxed mb-6 max-w-sm">
-              {project.description}
-            </p>
+          {/* Hover-reveal details */}
+          <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-500 group-hover:mt-4 group-hover:grid-rows-[1fr] group-hover:opacity-100">
+            <div className="overflow-hidden space-y-3">
+              <p className="text-white/75 text-sm leading-relaxed line-clamp-3">
+                {project.description}
+              </p>
 
-            {/* Tags */}
-            <div className="row-anim flex flex-wrap gap-2 mb-8">
-              {(project.tags ?? []).slice(0, 3).map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[10px] sm:text-xs border border-border text-textColor px-2.5 py-1 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+              {project.tags?.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {project.tags.slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[10px] border border-white/30 text-white/60 px-2 py-0.5 rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
 
-            {/* CTA */}
-            <div className="row-anim inline-flex items-center gap-2 text-sm font-medium text-foreground group/cta self-start">
-              <span className="border-b border-textColor group-hover/cta:border-foreground transition-colors duration-200">
-                View Project
-              </span>
-              <ArrowUpRight
-                size={14}
-                className="transition-transform duration-200 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
-              />
+              <div className="inline-flex items-center gap-1.5 text-sm font-medium text-white mt-1">
+                <span className="border-b border-white/50">View Project</span>
+                <ArrowUpRight size={13} />
+              </div>
             </div>
           </div>
-        </article>
+        </div>
       </Link>
-
-      {/* Separator */}
-      <div className="w-full h-px bg-border" />
-    </>
+    </div>
   );
 }

@@ -1,31 +1,44 @@
 import { defineField, defineType } from "sanity";
+import { PageBuilderInput } from "../studio/components/PageBuilderInput";
+import { ProjectEditor } from "../studio/components/ProjectEditor";
+import { CreativeFieldInput } from "../studio/components/CreativeFieldInput";
 
 export default defineType({
   name: "project",
   title: "Project",
   type: "document",
+  // Behance-style: a project is a cover + title + a canvas of content modules.
+  // A custom document editor arranges these fields like Behance.
+  components: { input: ProjectEditor },
   fields: [
+    // ── Project Settings (Behance "Project Settings" panel) ──
     defineField({
       name: "title",
-      title: "Title",
+      title: "Project Title",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
-      title: "Slug",
+      title: "URL Slug",
       type: "slug",
       options: { source: "title", maxLength: 96 },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "coverImage",
+      title: "Cover Image",
+      description: "The thumbnail shown on the dashboard and work grid.",
+      type: "image",
+      options: { hotspot: true },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "category",
-      title: "Category",
+      title: "Creative Field",
+      description: "Pick an existing field or add a new one.",
       type: "string",
-      options: {
-        list: ["Design", "Films", "Marketing"],
-        layout: "radio",
-      },
+      components: { input: CreativeFieldInput },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -33,76 +46,33 @@ export default defineType({
       title: "Tags",
       type: "array",
       of: [{ type: "string" }],
+      options: { layout: "tags" },
     }),
-    defineField({ name: "client", title: "Client", type: "string" }),
-    defineField({ name: "year", title: "Year", type: "string" }),
-    defineField({ name: "services", title: "Services (one line)", type: "string" }),
     defineField({
       name: "description",
       title: "Short Description",
+      description: "One or two lines shown on the project card and header.",
       type: "text",
-      rows: 3,
+      rows: 2,
     }),
+
+    // ── Content canvas (Behance module stack) ──
     defineField({
-      name: "challenge",
-      title: "The Challenge",
-      type: "text",
-      rows: 5,
-    }),
-    defineField({
-      name: "approach",
-      title: "Our Approach",
-      type: "text",
-      rows: 5,
-    }),
-    defineField({
-      name: "outcome",
-      title: "The Outcome (1–2 sentences)",
-      type: "text",
-      rows: 3,
-    }),
-    defineField({
-      name: "coverImage",
-      title: "Cover Image",
-      type: "image",
-      options: { hotspot: true },
-    }),
-    defineField({
-      name: "gallery",
-      title: "Gallery Images",
+      name: "pageBuilder",
+      title: "Project Content",
+      description: "Build your project by stacking modules — images, text, video and more.",
       type: "array",
-      of: [{ type: "image", options: { hotspot: true } }],
-    }),
-    defineField({
-      name: "metrics",
-      title: "Result Metrics",
-      type: "array",
+      components: { input: PageBuilderInput },
       of: [
-        {
-          type: "object",
-          fields: [
-            { name: "value", title: "Value (e.g. +45%)", type: "string" },
-            { name: "label", title: "Label (e.g. Conversion Rate)", type: "string" },
-          ],
-        },
+        { type: "pb_hero" },
+        { type: "pb_text" },
+        { type: "pb_media" },
+        { type: "pb_split" },
+        { type: "pb_grid" },
+        { type: "pb_metrics" },
+        { type: "pb_quote" },
+        { type: "pb_video" },
       ],
-    }),
-    defineField({
-      name: "featured",
-      title: "Featured",
-      type: "boolean",
-      initialValue: false,
-    }),
-    defineField({
-      name: "order",
-      title: "Display Order",
-      type: "number",
-    }),
-    defineField({
-      name: "nextProject",
-      title: "Next Project",
-      type: "reference",
-      to: [{ type: "project" }],
     }),
   ],
   preview: {

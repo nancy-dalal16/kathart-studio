@@ -80,23 +80,20 @@ export function Footer() {
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top bottom", // fires as soon as footer enters the viewport
-            once: true,
-          },
+      // immediateRender:false keeps the footer visible at full opacity until the
+      // ScrollTrigger fires — prevents it staying blank if Lenis hasn't settled yet.
+      gsap.from(el, {
+        opacity: 0,
+        y: 40,
+        duration: 1.2,
+        ease: "power3.out",
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: el,
+          start: "top 95%",
+          once: true,
         },
-      );
-      // Recalculate positions so footer already in view on load animates in immediately
-      ScrollTrigger.refresh();
+      });
     });
 
     return () => ctx.revert();
