@@ -28,9 +28,16 @@ export default async function ProjectDetailPage({ params }) {
   const all = await getAllProjects();
   const idx = all.findIndex((p) => p.slug === slug);
 
-  const next1 = all[(idx + 1) % all.length] ?? null;
-  const next2 = all[(idx + 2) % all.length] ?? null;
-  const nextProjects = [next1, next2].filter(Boolean);
+  // Collect up to 2 distinct next projects, deduped by slug
+  const others = all.filter((p) => p.slug !== slug);
+  const next1 = others[(idx) % Math.max(others.length, 1)] ?? null;
+  const next2 = others.length > 1 ? others[(idx + 1) % others.length] ?? null : null;
+  const seen = new Set();
+  const nextProjects = [next1, next2].filter((p) => {
+    if (!p || seen.has(p.slug)) return false;
+    seen.add(p.slug);
+    return true;
+  });
 
   return (
     <ProjectDetailClient project={project} nextProjects={nextProjects} />

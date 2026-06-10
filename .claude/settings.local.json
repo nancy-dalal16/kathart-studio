@@ -47,7 +47,8 @@
       "Bash(grep -oE \".{0,90}createPatchChannel\\\\\\(\\\\\\).{0,140}\" node_modules/sanity/lib/_chunks-es/structureTool.js)",
       "Bash(grep -oE \"FormBuilder,\\\\{[^}]{0,400}\" node_modules/sanity/lib/_chunks-es/structureTool.js)",
       "Bash(grep -oE \"\\\\\\(FormBuilder,\\\\s*\\\\{[^\\)]{0,600}\" node_modules/sanity/lib/_chunks-es/structureTool.js)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(Get-Content *)"
     ]
   }
 }

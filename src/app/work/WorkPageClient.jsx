@@ -100,7 +100,7 @@ export default function WorkPageClient({ projects }) {
         className="px-4 sm:px-8 md:px-12 lg:px-20 pt-36 sm:pt-40 pb-16 sm:pb-20"
       >
         <div className="h-anim text-center">
-          <span className="text-[10px] sm:text-xs font-semibold tracking-[0.25em] uppercase text-dark-purple">
+          <span className="text-[10px] sm:text-xs font-semibold tracking-[0.25em] uppercase text-primary">
             Our Work
           </span>
         </div>
@@ -124,7 +124,9 @@ export default function WorkPageClient({ projects }) {
               <div className="text-2xl sm:text-3xl font-semibold text-foreground">
                 {v}
               </div>
-              <div className="text-textColor text-xs sm:text-sm mt-0.5">{l}</div>
+              <div className="text-textColor text-xs sm:text-sm mt-0.5">
+                {l}
+              </div>
             </div>
           ))}
         </div>
@@ -139,7 +141,7 @@ export default function WorkPageClient({ projects }) {
               onClick={() => setActiveCategory(cat)}
               className={`text-xs sm:text-sm font-medium px-4 sm:px-5 py-2 rounded-full border transition-all duration-300 ${
                 activeCategory === cat
-                  ? "bg-dark-purple border-dark-purple text-white"
+                  ? "bg-primary border-primary text-white"
                   : "border-border text-textColor hover:border-primary hover:text-foreground"
               }`}
             >

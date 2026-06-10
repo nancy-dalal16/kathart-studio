@@ -1,5 +1,5 @@
 import "./globals.css";
-import { ThemeScript } from "./theme-script";
+import Script from "next/script";
 import localFont from "next/font/local";
 import { Questrial } from "next/font/google";
 import { draftMode } from "next/headers";
@@ -83,7 +83,13 @@ export default async function RootLayout({ children }) {
       className={`${geologica.variable} ${questrial.variable}`}
     >
       <head>
-        <ThemeScript />
+        <Script
+          id="theme-script"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{const saved=localStorage.getItem("theme");const prefersLight=window.matchMedia("(prefers-color-scheme: light)").matches;const theme=saved||(prefersLight?"light":"dark");document.documentElement.dataset.theme=theme;if(theme==="light"){document.documentElement.classList.add("light");}else{document.documentElement.classList.remove("light");}}catch(e){}})();`,
+          }}
+        />
       </head>
       <body className="bg-background text-foreground" suppressHydrationWarning>
         <GlowCursorWrapper />

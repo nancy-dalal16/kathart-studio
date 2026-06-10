@@ -129,7 +129,9 @@ export function Header() {
   // Compute activeIndex synchronously — no useEffect delay
   const activeIndex = Math.max(
     0,
-    navItems.findIndex((item) => item.href === pathname),
+    navItems.findIndex((item) =>
+      item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)
+    ),
   );
 
   const [mounted, setMounted] = useState(false);

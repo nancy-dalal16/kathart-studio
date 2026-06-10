@@ -14,11 +14,11 @@ if (typeof window !== "undefined") {
 }
 
 export default function ProjectDetailClient({ project, nextProjects = [] }) {
-  const pageRef        = useRef(null);
-  const heroRef        = useRef(null);
-  const coverRef       = useRef(null);
+  const pageRef = useRef(null);
+  const heroRef = useRef(null);
+  const coverRef = useRef(null);
   const pageBuilderRef = useRef(null);
-  const nextRef        = useRef(null);
+  const nextRef = useRef(null);
 
   const hasModules = Boolean(project.pageBuilder?.length);
 
@@ -31,7 +31,14 @@ export default function ProjectDetailClient({ project, nextProjects = [] }) {
         gsap.fromTo(
           heroRef.current.querySelectorAll(".h-anim"),
           { y: 52, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1.1, stagger: 0.1, ease: "power4.out", delay: 0.1 }
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.1,
+            stagger: 0.1,
+            ease: "power4.out",
+            delay: 0.1,
+          },
         );
       }
 
@@ -41,10 +48,16 @@ export default function ProjectDetailClient({ project, nextProjects = [] }) {
           coverRef.current,
           { clipPath: "inset(8% 0% 0% 0%)", opacity: 0 },
           {
-            clipPath: "inset(0% 0% 0% 0%)", opacity: 1,
-            duration: 1.4, ease: "power4.inOut",
-            scrollTrigger: { trigger: coverRef.current, start: "top 92%", once: true },
-          }
+            clipPath: "inset(0% 0% 0% 0%)",
+            opacity: 1,
+            duration: 1.4,
+            ease: "power4.inOut",
+            scrollTrigger: {
+              trigger: coverRef.current,
+              start: "top 92%",
+              once: true,
+            },
+          },
         );
       }
 
@@ -57,9 +70,12 @@ export default function ProjectDetailClient({ project, nextProjects = [] }) {
               el,
               { opacity: 0, y: 40 },
               {
-                opacity: 1, y: 0, duration: 0.85, ease: "power3.out",
+                opacity: 1,
+                y: 0,
+                duration: 0.85,
+                ease: "power3.out",
                 scrollTrigger: { trigger: el, start: "top 88%", once: true },
-              }
+              },
             );
           });
       }
@@ -70,9 +86,17 @@ export default function ProjectDetailClient({ project, nextProjects = [] }) {
           nextRef.current.querySelectorAll(".next-card"),
           { y: 40, opacity: 0 },
           {
-            y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power3.out",
-            scrollTrigger: { trigger: nextRef.current, start: "top 88%", once: true },
-          }
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: nextRef.current,
+              start: "top 88%",
+              once: true,
+            },
+          },
         );
       }
     }, pageRef);
@@ -82,7 +106,6 @@ export default function ProjectDetailClient({ project, nextProjects = [] }) {
 
   return (
     <main ref={pageRef} className="min-h-screen">
-
       {/* ── HERO ── */}
       <section
         ref={heroRef}
@@ -92,26 +115,26 @@ export default function ProjectDetailClient({ project, nextProjects = [] }) {
           href="/work"
           className="h-anim inline-flex items-center gap-2 text-textColor hover:text-foreground text-sm transition-colors duration-200 group mb-10 sm:mb-12"
         >
-          <ArrowLeft size={14} className="transition-transform duration-200 group-hover:-translate-x-1" />
+          <ArrowLeft
+            size={14}
+            className="transition-transform duration-200 group-hover:-translate-x-1"
+          />
           All Projects
-        </Link>
-
+        </Link>{" "}
+        <br />
         {project.category && (
-          <p className="h-anim inline-flex items-center gap-2 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-dark-purple mb-5">
+          <p className="h-anim inline-flex items-center gap-2 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-primary mb-5">
             {project.category}
           </p>
         )}
-
         <h1 className="h-anim text-[clamp(2.5rem,7vw,5.5rem)] font-semibold text-foreground leading-[1.0] tracking-tight max-w-4xl mb-6">
           {project.title}
         </h1>
-
         {project.description && (
           <p className="h-anim text-textColor text-base sm:text-lg leading-relaxed max-w-2xl">
             {project.description}
           </p>
         )}
-
         {/* Tags */}
         {project.tags?.length > 0 && (
           <div className="h-anim flex flex-wrap gap-2 mt-7">
@@ -133,7 +156,10 @@ export default function ProjectDetailClient({ project, nextProjects = [] }) {
         className="w-full mt-4 overflow-hidden"
         style={{ clipPath: "inset(0% 0% 0% 0%)" }}
       >
-        <div className="relative w-full" style={{ minHeight: "62vh", aspectRatio: "16/9" }}>
+        <div
+          className="relative w-full"
+          style={{ minHeight: "62vh", aspectRatio: "16/9" }}
+        >
           {project.coverImage ? (
             <Image
               src={project.coverImage}
@@ -146,7 +172,10 @@ export default function ProjectDetailClient({ project, nextProjects = [] }) {
           ) : (
             <div
               className="absolute inset-0"
-              style={{ background: "linear-gradient(135deg, #1A1733 0%, #2D1A4A 40%, #0F0F1A 100%)" }}
+              style={{
+                background:
+                  "linear-gradient(135deg, #1A1733 0%, #2D1A4A 40%, #0F0F1A 100%)",
+              }}
             >
               <div
                 className="absolute inset-0 opacity-20"
@@ -183,7 +212,9 @@ export default function ProjectDetailClient({ project, nextProjects = [] }) {
           <div
             ref={nextRef}
             className={`grid gap-4 sm:gap-5 ${
-              nextProjects.length >= 2 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 max-w-lg"
+              nextProjects.length >= 2
+                ? "grid-cols-1 sm:grid-cols-2"
+                : "grid-cols-1 max-w-lg"
             }`}
           >
             {nextProjects.map((np) => (
