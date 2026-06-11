@@ -77,9 +77,9 @@ const services = [
 
 // Each service gets TRACK_VH of scroll space.
 // +100 ensures the sticky panel fully unsticks only after the last exit completes.
-const TRACK_VH = 250;
+const TRACK_VH = 150;
 const ROW_H = 50; // vh — two rows visible: one full + one peeking
-const SCRUB = 1.5;
+const SCRUB = 1.0;
 
 // Normalised positions within each service's 0→1 timeline progress
 const T_ENTER_END = 0.36; // image fully in position

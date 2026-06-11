@@ -17,55 +17,62 @@ gsap.registerPlugin(ScrollTrigger);
 ─────────────────────────────────────────────────────────── */
 
 // Slide positions on the mega-canvas (multiplied by vw/vh)
-// Slanted W: zigzags left↔right while drifting diagonally top-left → bottom-right
+// Traced from the reference illustration (star pixel coords, P1 as origin):
+//   P1 (0,0)      — top-left, highest star
+//   P2 (112,185)  — steep drop down-right (~59°)
+//   P3 (270,176)  — nearly flat across to the right
+//   P4 (355,367)  — steepest drop to the LOWEST, brightest star (~66°)
+//   P5 (533,245)  — rises up-right (~34°)
+// Canvas y units are vh and x units are vw, so x is divided by the ~16:9
+// viewport ratio to keep the on-screen angles faithful to the image.
 const SLIDE_POSITIONS = [
-  { x: 0, y: 0 },   // Segin    — top-left
-  { x: 2, y: 1 },   // Ruchbah  — far right, one screen down
-  { x: 1, y: 2 },   // Gamma    — center-left, two screens down
-  { x: 3, y: 3 },   // Schedar  — far right, three screens down
-  { x: 2, y: 4 },   // Caph     — center, four screens down
+  { x: 0,    y: 0    },  // P1 — top-left (highest), viewport centre at start
+  { x: 0.27, y: 0.81 },  // P2 — steep drop
+  { x: 0.66, y: 0.77 },  // P3 — flat across
+  { x: 0.87, y: 1.6  },  // P4 — deepest point (brightest star)
+  { x: 1.3,  y: 1.07 },  // P5 — rising tail
 ];
 
 // Star metadata
 const STARS = [
-  { name: "Segin",   sanskrit: "प्रारंभ",  meaning: "The Beginning" },
-  { name: "Ruchbah", sanskrit: "आधार",     meaning: "The Foundation" },
-  { name: "Gamma",   sanskrit: "शिखर",     meaning: "The Pinnacle" },
-  { name: "Schedar", sanskrit: "परिष्कार", meaning: "The Refinement" },
-  { name: "Caph",    sanskrit: "मुकुट",    meaning: "The Crown" },
+  { name: "Segin", sanskrit: "शिकार", meaning: "The Hunt" },
+  { name: "Ruchbah", sanskrit: "सार", meaning: "The Essence" },
+  { name: "Gamma", sanskrit: "शिल्प", meaning: "The Craft" },
+  { name: "Schedar", sanskrit: "मुक्ति", meaning: "The Release" },
+  { name: "Caph", sanskrit: "विकास", meaning: "The Growth" },
 ];
 
-// Content for each full-screen slide
+// Content for each full-screen slide — mirrors the Our Approach steps
 const SLIDE_CONTENT = [
   {
     number: "01",
-    subtitle: "Segin — The Beginning",
-    title: "Every brand starts as a scattered idea.",
-    body: "Lost signals in a noisy sky. We find the first authentic spark — the conviction that refuses to fade — and anchor it as the starting point of your constellation.",
+    subtitle: "Segin — The Hunt",
+    title: "We find the story you can't ignore.",
+    body: "We don't invent stories. We hunt the one already living in your system… the part you keep repeating to yourself at 3 a.m., the reason you started this in the first place — the \"why\". That's the story worth telling.",
   },
   {
     number: "02",
-    subtitle: "Ruchbah — The Foundation",
-    title: "We descend to build roots.",
-    body: "Going deep into the soil of your identity. Unearthing the truth that your market already senses but hasn't heard articulated. This is where clarity is forged.",
+    subtitle: "Ruchbah — The Essence",
+    title: "We strip everything that isn't it.",
+    body: "We gently move aside the noise until only the one thing that truly matters is left standing. What's left is the single, undeniable truth your brand owns. Nothing added. Nothing forced. Just the essence.",
   },
   {
     number: "03",
-    subtitle: "Gamma — The Pinnacle",
-    title: "Rising to the summit of meaning.",
-    body: "The brightest point. Your brand's core message — distilled, elevated, unmistakable. This is the truth that everything else orbits around.",
+    subtitle: "Gamma — The Craft",
+    title: "We craft like it's ours.",
+    body: "Identity that feels like it's always belonged to you. Films that stop thumbs mid-scroll. Words that turn strangers into believers. We don't stop until the work sells itself.",
   },
   {
     number: "04",
-    subtitle: "Schedar — The Refinement",
-    title: "Sharpening every edge.",
-    body: "Descent into craft. Every visual, every word, every frame is honed until the work doesn't just communicate — it resonates in the bones.",
+    subtitle: "Schedar — The Release",
+    title: "We release what lasts.",
+    body: "The katha leaves our hands quietly. Just a story set free to find its people. Ten years from now it still feels true, still pulls the right founders in, still quietly prospers. That's the catharsis we chase.",
   },
   {
     number: "05",
-    subtitle: "Caph — The Crown",
-    title: "Taking your throne.",
-    body: "The final ascent. Your brand rises into permanent position — commanding, distinctive, and quietly sovereign. Not just seen, but remembered forever.",
+    subtitle: "Caph — The Growth",
+    title: "We stay as the story takes root.",
+    body: "The katha doesn't end at launch. We stay in orbit — watching how your brand lands, sharpening what resonates, amplifying what finds its people. Long after delivery, we're still invested in the truth we set free together.",
   },
 ];
 
@@ -77,8 +84,8 @@ const BG_STARS = Array.from({ length: 280 }, (_, i) => {
   const layer = i % 3; // 3 depth layers for parallax
 
   return {
-    x: hx * 4,
-    y: hy * 5,
+    x: hx * 2.3,
+    y: hy * 2.6,
     r: 0.5 + ((i * 31) % 8) * 0.35,
     delay: parseFloat((((i * 43) % 60) / 10).toFixed(1)),
     dur: parseFloat((2.0 + ((i * 17) % 8) * 0.6).toFixed(1)),
@@ -92,7 +99,7 @@ const BG_STARS = Array.from({ length: 280 }, (_, i) => {
 const INTRO_STARS = Array.from({ length: 220 }, (_, i) => {
   const hx = ((i * 4973 + 811) % 10000) / 100;
   const hy = ((i * 3571 + 2143) % 10000) / 100;
-  const sizeVariant = ((i * 157) % 5);
+  const sizeVariant = (i * 157) % 5;
 
   // Size tiers for depth perception
   let sizeBase = 1.2;
@@ -159,10 +166,15 @@ export default function CassiopeiaConstellation() {
       lineRefs.current.forEach((el) => {
         if (el) {
           const len = el.getTotalLength();
-          gsap.set(el, { strokeDasharray: len, strokeDashoffset: len, opacity: 0 });
+          gsap.set(el, {
+            strokeDasharray: len,
+            strokeDashoffset: len,
+            opacity: 0,
+          });
         }
       });
-      if (finalRef.current) gsap.set(finalRef.current, { opacity: 0, scale: 0.95 });
+      if (finalRef.current)
+        gsap.set(finalRef.current, { opacity: 0, scale: 0.95 });
       if (introRef.current) gsap.set(introRef.current, { opacity: 1, y: 0 });
 
       // ── Master timeline ──
@@ -170,7 +182,7 @@ export default function CassiopeiaConstellation() {
         scrollTrigger: {
           trigger: pin,
           start: "top top",
-          end: () => "+=" + window.innerHeight * 12, // Extended for star convergence
+          end: () => "+=" + window.innerHeight * 10,
           pin: true,
           scrub: 0.8,
           invalidateOnRefresh: true,
@@ -197,44 +209,75 @@ export default function CassiopeiaConstellation() {
 
       // Select first 50 stars to form the traveling journey point
       const journeyStarCount = 50;
-      const journeyIndices = Array.from({ length: journeyStarCount }, (_, i) => i);
+      const journeyIndices = Array.from(
+        { length: journeyStarCount },
+        (_, i) => i,
+      );
 
       // First convergence: stars gather at first constellation point (viewport center area)
       journeyIndices.forEach((i) => {
         const el = introStarRefs.current[i];
         if (el) {
-          tl.to(el, {
-            left: "50%",
-            top: "50%",
-            opacity: 0.9,
-            scale: 0.5,
-            duration: CONVERGE_DURATION * 0.8,
-            ease: "power2.inOut",
-          }, t);
+          tl.to(
+            el,
+            {
+              left: "50%",
+              top: "50%",
+              opacity: 0.9,
+              scale: 0.5,
+              duration: CONVERGE_DURATION * 0.8,
+              ease: "power2.inOut",
+            },
+            t,
+          );
         }
       });
 
       // Fade out intro title/text
-      tl.to(introRef.current, {
-        opacity: 0, y: -20, duration: CONVERGE_DURATION * 0.6, ease: "power2.inOut",
-      }, t + 0.2);
+      tl.to(
+        introRef.current,
+        {
+          opacity: 0,
+          y: -20,
+          duration: CONVERGE_DURATION * 0.6,
+          ease: "power2.inOut",
+        },
+        t + 0.2,
+      );
 
       t += CONVERGE_DURATION;
 
       // ── Phase 1: First slide appears, journey point established ──
       // First slide enters
-      tl.to(slideRefs.current[0], {
-        opacity: 1, scale: 1, y: 0, duration: 1.0, ease: "power3.out",
-      }, t);
+      tl.to(
+        slideRefs.current[0],
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 1.0,
+          ease: "power3.out",
+        },
+        t,
+      );
 
       // Journey point solidifies at first constellation point
-      tl.to(starDotRefs.current[0], {
-        opacity: 1, scale: 1.2, duration: 0.6, ease: "back.out(2)",
-      }, t + 0.3);
+      tl.to(
+        starDotRefs.current[0],
+        {
+          opacity: 1,
+          scale: 1.2,
+          duration: 0.6,
+          ease: "back.out(2)",
+        },
+        t + 0.3,
+      );
 
-      gsap.to(starDotRefs.current[0], {
-        scale: 1, duration: 0.4, ease: "power2.inOut", delay: t + 0.8,
-      });
+      tl.to(starDotRefs.current[0], {
+        scale: 1,
+        duration: 0.4,
+        ease: "power2.inOut",
+      }, t + 0.8);
 
       t += 1.6 + HOLD;
 
@@ -250,62 +293,122 @@ export default function CassiopeiaConstellation() {
           const el = introStarRefs.current[starIdx];
           if (el) {
             // Keep journey stars centered at viewport center during pan
-            tl.to(el, {
-              left: "50%",
-              top: "50%",
-              opacity: 0.95,
-              scale: 0.6,
-              duration: MOVE * 1.1,
-              ease: "power2.inOut",
-            }, t);
+            tl.to(
+              el,
+              {
+                left: "50%",
+                top: "50%",
+                opacity: 0.95,
+                scale: 0.6,
+                duration: MOVE * 1.1,
+                ease: "power2.inOut",
+              },
+              t,
+            );
           }
         });
 
         // Current slide fades
-        tl.to(currentSlide, {
-          opacity: 0, scale: 0.8, y: -30, duration: MOVE * 0.32, ease: "power2.in",
-        }, t);
+        tl.to(
+          currentSlide,
+          {
+            opacity: 0,
+            scale: 0.8,
+            y: -30,
+            duration: MOVE * 0.32,
+            ease: "power2.in",
+          },
+          t,
+        );
 
         // Smooth pan across the starfield
-        tl.to(canvas, {
-          x: () => -next.x * window.innerWidth,
-          y: () => -next.y * window.innerHeight,
-          duration: MOVE * 1.15,
-          ease: "power2.inOut",
-        }, t);
+        tl.to(
+          canvas,
+          {
+            x: () => -next.x * window.innerWidth,
+            y: () => -next.y * window.innerHeight,
+            duration: MOVE * 1.15,
+            ease: "power2.inOut",
+          },
+          t,
+        );
 
         // Line animation with dramatic reveal
         if (lineRefs.current[i]) {
-          tl.to(lineRefs.current[i], { opacity: 0.8, duration: 0.15 }, t + MOVE * 0.1);
-          tl.to(lineRefs.current[i], {
-            strokeDashoffset: 0, duration: MOVE * 0.9, ease: "power2.inOut",
-          }, t + MOVE * 0.15);
-          tl.to(lineRefs.current[i], { opacity: 0.4, duration: 0.3 }, t + MOVE * 1.0);
+          tl.to(
+            lineRefs.current[i],
+            { opacity: 0.8, duration: 0.15 },
+            t + MOVE * 0.1,
+          );
+          tl.to(
+            lineRefs.current[i],
+            {
+              strokeDashoffset: 0,
+              duration: MOVE * 0.9,
+              ease: "power2.inOut",
+            },
+            t + MOVE * 0.15,
+          );
+          tl.to(
+            lineRefs.current[i],
+            { opacity: 0.4, duration: 0.3 },
+            t + MOVE * 1.0,
+          );
         }
 
         // Next slide enters
-        tl.to(nextSlide, {
-          opacity: 1, scale: 1, y: 0, duration: MOVE * 0.55, ease: "power3.out",
-        }, t + MOVE * 0.5);
+        tl.to(
+          nextSlide,
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: MOVE * 0.55,
+            ease: "power3.out",
+          },
+          t + MOVE * 0.5,
+        );
 
         // Next constellation point ignites
-        tl.to(starDotRefs.current[i + 1], {
-          opacity: 1, scale: 1.3, duration: 0.65, ease: "back.out(2.2)",
-        }, t + MOVE * 0.75);
+        tl.to(
+          starDotRefs.current[i + 1],
+          {
+            opacity: 1,
+            scale: 1.3,
+            duration: 0.65,
+            ease: "back.out(2.2)",
+          },
+          t + MOVE * 0.75,
+        );
 
-        gsap.to(starDotRefs.current[i + 1], {
-          scale: 1, duration: 0.45, ease: "power2.inOut", delay: t + MOVE * 1.4,
-        });
+        tl.to(starDotRefs.current[i + 1], {
+          scale: 1,
+          duration: 0.45,
+          ease: "power2.inOut",
+        }, t + MOVE * 1.4);
 
         t += MOVE * 1.3 + HOLD;
       }
 
       // ── Hide journey stars immediately after reaching 5th point ──
+      // The cas-twinkle CSS animation perpetually drives opacity/transform,
+      // overriding GSAP's inline values. visibility is NOT in the keyframes,
+      // so an inline visibility:hidden cannot be overridden — guaranteed hide.
       journeyIndices.forEach((starIdx) => {
         const el = introStarRefs.current[starIdx];
         if (el) {
-          tl.to(el, { opacity: 0, scale: 0, duration: 0.3, ease: "power2.in" }, t);
-          gsap.set(el, { display: "none", delay: t + 0.4 });
+          tl.to(
+            el,
+            {
+              opacity: 0,
+              scale: 0,
+              "--so": 0,
+              duration: 0.3,
+              ease: "power2.in",
+            },
+            t,
+          );
+          tl.set(el, { visibility: "hidden" }, t + 0.35);
         }
       });
 
@@ -313,15 +416,26 @@ export default function CassiopeiaConstellation() {
 
       // ── Final act — zoom out from center ──
       // Last slide dims and pulls back
-      tl.to(slideRefs.current[4], {
-        opacity: 0, scale: 0.7, y: 40, duration: 1.2, ease: "power2.in",
-      }, t);
+      tl.to(
+        slideRefs.current[4],
+        {
+          opacity: 0,
+          scale: 0.7,
+          y: 40,
+          duration: 1.2,
+          ease: "power2.in",
+        },
+        t,
+      );
 
       // Hide ALL animated star dots completely to avoid duplication with final constellation
       starDotRefs.current.forEach((el) => {
         if (el) {
-          tl.to(el, { opacity: 0, scale: 0, duration: 0.4, ease: "power2.in" }, t);
-          gsap.set(el, { display: "none", delay: t + 0.5 });
+          tl.to(
+            el,
+            { opacity: 0, scale: 0, duration: 0.4, ease: "power2.in" },
+            t,
+          );
         }
       });
 
@@ -331,8 +445,8 @@ export default function CassiopeiaConstellation() {
       const vh = window.innerHeight;
       const availH = vh - NAV_H - 60;
       const availW = vw - 80;
-      const canvasW = vw * 4;  // 400vw
-      const canvasH = vh * 5;  // 500vh
+      const canvasW = vw * 2.3; // 230vw
+      const canvasH = vh * 2.6; // 260vh
 
       // Scale to fit constellation within available space
       const finalScale = Math.min(availH / canvasH, availW / canvasW);
@@ -345,20 +459,31 @@ export default function CassiopeiaConstellation() {
 
       // Zoom out effect: scale from current position to fit-all view
       // Keep transform origin at center for proper zoom behavior
-      tl.to(canvas, {
-        scale: finalScale,
-        x: finalX,
-        y: finalY,
-        transformOrigin: "center center",
-        duration: 3.0,
-        ease: "power3.inOut",
-      }, t + 0.2);
+      tl.to(
+        canvas,
+        {
+          scale: finalScale,
+          x: finalX,
+          y: finalY,
+          transformOrigin: "center center",
+          duration: 3.0,
+          ease: "power3.inOut",
+        },
+        t + 0.2,
+      );
 
       // Final constellation text emerges with elegance
       if (finalRef.current) {
-        tl.to(finalRef.current, {
-          opacity: 1, scale: 1, duration: 1.6, ease: "power2.out",
-        }, t + 2.2);
+        tl.to(
+          finalRef.current,
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 1.6,
+            ease: "power2.out",
+          },
+          t + 2.2,
+        );
       }
 
       return () => {
@@ -371,7 +496,13 @@ export default function CassiopeiaConstellation() {
   }, []);
 
   return (
-    <section style={{ background: "var(--background)", position: "relative", overflow: "hidden" }}>
+    <section
+      style={{
+        background: "var(--background)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
       <style>{`
         .cas-pin {
           position: relative;
@@ -382,8 +513,8 @@ export default function CassiopeiaConstellation() {
         .cas-canvas {
           position: absolute;
           top: 0; left: 0;
-          width: 400vw;   /* 4 screens wide (slanted W) */
-          height: 500vh;  /* 5 screens tall */
+          width: 230vw;   /* max slide x=1.3 + 1 slide width */
+          height: 260vh;  /* max slide y=1.6 + 1 slide height */
           will-change: transform;
           transform-origin: center center;
         }
@@ -554,7 +685,7 @@ export default function CassiopeiaConstellation() {
           z-index: 0;
         }
 
-        /* Final overlay */
+        /* Final overlay — top padding clears the floating navbar */
         .cas-final {
           position: absolute;
           inset: 0;
@@ -564,36 +695,43 @@ export default function CassiopeiaConstellation() {
           justify-content: center;
           z-index: 20;
           pointer-events: none;
+          padding: 110px 1rem 1.5rem;
+          box-sizing: border-box;
+          overflow: hidden;
         }
         .cas-final-svg {
-          width: min(50vh, 320px);
+          width: min(56vw, 440px);
+          max-height: 32vh;
           height: auto;
+          flex-shrink: 1;
+          min-height: 0;
           filter: drop-shadow(0 0 24px rgba(184, 139, 255, 0.25));
         }
         .cas-final-title {
-          font-size: clamp(1.8rem, 4.2vw, 3.2rem);
+          font-size: clamp(1.5rem, 3.2vw, 2.4rem);
           font-weight: 800;
           color: var(--foreground);
           text-align: center;
-          margin-top: 2.2rem;
+          margin-top: 1.2rem;
           letter-spacing: -0.02em;
           line-height: 1.1;
           font-family: "Geologica", sans-serif;
         }
         .cas-final-sub {
-          font-size: 0.75rem;
+          font-size: 0.72rem;
           color: #E382FF;
           letter-spacing: 0.35em;
           text-transform: uppercase;
-          margin-top: 0.8rem;
+          margin-top: 0.5rem;
           font-weight: 600;
+          text-align: center;
         }
         .cas-final-body {
           font-size: clamp(0.9rem, 1.3vw, 1.1rem);
           color: var(--textColor, rgba(255,255,255,0.65));
           text-align: center;
           max-width: 32rem;
-          margin-top: 1.2rem;
+          margin-top: 0.9rem;
           line-height: 1.8;
           padding: 0 1.2rem;
           font-weight: 300;
@@ -624,40 +762,66 @@ export default function CassiopeiaConstellation() {
       `}</style>
 
       {/* Spacer to clear the fixed navbar */}
-      <div style={{ height: '80px' }} />
+      <div style={{ height: "80px" }} />
 
       {/* Pinned viewport — one screen */}
       <div ref={pinRef} className="cas-pin">
-
         {/* Intro: scattered starfield with title */}
-        <div ref={introRef} style={{
-          position: 'absolute', inset: 0, zIndex: 15,
-          display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center',
-          textAlign: 'center', padding: '2rem',
-          pointerEvents: 'none',
-          background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(81,60,213,0.02) 100%)',
-        }}>
-          <div style={{ marginBottom: '0.5rem' }}>
-            <h2 style={{
-              fontSize: 'clamp(2.2rem, 6vw, 4rem)',
-              fontWeight: 800,
-              color: 'var(--foreground)',
-              marginBottom: '0.5rem',
-              letterSpacing: '-0.02em',
-              fontFamily: '"Geologica", sans-serif',
-            }}>The Cassiopeia Path</h2>
+        <div
+          ref={introRef}
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 15,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            padding: "2rem",
+            pointerEvents: "none",
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(81,60,213,0.02) 100%)",
+          }}
+        >
+          <div style={{ marginBottom: "0.5rem" }}>
+            <h2
+              style={{
+                fontSize: "clamp(2.2rem, 6vw, 4rem)",
+                fontWeight: 800,
+                color: "var(--foreground)",
+                marginBottom: "0.5rem",
+                letterSpacing: "-0.02em",
+                fontFamily: '"Geologica", sans-serif',
+              }}
+            >
+              Our Approach
+            </h2>
           </div>
-          <p style={{
-            fontSize: '0.75rem', fontWeight: 600,
-            letterSpacing: '0.4em', textTransform: 'uppercase',
-            color: '#E382FF', marginBottom: '1.2rem',
-          }}>कैसिओपिया — The Sovereign Shape</p>
-          <p style={{
-            fontSize: 'clamp(0.9rem, 1.4vw, 1.1rem)',
-            color: 'var(--textColor, rgba(255,255,255,0.6))',
-            maxWidth: '32rem', lineHeight: 1.8, fontWeight: 300,
-          }}>Five points trace the queen&apos;s throne across the sky. Scroll to follow the path from scattered noise to sovereign constellation.</p>
+          <p
+            style={{
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              letterSpacing: "0.4em",
+              textTransform: "uppercase",
+              color: "#E382FF",
+              marginBottom: "1.2rem",
+            }}
+          >
+            Cassiopeia — The Kathart Path
+          </p>
+          <p
+            style={{
+              fontSize: "clamp(0.9rem, 1.4vw, 1.1rem)",
+              color: "var(--textColor, rgba(255,255,255,0.6))",
+              maxWidth: "32rem",
+              lineHeight: 1.8,
+              fontWeight: 300,
+            }}
+          >
+            Five steps trace how we work. Scroll to follow our path from hunting
+            your story to watching it take root forever.
+          </p>
         </div>
 
         {/* Intro scattered stars — animates to constellation points */}
@@ -671,34 +835,42 @@ export default function CassiopeiaConstellation() {
               left: `${star.left}%`,
               width: `${star.s}px`,
               height: `${star.s}px`,
-              '--so': star.o,
-              '--delay': `${star.d}s`,
-              '--dur': `${star.dur}s`,
+              "--so": star.o,
+              "--delay": `${star.d}s`,
+              "--dur": `${star.dur}s`,
               zIndex: 1,
-              position: 'absolute',
+              position: "absolute",
             }}
           />
         ))}
 
         {/* Mega-canvas that gets panned */}
         <div ref={canvasRef} className="cas-canvas">
-
-          {/* Nebula ambience */}
-          <div className="cas-nebula" style={{
-            width: '45vw', height: '45vw',
-            background: 'radial-gradient(circle, rgba(184,139,255,0.05) 0%, transparent 70%)',
-            left: '15vw', top: '15vh',
-          }} />
-          <div className="cas-nebula" style={{
-            width: '40vw', height: '40vw',
-            background: 'radial-gradient(circle, rgba(227,130,255,0.04) 0%, transparent 70%)',
-            left: '110vw', top: '160vh',
-          }} />
-          <div className="cas-nebula" style={{
-            width: '55vw', height: '55vw',
-            background: 'radial-gradient(circle, rgba(81,60,213,0.06) 0%, transparent 70%)',
-            left: '20vw', top: '320vh',
-          }} />
+          {/* Nebula ambience — centred near each group of the W path */}
+          <div
+            className="cas-nebula"
+            style={{
+              width: "36vw", height: "36vw",
+              background: "radial-gradient(circle, rgba(184,139,255,0.05) 0%, transparent 70%)",
+              left: "30vw", top: "30vh",   /* near P1 */
+            }}
+          />
+          <div
+            className="cas-nebula"
+            style={{
+              width: "34vw", height: "34vw",
+              background: "radial-gradient(circle, rgba(227,130,255,0.04) 0%, transparent 70%)",
+              left: "80vw", top: "110vh",  /* near P2–P3 */
+            }}
+          />
+          <div
+            className="cas-nebula"
+            style={{
+              width: "44vw", height: "44vw",
+              background: "radial-gradient(circle, rgba(81,60,213,0.06) 0%, transparent 70%)",
+              left: "135vw", top: "165vh", /* near P4–P5 */
+            }}
+          />
 
           {/* Background stars */}
           {BG_STARS.map((star, i) => (
@@ -710,17 +882,17 @@ export default function CassiopeiaConstellation() {
                 top: `${star.y}%`,
                 width: `${star.r * 2}px`,
                 height: `${star.r * 2}px`,
-                '--so': star.opacity,
-                '--delay': `${star.delay}s`,
-                '--dur': `${star.dur}s`,
+                "--so": star.opacity,
+                "--delay": `${star.delay}s`,
+                "--dur": `${star.dur}s`,
               }}
             />
           ))}
 
-          {/* Constellation lines SVG (viewBox matches canvas proportion: 200 × 500) */}
+          {/* Constellation lines SVG — viewBox must match canvas: 230vw × 260vh */}
           <svg
             className="cas-lines-svg"
-            viewBox="0 0 400 500"
+            viewBox="0 0 230 260"
             preserveAspectRatio="none"
           >
             <defs>
@@ -755,8 +927,8 @@ export default function CassiopeiaConstellation() {
               ref={(el) => (starDotRefs.current[i] = el)}
               className="cas-star-dot"
               style={{
-                left:  `calc(${pos.x * 100}vw + 50vw - 7px)`,
-                top:   `calc(${pos.y * 100}vh + 50vh - 7px)`,
+                left: `calc(${pos.x * 100}vw + 50vw - 7px)`,
+                top: `calc(${pos.y * 100}vh + 50vh - 7px)`,
               }}
             />
           ))}
@@ -771,7 +943,7 @@ export default function CassiopeiaConstellation() {
                 className="cas-slide"
                 style={{
                   left: `${pos.x * 100}vw`,
-                  top:  `${pos.y * 100}vh`,
+                  top: `${pos.y * 100}vh`,
                 }}
               >
                 <div className="cas-slide-inner">
@@ -795,17 +967,29 @@ export default function CassiopeiaConstellation() {
 
         {/* ── Final constellation overlay ── */}
         <div ref={finalRef} className="cas-final">
-          <svg className="cas-final-svg" viewBox="0 0 400 500" fill="none">
+          <svg className="cas-final-svg" viewBox="0 0 593 427" fill="none">
             <defs>
               <linearGradient id="cas-fg" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#B88BFF" />
                 <stop offset="40%" stopColor="#E382FF" />
                 <stop offset="100%" stopColor="#FF9F7F" />
               </linearGradient>
-              <filter id="cas-glow" x="-80%" y="-80%" width="260%" height="260%">
+              <filter
+                id="cas-glow"
+                x="-80%"
+                y="-80%"
+                width="260%"
+                height="260%"
+              >
                 <feGaussianBlur stdDeviation="4" />
               </filter>
-              <filter id="cas-core-glow" x="-60%" y="-60%" width="220%" height="220%">
+              <filter
+                id="cas-core-glow"
+                x="-60%"
+                y="-60%"
+                width="220%"
+                height="220%"
+              >
                 <feGaussianBlur stdDeviation="2" />
               </filter>
               <radialGradient id="cas-sg" cx="50%" cy="50%" r="50%">
@@ -818,48 +1002,93 @@ export default function CassiopeiaConstellation() {
                 <stop offset="70%" stopColor="#B88BFF" />
                 <stop offset="100%" stopColor="#8855FF" />
               </radialGradient>
+              <radialGradient id="cas-bg-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#B88BFF" stopOpacity="0.09" />
+                <stop offset="55%" stopColor="#E382FF" stopOpacity="0.05" />
+                <stop offset="100%" stopColor="#B88BFF" stopOpacity="0" />
+              </radialGradient>
             </defs>
 
-            {/* Constellation backdrop nebula glow */}
-            <circle cx={200} cy={250} r={180} fill="url(#cas-fg)" opacity={0.04} />
+            {/* Constellation backdrop nebula glow — radial fade, fits inside viewBox */}
+            <ellipse
+              cx={296}
+              cy={213}
+              rx={293}
+              ry={210}
+              fill="url(#cas-bg-glow)"
+            />
 
-            {/* Slanted W polyline with rich gradient */}
+            {/* Cassiopeia W traced from the reference illustration */}
             <polyline
-              points="50,50 250,150 150,250 350,350 250,450"
+              points="30,30 142,215 300,206 385,397 563,275"
               stroke="url(#cas-fg)"
               strokeWidth="2.2"
               strokeLinecap="round"
               strokeLinejoin="round"
               fill="none"
               opacity={0.9}
-              style={{ filter: 'drop-shadow(0 0 8px rgba(184, 139, 255, 0.4))' }}
+              style={{
+                filter: "drop-shadow(0 0 8px rgba(184, 139, 255, 0.4))",
+              }}
             />
 
-            {/* Star nodes with enhanced glow */}
+            {/* Star nodes with enhanced glow — P4 is the brightest, as in the reference */}
             {[
-              { cx: 50, cy: 50 },
-              { cx: 250, cy: 150 },
-              { cx: 150, cy: 250 },
-              { cx: 350, cy: 350 },
-              { cx: 250, cy: 450 },
+              { cx: 30,  cy: 30,  r: 1    },  // P1 — top-left, highest
+              { cx: 142, cy: 215, r: 0.9  },  // P2 — first dip
+              { cx: 300, cy: 206, r: 1    },  // P3 — flat across
+              { cx: 385, cy: 397, r: 1.45 },  // P4 — lowest, brightest star
+              { cx: 563, cy: 275, r: 1.1  },  // P5 — rising tail
             ].map((s, i) => (
               <g key={i}>
                 {/* Outer nebula halo */}
-                <circle cx={s.cx} cy={s.cy} r={20} fill="#B88BFF" opacity={0.08} filter="url(#cas-glow)" />
+                <circle
+                  cx={s.cx}
+                  cy={s.cy}
+                  r={24 * s.r}
+                  fill="#B88BFF"
+                  opacity={0.08}
+                  filter="url(#cas-glow)"
+                />
                 {/* Mid glow */}
-                <circle cx={s.cx} cy={s.cy} r={12} fill="#E382FF" opacity={0.15} filter="url(#cas-core-glow)" />
+                <circle
+                  cx={s.cx}
+                  cy={s.cy}
+                  r={14 * s.r}
+                  fill="#E382FF"
+                  opacity={0.15}
+                  filter="url(#cas-core-glow)"
+                />
                 {/* Star surface */}
-                <circle cx={s.cx} cy={s.cy} r={7} fill="url(#cas-star-core)" opacity={0.95} />
+                <circle
+                  cx={s.cx}
+                  cy={s.cy}
+                  r={8 * s.r}
+                  fill="url(#cas-star-core)"
+                  opacity={0.95}
+                />
                 {/* Bright core */}
-                <circle cx={s.cx} cy={s.cy} r={3.5} fill="#ffffff" opacity={0.8} />
+                <circle
+                  cx={s.cx}
+                  cy={s.cy}
+                  r={4 * s.r}
+                  fill="#ffffff"
+                  opacity={0.8}
+                />
                 {/* Sparkle point */}
-                <circle cx={s.cx} cy={s.cy} r={1.2} fill="#ffffff" opacity={1} />
+                <circle
+                  cx={s.cx}
+                  cy={s.cy}
+                  r={1.4 * s.r}
+                  fill="#ffffff"
+                  opacity={1}
+                />
                 {/* Star name with Sanskrit */}
                 <text
-                  x={s.cx + (i % 2 === 0 ? -18 : 18)}
-                  y={s.cy - 8}
+                  x={s.cx + (i % 2 === 0 ? -22 : 22)}
+                  y={s.cy - 10}
                   textAnchor={i % 2 === 0 ? "end" : "start"}
-                  fontSize="6.5"
+                  fontSize="9.5"
                   fontFamily="Questrial, sans-serif"
                   letterSpacing="0.8"
                   fill="#B88BFF"
@@ -870,10 +1099,10 @@ export default function CassiopeiaConstellation() {
                 </text>
                 {/* Sanskrit below */}
                 <text
-                  x={s.cx + (i % 2 === 0 ? -18 : 18)}
-                  y={s.cy + 6}
+                  x={s.cx + (i % 2 === 0 ? -22 : 22)}
+                  y={s.cy + 8}
                   textAnchor={i % 2 === 0 ? "end" : "start"}
-                  fontSize="4.5"
+                  fontSize="7"
                   fontFamily="Arial, sans-serif"
                   fill="#E382FF"
                   opacity="0.65"
@@ -885,14 +1114,54 @@ export default function CassiopeiaConstellation() {
             ))}
           </svg>
 
-          <h3 className="cas-final-title">The Queen&apos;s Throne</h3>
-          <span className="cas-final-sub">कैसिओपिया — The Sovereign Shape</span>
-          <p className="cas-final-body">
-            What was once scattered is now sovereign. Five truths, one throne.
-            Your brand&apos;s constellation — permanent, undeniable, and forever visible in the sky.
-          </p>
+          <h3 className="cas-final-title">Our Approach</h3>
+          <span className="cas-final-sub">
+            The Kathart Path — Five Steps, One Truth
+          </span>
+          <div
+            className="cas-final-body"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.55rem",
+              textAlign: "left",
+              maxWidth: "28rem",
+            }}
+          >
+            {SLIDE_CONTENT.map((s, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "0.75rem",
+                }}
+              >
+                <span
+                  style={{
+                    color: "#E382FF",
+                    fontWeight: 700,
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.1em",
+                    minWidth: "1.6rem",
+                    paddingTop: "0.18rem",
+                  }}
+                >
+                  0{i + 1}
+                </span>
+                <span
+                  style={{
+                    color: "var(--foreground)",
+                    fontWeight: 500,
+                    fontSize: "clamp(0.8rem, 1.2vw, 0.95rem)",
+                  }}
+                >
+                  {s.title}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
-
       </div>
     </section>
   );
