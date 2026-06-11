@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { insert, PatchEvent, ArrayOfObjectsInputMember } from "sanity";
 import { randomKey } from "@sanity/util/content";
 import {
@@ -120,17 +120,41 @@ function IconVideo() {
   );
 }
 
+function IconGif() {
+  return (
+    <svg viewBox="0 0 88 60" fill="none" width="88" height="60">
+      <rect width="88" height="60" rx="4" fill="url(#gg)" />
+      <rect x="6" y="6" width="76" height="48" rx="3" fill="white" fillOpacity=".08" />
+      {/* Film strip holes */}
+      <rect x="8" y="10" width="6" height="6" rx="1.5" fill="white" fillOpacity=".25" />
+      <rect x="8" y="27" width="6" height="6" rx="1.5" fill="white" fillOpacity=".25" />
+      <rect x="8" y="44" width="6" height="6" rx="1.5" fill="white" fillOpacity=".25" />
+      <rect x="74" y="10" width="6" height="6" rx="1.5" fill="white" fillOpacity=".25" />
+      <rect x="74" y="27" width="6" height="6" rx="1.5" fill="white" fillOpacity=".25" />
+      <rect x="74" y="44" width="6" height="6" rx="1.5" fill="white" fillOpacity=".25" />
+      {/* GIF text */}
+      <text x="44" y="37" fontSize="18" fontWeight="800" fill="white" textAnchor="middle" fontFamily="monospace" letterSpacing="2">GIF</text>
+      <defs>
+        <linearGradient id="gg" x1="0" y1="0" x2="88" y2="60" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#E7435C" /><stop offset="1" stopColor="#A0206C" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
 // ─── Block type registry ─────────────────────────────────────────────────────
 
 const BLOCK_TYPES = [
-  { name: "pb_hero",    label: "Hero",        desc: "Full-bleed or split image hero", Icon: IconHero    },
-  { name: "pb_text",    label: "Text",         desc: "Narrative text with layout",     Icon: IconText    },
-  { name: "pb_media",   label: "Image",        desc: "Full-width single image",        Icon: IconMedia   },
-  { name: "pb_split",   label: "Side by Side", desc: "Two images with ratio control",  Icon: IconSplit   },
-  { name: "pb_grid",    label: "Grid",         desc: "Image gallery, 2–3 columns",     Icon: IconGrid    },
-  { name: "pb_metrics", label: "Metrics",      desc: "Stats row with values + labels", Icon: IconMetrics },
-  { name: "pb_quote",   label: "Pull Quote",   desc: "Large editorial pull quote",     Icon: IconQuote   },
-  { name: "pb_video",   label: "Video",        desc: "YouTube or Vimeo embed",         Icon: IconVideo   },
+  { name: "pb_hero",    label: "Hero",        desc: "Full-bleed or split image hero",  Icon: IconHero    },
+  { name: "pb_text",    label: "Text",        desc: "Narrative text with layout",      Icon: IconText    },
+  { name: "pb_media",   label: "Image",       desc: "Full-width single image",         Icon: IconMedia   },
+  { name: "pb_split",   label: "Side by Side",desc: "Two images with ratio control",   Icon: IconSplit   },
+  { name: "pb_grid",    label: "Grid",        desc: "Image gallery, 2–3 columns",      Icon: IconGrid    },
+  { name: "pb_metrics", label: "Metrics",     desc: "Stats row with values + labels",  Icon: IconMetrics },
+  { name: "pb_quote",   label: "Pull Quote",  desc: "Large editorial pull quote",      Icon: IconQuote   },
+  { name: "pb_video",   label: "Video",       desc: "Embed or upload a video file",    Icon: IconVideo   },
+  { name: "pb_gif",     label: "Animated GIF",desc: "Upload a looping .gif file",      Icon: IconGif     },
 ];
 
 const TYPE_LABEL = Object.fromEntries(BLOCK_TYPES.map((b) => [b.name, b.label]));
@@ -294,12 +318,13 @@ function SortableItem({ id, member, renderProps }) {
 
 export function PageBuilderInput(props) {
   const {
-    onChange, members = [], onMoveItem,
+    onChange, members = [], onMoveItem, onItemOpen, path = [],
     renderAnnotation, renderBlock, renderField,
     renderInlineBlock, renderInput, renderItem, renderPreview,
   } = props;
 
   const [activePicker, setActivePicker] = useState(null); // null | 'empty' | 'bottom' | memberKey
+  const [pendingOpenKey, setPendingOpenKey] = useState(null);
 
   const renderProps = { renderAnnotation, renderBlock, renderField, renderInlineBlock, renderInput, renderItem, renderPreview };
 
@@ -309,12 +334,27 @@ export function PageBuilderInput(props) {
 
   const addBlock = useCallback(
     (typeName) => {
-      const newItem = { _type: typeName, _key: randomKey(12) };
-      onChange(PatchEvent.from(insert([newItem], "after", [-1])));
+      const key = randomKey(12);
+      onChange(PatchEvent.from(insert([{ _type: typeName, _key: key }], "after", [-1])));
       setActivePicker(null);
+      setPendingOpenKey(key);
     },
     [onChange]
   );
+
+  // Once the new member appears in the list, open it.
+  // onItemOpen expects the FULL absolute path from document root ([...path, {_key}]),
+  // not just [{_key}] — confirmed from Sanity source (onItemOpen → onPathOpen(absolutePath)).
+  useEffect(() => {
+    if (!pendingOpenKey) return;
+    const member = members.find((m) => m.kind === "item" && m.key === pendingOpenKey);
+    if (!member) return;
+    const key = pendingOpenKey;
+    setPendingOpenKey(null);
+    if (typeof onItemOpen === "function") {
+      onItemOpen([...path, { _key: key }]);
+    }
+  }, [members, pendingOpenKey, onItemOpen, path]);
 
   function handleDragEnd({ active, over }) {
     if (!over || active.id === over.id) return;

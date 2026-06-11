@@ -7,6 +7,7 @@ import galleryGrid from "./blocks/galleryGrid";
 import metricsRow from "./blocks/metricsRow";
 import pullQuote from "./blocks/pullQuote";
 import videoEmbed from "./blocks/videoEmbed";
+import gifUpload from "./blocks/gifUpload";
 
 export const schemaTypes = [
   project,
@@ -18,4 +19,5 @@ export const schemaTypes = [
   metricsRow,
   pullQuote,
   videoEmbed,
+  gifUpload,
 ];

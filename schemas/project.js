@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { PageBuilderInput } from "../studio/components/PageBuilderInput";
 import { ProjectEditor } from "../studio/components/ProjectEditor";
 import { CreativeFieldInput } from "../studio/components/CreativeFieldInput";
+import { TagsInput } from "../studio/components/TagsInput";
 
 export default defineType({
   name: "project",
@@ -36,17 +37,19 @@ export default defineType({
     defineField({
       name: "category",
       title: "Creative Field",
-      description: "Pick an existing field or add a new one.",
-      type: "string",
+      description: "Pick one or more fields, or type to add a new one.",
+      type: "array",
+      of: [{ type: "string" }],
       components: { input: CreativeFieldInput },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.min(1).error("At least one creative field is required."),
     }),
     defineField({
       name: "tags",
       title: "Tags",
+      description: "Select from existing tags or type to add a new one.",
       type: "array",
       of: [{ type: "string" }],
-      options: { layout: "tags" },
+      components: { input: TagsInput },
     }),
     defineField({
       name: "description",
@@ -72,10 +75,18 @@ export default defineType({
         { type: "pb_metrics" },
         { type: "pb_quote" },
         { type: "pb_video" },
+        { type: "pb_gif" },
       ],
     }),
   ],
   preview: {
     select: { title: "title", media: "coverImage", subtitle: "category" },
+    prepare({ title, media, subtitle }) {
+      return {
+        title,
+        media,
+        subtitle: Array.isArray(subtitle) ? subtitle.join(", ") : subtitle,
+      };
+    },
   },
 });

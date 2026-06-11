@@ -61,7 +61,7 @@ export function ProjectEditor(props) {
             {value?.title || "Untitled project"}
           </div>
           <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", marginTop: "2px" }}>
-            {value?.category ? `${value.category} · ` : ""}Project Editor
+            {value?.category ? `${Array.isArray(value.category) ? value.category.join(", ") : value.category} · ` : ""}Project Editor
           </div>
         </div>
       </div>

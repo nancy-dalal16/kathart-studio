@@ -139,7 +139,8 @@ function StatChip({ icon, value }) {
 function ProjectCard({ p, onOpen }) {
   const [hover, setHover] = useState(false);
   const initials = (p.title || "U").slice(0, 2).toUpperCase();
-  const color = catColor(p.category);
+  const categoryLabel = Array.isArray(p.category) ? p.category.join(", ") : (p.category || "");
+  const color = catColor(Array.isArray(p.category) ? p.category[0] : p.category);
 
   return (
     <article
@@ -244,16 +245,16 @@ function ProjectCard({ p, onOpen }) {
             fontSize: "12px", color: "#6B6B7B", flex: 1,
             whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
           }}>
-            {p.category || "Uncategorized"}
+            {categoryLabel || "Uncategorized"}
           </span>
 
-          {p.category && (
+          {categoryLabel && (
             <span style={{
               flexShrink: 0, fontSize: "10px", fontWeight: 700,
               color: color, background: `${color}18`,
               padding: "2px 7px", borderRadius: "100px",
             }}>
-              {p.category}
+              {categoryLabel}
             </span>
           )}
         </div>
@@ -360,7 +361,7 @@ export default function BehanceDashboard({ onOpen, onCreate }) {
       list = list.filter(
         (p) =>
           (p.title    || "").toLowerCase().includes(q) ||
-          (p.category || "").toLowerCase().includes(q)
+          (Array.isArray(p.category) ? p.category.join(" ") : (p.category || "")).toLowerCase().includes(q)
       );
     }
     return list;
