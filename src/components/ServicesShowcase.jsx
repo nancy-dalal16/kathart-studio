@@ -75,215 +75,242 @@ const services = [
   },
 ];
 
-const TRACK_VH = 200; // more scroll distance = more reading time per service
-const ROW_H = "65vh"; // taller rows = more breathing room between the two visible titles
+// Each service gets TRACK_VH of scroll space.
+// +100 ensures the sticky panel fully unsticks only after the last exit completes.
+const TRACK_VH = 250;
+const ROW_H = 50; // vh — two rows visible: one full + one peeking
+const SCRUB = 1.5;
+
+// Normalised positions within each service's 0→1 timeline progress
+const T_ENTER_END = 0.36; // image fully in position
+const T_HOLD_END = 0.65; // hold ends, exit begins
 
 export default function ServicesShowcase() {
-  const sectionRef = useRef(null);
-  const wrapperRef = useRef(null);
-  const headerRefs = useRef([]);
-  const imageRefs = useRef([]);
-  const overlayRefs = useRef([]);
+  const rootRef = useRef(null);
 
   useEffect(() => {
-    const N = services.length;
-    const wrapper = wrapperRef.current;
-    const headers = headerRefs.current.filter(Boolean);
-    const images = imageRefs.current.filter(Boolean);
-    const overlays = overlayRefs.current.filter(Boolean);
+    const ctx = gsap.context(() => {
+      const outerTrack = rootRef.current.querySelector(".svc-outer-track");
+      const listInner = rootRef.current.querySelector(".svc-list-inner");
+      const imgPanels = [...rootRef.current.querySelectorAll(".svc-img-panel")];
+      const rows = [...rootRef.current.querySelectorAll(".svc-row")];
 
-    // ── Initial state: images stacked below viewport, text offset ──────────
-    gsap.set(wrapper, { y: 0 });
-    gsap.set(headers, { y: 0 });
-    // Images start fully collapsed to a point so they are invisible until activated.
-    // The clipPath expansion creates the "expanding from the title card" effect.
-    gsap.set(images, { y: 0, clipPath: "inset(25% 50% 75% 50% round 0px)" });
-    gsap.set(overlays, { y: 80 }); // text sits 80 px below its resting spot
+      // Anchor initial states so ctx.revert() restores them cleanly
+      gsap.set(listInner, { y: 0 });
+      imgPanels.forEach((panel) => {
+        // Each image waits below the viewport until its service's scroll range begins
+        gsap.set(panel, { yPercent: 100 });
+        gsap.set(panel.querySelectorAll(".svc-ov-item"), { opacity: 0, y: 20 });
+      });
 
-    // ── Timeline — one unit per service ────────────────────────────────────
-    const tl = gsap.timeline();
+      const svh = () => window.innerHeight / 100;
+      const exitDur = 1.0 - T_HOLD_END; // 0.35
 
-    services.forEach((_, i) => {
-      const header = headers[i];
-      const image = images[i];
-      const overlay = overlays[i];
-
-      /*
-       * Timeline is divided into three clear zones per service (1 unit each):
-       *   ENTER  i+0.00 → i+0.36   (~130 vh of scroll)
-       *   HOLD   i+0.36 → i+0.65   (~105 vh — image fully open, nothing moving)
-       *   EXIT   i+0.65 → i+1.00   (~125 vh of scroll)
-       */
-
-      // ── ENTER ─────────────────────────────────────────────────────────────
-      tl.to(
-        header,
-        { y: -70, opacity: 0, ease: "power3.in", duration: 0.12 },
-        i + 0.0,
-      );
-      tl.to(
-        image,
-        {
-          clipPath: "inset(2% 2% 50% 2% round 18px)",
-          ease: "power2.out",
-          duration: 0.12,
+      // ── Single master timeline for list advances ──────────────────────
+      // All advances target the same element (listInner). Putting them in
+      // ONE timeline means GSAP sequences them in order — no creation-time
+      // conflict, no element state being stamped by the "last tween wins" rule.
+      // Each service owns 1 unit of timeline time; totalDuration = N.
+      const listTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: outerTrack,
+          start: "top top",
+          end: () => `top+=${services.length * TRACK_VH * svh()}px top`,
+          scrub: SCRUB,
+          invalidateOnRefresh: true,
         },
-        i + 0.02,
-      );
-      tl.to(
-        image,
-        {
-          clipPath: "inset(0% 0% 0% 0% round 0px)",
-          ease: "power3.inOut",
-          duration: 0.22,
-        },
-        i + 0.12,
-      );
-      tl.to(overlay, { y: 0, ease: "power2.out", duration: 0.12 }, i + 0.24);
+      });
 
-      // ── EXIT (skip for last service) ──────────────────────────────────────
-      if (i < N - 1) {
-        tl.to(overlay, { y: -80, ease: "power2.in", duration: 0.1 }, i + 0.65);
-        tl.to(
-          image,
-          {
-            clipPath: "inset(2% 2% 50% 2% round 18px)",
-            ease: "power3.inOut",
-            duration: 0.14,
+      services.forEach((_, i) => {
+        if (i < services.length - 1) {
+          // Absolute position in the master timeline: service i starts at time i
+          listTl.to(
+            listInner,
+            {
+              y: `-${(i + 1) * ROW_H}vh`,
+              ease: "power2.inOut",
+              duration: exitDur * 0.42,
+            },
+            i + T_HOLD_END + exitDur * 0.55,
+          );
+        }
+      });
+
+      // ── Per-service timelines for images and row headings ────────────
+      // Each targets its own unique elements so separate timelines are safe.
+      services.forEach((_, i) => {
+        const panel = imgPanels[i];
+        const ovItems = panel.querySelectorAll(".svc-ov-item");
+        const rowHead = rows[i].querySelector(".svc-row-head");
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: outerTrack,
+            start: () => `top+=${i * TRACK_VH * svh()}px top`,
+            end: () => `top+=${(i + 1) * TRACK_VH * svh()}px top`,
+            scrub: SCRUB,
+            invalidateOnRefresh: true,
           },
-          i + 0.68,
-        );
+        });
+
+        // ENTER — heading out, image slides up, overlay in
         tl.to(
-          image,
+          rowHead,
           {
-            clipPath: "inset(25% 50% 75% 50% round 0px)",
+            opacity: 0,
+            y: -12,
+            duration: T_ENTER_END * 0.55,
             ease: "power2.in",
-            duration: 0.12,
           },
-          i + 0.8,
+          0,
+        );
+        tl.fromTo(
+          panel,
+          { yPercent: 100 },
+          { yPercent: 0, ease: "power2.inOut", duration: T_ENTER_END },
+          0,
         );
         tl.to(
-          header,
-          { y: 0, opacity: 1, ease: "power3.out", duration: 0.14 },
-          i + 0.74,
+          ovItems,
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.04,
+            duration: 0.1,
+            ease: "power2.out",
+          },
+          T_ENTER_END - 0.04,
         );
-        tl.to(
-          wrapper,
-          { y: `${-(i + 1) * 65}vh`, ease: "power2.inOut", duration: 0.14 },
-          i + 0.86,
-        );
-      }
-    });
 
-    // scrub: 2.5 — animation trails scroll by 2.5 s for a silky, unhurried feel
-    const st = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: "bottom bottom",
-      scrub: 2.5,
-      animation: tl,
-      invalidateOnRefresh: true,
-    });
+        // HOLD — nothing animates
 
-    return () => {
-      st.kill();
-      tl.kill();
-    };
+        // EXIT — last service stays full-screen, no exit tweens
+        if (i < services.length - 1) {
+          tl.to(
+            ovItems,
+            {
+              opacity: 0,
+              y: -12,
+              stagger: 0.02,
+              duration: exitDur * 0.28,
+              ease: "power2.in",
+            },
+            T_HOLD_END,
+          );
+          tl.to(
+            panel,
+            { yPercent: -100, ease: "power2.inOut", duration: exitDur * 0.6 },
+            T_HOLD_END + exitDur * 0.15,
+          );
+          tl.to(
+            rowHead,
+            { opacity: 1, y: 0, duration: exitDur * 0.2, ease: "power2.out" },
+            T_HOLD_END + exitDur * 0.48,
+          );
+        }
+      });
+    }, rootRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      style={{ height: `${services.length * TRACK_VH}vh` }}
-    >
+    <section ref={rootRef} className="relative">
+      {/*
+       * Outer track: tall enough for all services + 100 vh so the sticky panel
+       * fully unsticks only after the last service's exit animation completes.
+       */}
       <div
-        className="sticky top-0 h-screen w-full overflow-hidden"
-        style={{ background: "var(--background)" }}
+        className="svc-outer-track relative"
+        style={{ height: `${services.length * TRACK_VH + 100}vh` }}
       >
-        {/*
-         * IMAGE LAYER — z-[20], slides up from below the viewport.
-         * Because it's above the list layer in z-order, it physically covers
-         * the title rows as it rises, creating a pure-slide transition.
-         */}
-        {services.map((service, i) => (
-          <div
-            key={`img-${service.number}`}
-            ref={(el) => (imageRefs.current[i] = el)}
-            className="absolute inset-0 z-[20]"
-          >
-            <img
-              src={service.img}
-              alt={service.title}
-              className="absolute inset-0 w-full h-full object-cover"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
+        <div
+          className="svc-sticky sticky top-0 h-screen overflow-hidden"
+          style={{ background: "var(--background)" }}
+        >
+          {/* ── Image panels — z:20, full-size, revealed via clip-path ── */}
+          <div className="absolute inset-0" style={{ zIndex: 20 }}>
+            {services.map((service) => (
+              <div
+                key={service.number}
+                className="svc-img-panel absolute inset-0"
+                style={{ willChange: "transform" }}
+              >
+                <img
+                  src={service.img}
+                  alt={service.title}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
 
-            <div
-              ref={(el) => (overlayRefs.current[i] = el)}
-              className="absolute inset-0 flex flex-col justify-end pointer-events-none px-6 sm:px-12 md:px-20 pb-10 sm:pb-14 md:pb-20"
-            >
-              <span className="block text-primary/60 text-[11px] font-semibold tracking-[0.3em] uppercase mb-4 md:mb-5">
-                {service.number}
-              </span>
-              <h3
-                className="font-bold text-white leading-[0.9] mb-3"
-                style={{ fontSize: "clamp(2.2rem, 5.5vw, 5.5rem)" }}
-              >
-                {service.title}
-              </h3>
-              <p className="text-white/65 italic text-base md:text-lg mb-5">
-                {service.tagline}
-              </p>
-              <p
-                className="text-white/80 text-sm md:text-base leading-relaxed mb-7"
-                style={{ maxWidth: "42rem" }}
-              >
-                {service.description}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {service.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1.5 text-[11px] md:text-xs font-medium text-white/85 border border-white/20 rounded-full backdrop-blur-sm"
-                    style={{ background: "rgba(255,255,255,0.07)" }}
-                  >
-                    {tag}
+                {/* Details overlay — bottom-aligned */}
+                <div className="absolute inset-0 flex flex-col justify-end px-8 sm:px-12 md:px-20 pb-12 md:pb-20 pointer-events-none">
+                  <span className="svc-ov-item block text-primary/60 text-[11px] font-semibold tracking-[0.3em] uppercase mb-3">
+                    {service.number}
                   </span>
-                ))}
+                  <h3
+                    className="svc-ov-item font-bold text-white leading-[0.9] mb-3"
+                    style={{ fontSize: "clamp(2.2rem, 5.5vw, 5.5rem)" }}
+                  >
+                    {service.title}
+                  </h3>
+                  <p className="svc-ov-item text-white/65 italic text-base md:text-lg mb-5">
+                    {service.tagline}
+                  </p>
+                  <p
+                    className="svc-ov-item text-white/80 text-sm md:text-base leading-relaxed mb-7"
+                    style={{ maxWidth: "42rem" }}
+                  >
+                    {service.description}
+                  </p>
+                  <div className="svc-ov-item flex flex-wrap gap-2">
+                    {service.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1.5 text-[11px] md:text-xs font-medium text-white/85 border border-white/20 rounded-full backdrop-blur-sm"
+                        style={{ background: "rgba(255,255,255,0.07)" }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
+            ))}
+          </div>
+
+          {/* ── Title list — z:10, slides upward per service ── */}
+          <div
+            className="absolute inset-0 overflow-hidden"
+            style={{ zIndex: 10 }}
+          >
+            <div className="svc-list-inner" style={{ willChange: "transform" }}>
+              {services.map((service) => (
+                <div
+                  key={service.number}
+                  className="svc-row flex flex-col justify-center px-8 sm:px-12 md:px-20 border-b border-border"
+                  style={{ height: `${ROW_H}vh` }}
+                >
+                  <div className="svc-row-head">
+                    <span className="block text-primary text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 md:mb-4">
+                      {service.number}
+                    </span>
+                    <h2
+                      className="font-bold leading-[0.88] text-foreground"
+                      style={{ fontSize: "clamp(2.8rem, 7vw, 7rem)" }}
+                    >
+                      {service.title}
+                    </h2>
+                    <p className="mt-3 text-textColor italic text-base md:text-lg">
+                      {service.tagline}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        ))}
-
-        {/*
-         * LIST LAYER — z-[10], sits behind the image layer.
-         * Each row is 50 vh so exactly two titles fill the viewport at once.
-         * The wrapper translates upward in 50 vh steps to advance the list.
-         */}
-        <div ref={wrapperRef} className="relative z-[10]">
-          {services.map((service, i) => (
-            <div
-              key={service.number}
-              ref={(el) => (headerRefs.current[i] = el)}
-              className="flex flex-col justify-center border-b border-white/10 px-6 sm:px-12 md:px-20"
-              style={{ height: ROW_H, background: "var(--background)" }}
-            >
-              <span className="text-primary text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 md:mb-5">
-                {service.number}
-              </span>
-              <h2
-                className="font-bold text-foreground uppercase tracking-tight leading-[0.88]"
-                style={{ fontSize: "clamp(2.8rem, 7vw, 7rem)" }}
-              >
-                {service.title}
-              </h2>
-              <p className="text-textColor italic mt-3 md:mt-4 text-sm md:text-base opacity-50">
-                {service.tagline}
-              </p>
-            </div>
-          ))}
         </div>
       </div>
     </section>
