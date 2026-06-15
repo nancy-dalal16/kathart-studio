@@ -12,21 +12,39 @@ if (typeof window !== "undefined") {
 // -----------------------------------------------------------------------------
 // ⭐ Marquee Component (No `cn`, fully rewritten)
 // -----------------------------------------------------------------------------
-function Marquee({ children, reverse = false, speed = 30, className = "" }) {
-  // Each copy lives in its own flex group with a trailing padding-right that
-  // matches the inter-logo gap. This makes every group exactly the same width,
-  // so translateX(-50%) lands precisely at the seam — no jump, no blank gap.
+function Marquee({
+  children,
+  reverse = false,
+  speed = 30,
+  repeat = 3,
+  className = "",
+}) {
+  // The track is sized to its content (width: max-content) so translateX(-50%)
+  // is measured against the content — not the viewport — and lands exactly on
+  // the seam between the two identical halves. Each half repeats the logos
+  // `repeat` times so it is always wider than the viewport, meaning the loop
+  // never exposes empty space. animationDuration scales with `repeat` so the
+  // on-screen speed stays constant regardless of how many copies are rendered.
   const groupClass =
     "flex items-center gap-5 sm:gap-8 md:gap-14 lg:gap-16 flex-shrink-0 pr-5 sm:pr-8 md:pr-14 lg:pr-16";
+
+  const half = Array.from({ length: repeat }).map((_, i) => (
+    <React.Fragment key={i}>{children}</React.Fragment>
+  ));
 
   return (
     <div className={`relative overflow-hidden w-full select-none ${className}`}>
       <div
         className={`flex ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}
-        style={{ animationDuration: `${speed}s` }}
+        style={{
+          width: "max-content",
+          animationDuration: `${speed * repeat}s`,
+        }}
       >
-        <div className={groupClass}>{children}</div>
-        <div className={groupClass}>{children}</div>
+        <div className={groupClass}>{half}</div>
+        <div className={groupClass} aria-hidden="true">
+          {half}
+        </div>
       </div>
     </div>
   );

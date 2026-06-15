@@ -123,6 +123,177 @@ const INTRO_STARS = Array.from({ length: 220 }, (_, i) => {
   };
 });
 
+// Final constellation node positions (matches the reference illustration)
+const REVEAL_NODES = [
+  { cx: 30,  cy: 30,  r: 1    },  // P1 — top-left, highest
+  { cx: 142, cy: 215, r: 0.9  },  // P2 — first dip
+  { cx: 300, cy: 206, r: 1    },  // P3 — flat across
+  { cx: 385, cy: 397, r: 1.45 },  // P4 — lowest, brightest star
+  { cx: 563, cy: 275, r: 1.1  },  // P5 — rising tail
+];
+
+// The full constellation "screen" — rendered identically at the opening and
+// the finale. `idp` namespaces the SVG def ids so two copies can coexist.
+function ConstellationReveal({ idp }) {
+  return (
+    <>
+      <svg className="cas-final-svg" viewBox="0 0 593 427" fill="none">
+        <defs>
+          <linearGradient id={`${idp}-fg`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#B88BFF" />
+            <stop offset="40%" stopColor="#E382FF" />
+            <stop offset="100%" stopColor="#FF9F7F" />
+          </linearGradient>
+          <filter id={`${idp}-glow`} x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="4" />
+          </filter>
+          <filter
+            id={`${idp}-core-glow`}
+            x="-60%"
+            y="-60%"
+            width="220%"
+            height="220%"
+          >
+            <feGaussianBlur stdDeviation="2" />
+          </filter>
+          <radialGradient id={`${idp}-star-core`} cx="40%" cy="40%" r="60%">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="70%" stopColor="#B88BFF" />
+            <stop offset="100%" stopColor="#8855FF" />
+          </radialGradient>
+          <radialGradient id={`${idp}-bg-glow`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#B88BFF" stopOpacity="0.09" />
+            <stop offset="55%" stopColor="#E382FF" stopOpacity="0.05" />
+            <stop offset="100%" stopColor="#B88BFF" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        {/* Constellation backdrop nebula glow — radial fade, fits inside viewBox */}
+        <ellipse cx={296} cy={213} rx={293} ry={210} fill={`url(#${idp}-bg-glow)`} />
+
+        {/* Cassiopeia W traced from the reference illustration */}
+        <polyline
+          points="30,30 142,215 300,206 385,397 563,275"
+          stroke={`url(#${idp}-fg)`}
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+          opacity={0.9}
+          style={{ filter: "drop-shadow(0 0 8px rgba(184, 139, 255, 0.4))" }}
+        />
+
+        {/* Star nodes with enhanced glow — P4 is the brightest, as in the reference */}
+        {REVEAL_NODES.map((s, i) => (
+          <g key={i}>
+            {/* Outer nebula halo */}
+            <circle
+              cx={s.cx}
+              cy={s.cy}
+              r={24 * s.r}
+              fill="#B88BFF"
+              opacity={0.08}
+              filter={`url(#${idp}-glow)`}
+            />
+            {/* Mid glow */}
+            <circle
+              cx={s.cx}
+              cy={s.cy}
+              r={14 * s.r}
+              fill="#E382FF"
+              opacity={0.15}
+              filter={`url(#${idp}-core-glow)`}
+            />
+            {/* Star surface */}
+            <circle
+              cx={s.cx}
+              cy={s.cy}
+              r={8 * s.r}
+              fill={`url(#${idp}-star-core)`}
+              opacity={0.95}
+            />
+            {/* Bright core */}
+            <circle cx={s.cx} cy={s.cy} r={4 * s.r} fill="#ffffff" opacity={0.8} />
+            {/* Sparkle point */}
+            <circle cx={s.cx} cy={s.cy} r={1.4 * s.r} fill="#ffffff" opacity={1} />
+            {/* Star name */}
+            <text
+              x={s.cx + (i % 2 === 0 ? -22 : 22)}
+              y={s.cy - 10}
+              textAnchor={i % 2 === 0 ? "end" : "start"}
+              fontSize="9.5"
+              fontFamily="Questrial, sans-serif"
+              letterSpacing="0.8"
+              fill="#B88BFF"
+              opacity="0.9"
+              fontWeight="600"
+            >
+              {STARS[i].name}
+            </text>
+            {/* Sanskrit below */}
+            <text
+              x={s.cx + (i % 2 === 0 ? -22 : 22)}
+              y={s.cy + 8}
+              textAnchor={i % 2 === 0 ? "end" : "start"}
+              fontSize="7"
+              fontFamily="Arial, sans-serif"
+              fill="#E382FF"
+              opacity="0.65"
+              fontStyle="italic"
+            >
+              {STARS[i].sanskrit}
+            </text>
+          </g>
+        ))}
+      </svg>
+
+      <h3 className="cas-final-title">Our Approach</h3>
+      <span className="cas-final-sub">
+        The Kathart Path — Five Steps, One Truth
+      </span>
+      <div
+        className="cas-final-body"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.55rem",
+          textAlign: "left",
+          maxWidth: "28rem",
+        }}
+      >
+        {SLIDE_CONTENT.map((s, i) => (
+          <div
+            key={i}
+            style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}
+          >
+            <span
+              style={{
+                color: "#E382FF",
+                fontWeight: 700,
+                fontSize: "0.7rem",
+                letterSpacing: "0.1em",
+                minWidth: "1.6rem",
+                paddingTop: "0.18rem",
+              }}
+            >
+              0{i + 1}
+            </span>
+            <span
+              style={{
+                color: "var(--foreground)",
+                fontWeight: 500,
+                fontSize: "clamp(0.8rem, 1.2vw, 0.95rem)",
+              }}
+            >
+              {s.title}
+            </span>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export default function CassiopeiaConstellation() {
   const pinRef = useRef(null);
   const canvasRef = useRef(null);
@@ -133,6 +304,7 @@ export default function CassiopeiaConstellation() {
   const starDotRefs = useRef([]);
   const lineRefs = useRef([]);
   const finalRef = useRef(null);
+  const introConstRef = useRef(null); // Opening overlay — same screen as finale
   const [activeSlide, setActiveSlide] = useState(-1);
 
   useEffect(() => {
@@ -143,6 +315,21 @@ export default function CassiopeiaConstellation() {
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 1px)", () => {
+      // ── Fit-all (zoomed-out) transform — shared by the opening overview
+      //    and the closing constellation reveal so both bookend the journey ──
+      const NAV_H = 90;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const availH = vh - NAV_H - 60;
+      const availW = vw - 80;
+      const canvasW = vw * 2.3; // 230vw
+      const canvasH = vh * 2.6; // 260vh
+      const finalScale = Math.min(availH / canvasH, availW / canvasW);
+      const scaledW = canvasW * finalScale;
+      const scaledH = canvasH * finalScale;
+      const finalX = (vw - scaledW) / 2;
+      const finalY = NAV_H + (availH - scaledH) / 2;
+
       // ── Initial state ──
       // Intro stars start at their scattered positions
       introStarRefs.current.forEach((el, i) => {
@@ -157,9 +344,20 @@ export default function CassiopeiaConstellation() {
         }
       });
 
+      // Canvas starts at the journey's first point; the opening overlay sits on
+      // top of it and the scattered sky converges in front of it from the start.
+      gsap.set(canvas, {
+        scale: 1,
+        x: 0,
+        y: 0,
+        transformOrigin: "center center",
+      });
+
       slideRefs.current.forEach((el) => {
         if (el) gsap.set(el, { opacity: 0, scale: 0.85, y: 40 });
       });
+      // Points and path stay hidden behind the opening overlay; the journey
+      // reveals them one by one once we've zoomed in.
       starDotRefs.current.forEach((el) => {
         if (el) gsap.set(el, { opacity: 0, scale: 0 });
       });
@@ -175,7 +373,11 @@ export default function CassiopeiaConstellation() {
       });
       if (finalRef.current)
         gsap.set(finalRef.current, { opacity: 0, scale: 0.95 });
-      if (introRef.current) gsap.set(introRef.current, { opacity: 1, y: 0 });
+      // Opening overlay = the exact same constellation screen as the finale
+      if (introConstRef.current)
+        gsap.set(introConstRef.current, { opacity: 1, scale: 1 });
+      // Old scattered-star title is retired in favour of the overlay
+      if (introRef.current) gsap.set(introRef.current, { opacity: 0, y: 0 });
 
       // ── Master timeline ──
       const tl = gsap.timeline({
@@ -204,17 +406,28 @@ export default function CassiopeiaConstellation() {
       const CONVERGE_DURATION = 2.2; // Stars converge to points
       let t = 0;
 
-      // ── Phase 0: Journey stars converge and travel the constellation path ──
-      t += 0.6; // initial gaze at scattered sky
-
-      // Select first 50 stars to form the traveling journey point
+      // ── Phase 0: Straight from the first section, the scattered sky streams
+      //    inward and gathers at the first constellation point while the opening
+      //    overlay dissolves into the journey. No separate intro screen. ──
       const journeyStarCount = 50;
       const journeyIndices = Array.from(
         { length: journeyStarCount },
         (_, i) => i,
       );
 
-      // First convergence: stars gather at first constellation point (viewport center area)
+      // Opening overlay dissolves as the convergence begins
+      tl.to(
+        introConstRef.current,
+        {
+          opacity: 0,
+          scale: 1.08,
+          duration: CONVERGE_DURATION * 0.7,
+          ease: "power2.in",
+        },
+        t,
+      );
+
+      // Scattered stars gather at the first constellation point (viewport center)
       journeyIndices.forEach((i) => {
         const el = introStarRefs.current[i];
         if (el) {
@@ -232,18 +445,6 @@ export default function CassiopeiaConstellation() {
           );
         }
       });
-
-      // Fade out intro title/text
-      tl.to(
-        introRef.current,
-        {
-          opacity: 0,
-          y: -20,
-          duration: CONVERGE_DURATION * 0.6,
-          ease: "power2.inOut",
-        },
-        t + 0.2,
-      );
 
       t += CONVERGE_DURATION;
 
@@ -439,25 +640,9 @@ export default function CassiopeiaConstellation() {
         }
       });
 
-      // Calculate proper zoom-out scaling to fit constellation in viewport
-      const NAV_H = 90;
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const availH = vh - NAV_H - 60;
-      const availW = vw - 80;
-      const canvasW = vw * 2.3; // 230vw
-      const canvasH = vh * 2.6; // 260vh
-
-      // Scale to fit constellation within available space
-      const finalScale = Math.min(availH / canvasH, availW / canvasW);
-      const scaledW = canvasW * finalScale;
-      const scaledH = canvasH * finalScale;
-
-      // Center the constellation in the viewport
-      const finalX = (vw - scaledW) / 2;
-      const finalY = NAV_H + (availH - scaledH) / 2;
-
-      // Zoom out effect: scale from current position to fit-all view
+      // Zoom out effect: scale from current position back to the same
+      // fit-all view used for the opening overview (finalScale/finalX/finalY
+      // are computed once at the top of this callback)
       // Keep transform origin at center for proper zoom behavior
       tl.to(
         canvas,
@@ -965,202 +1150,14 @@ export default function CassiopeiaConstellation() {
           })}
         </div>
 
+        {/* ── Opening constellation overlay — identical screen to the finale ── */}
+        <div ref={introConstRef} className="cas-final">
+          <ConstellationReveal idp="cas-intro" />
+        </div>
+
         {/* ── Final constellation overlay ── */}
         <div ref={finalRef} className="cas-final">
-          <svg className="cas-final-svg" viewBox="0 0 593 427" fill="none">
-            <defs>
-              <linearGradient id="cas-fg" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#B88BFF" />
-                <stop offset="40%" stopColor="#E382FF" />
-                <stop offset="100%" stopColor="#FF9F7F" />
-              </linearGradient>
-              <filter
-                id="cas-glow"
-                x="-80%"
-                y="-80%"
-                width="260%"
-                height="260%"
-              >
-                <feGaussianBlur stdDeviation="4" />
-              </filter>
-              <filter
-                id="cas-core-glow"
-                x="-60%"
-                y="-60%"
-                width="220%"
-                height="220%"
-              >
-                <feGaussianBlur stdDeviation="2" />
-              </filter>
-              <radialGradient id="cas-sg" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-                <stop offset="60%" stopColor="#fff" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="#fff" stopOpacity="0" />
-              </radialGradient>
-              <radialGradient id="cas-star-core" cx="40%" cy="40%" r="60%">
-                <stop offset="0%" stopColor="#FFFFFF" />
-                <stop offset="70%" stopColor="#B88BFF" />
-                <stop offset="100%" stopColor="#8855FF" />
-              </radialGradient>
-              <radialGradient id="cas-bg-glow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#B88BFF" stopOpacity="0.09" />
-                <stop offset="55%" stopColor="#E382FF" stopOpacity="0.05" />
-                <stop offset="100%" stopColor="#B88BFF" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-
-            {/* Constellation backdrop nebula glow — radial fade, fits inside viewBox */}
-            <ellipse
-              cx={296}
-              cy={213}
-              rx={293}
-              ry={210}
-              fill="url(#cas-bg-glow)"
-            />
-
-            {/* Cassiopeia W traced from the reference illustration */}
-            <polyline
-              points="30,30 142,215 300,206 385,397 563,275"
-              stroke="url(#cas-fg)"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              opacity={0.9}
-              style={{
-                filter: "drop-shadow(0 0 8px rgba(184, 139, 255, 0.4))",
-              }}
-            />
-
-            {/* Star nodes with enhanced glow — P4 is the brightest, as in the reference */}
-            {[
-              { cx: 30,  cy: 30,  r: 1    },  // P1 — top-left, highest
-              { cx: 142, cy: 215, r: 0.9  },  // P2 — first dip
-              { cx: 300, cy: 206, r: 1    },  // P3 — flat across
-              { cx: 385, cy: 397, r: 1.45 },  // P4 — lowest, brightest star
-              { cx: 563, cy: 275, r: 1.1  },  // P5 — rising tail
-            ].map((s, i) => (
-              <g key={i}>
-                {/* Outer nebula halo */}
-                <circle
-                  cx={s.cx}
-                  cy={s.cy}
-                  r={24 * s.r}
-                  fill="#B88BFF"
-                  opacity={0.08}
-                  filter="url(#cas-glow)"
-                />
-                {/* Mid glow */}
-                <circle
-                  cx={s.cx}
-                  cy={s.cy}
-                  r={14 * s.r}
-                  fill="#E382FF"
-                  opacity={0.15}
-                  filter="url(#cas-core-glow)"
-                />
-                {/* Star surface */}
-                <circle
-                  cx={s.cx}
-                  cy={s.cy}
-                  r={8 * s.r}
-                  fill="url(#cas-star-core)"
-                  opacity={0.95}
-                />
-                {/* Bright core */}
-                <circle
-                  cx={s.cx}
-                  cy={s.cy}
-                  r={4 * s.r}
-                  fill="#ffffff"
-                  opacity={0.8}
-                />
-                {/* Sparkle point */}
-                <circle
-                  cx={s.cx}
-                  cy={s.cy}
-                  r={1.4 * s.r}
-                  fill="#ffffff"
-                  opacity={1}
-                />
-                {/* Star name with Sanskrit */}
-                <text
-                  x={s.cx + (i % 2 === 0 ? -22 : 22)}
-                  y={s.cy - 10}
-                  textAnchor={i % 2 === 0 ? "end" : "start"}
-                  fontSize="9.5"
-                  fontFamily="Questrial, sans-serif"
-                  letterSpacing="0.8"
-                  fill="#B88BFF"
-                  opacity="0.9"
-                  fontWeight="600"
-                >
-                  {STARS[i].name}
-                </text>
-                {/* Sanskrit below */}
-                <text
-                  x={s.cx + (i % 2 === 0 ? -22 : 22)}
-                  y={s.cy + 8}
-                  textAnchor={i % 2 === 0 ? "end" : "start"}
-                  fontSize="7"
-                  fontFamily="Arial, sans-serif"
-                  fill="#E382FF"
-                  opacity="0.65"
-                  fontStyle="italic"
-                >
-                  {STARS[i].sanskrit}
-                </text>
-              </g>
-            ))}
-          </svg>
-
-          <h3 className="cas-final-title">Our Approach</h3>
-          <span className="cas-final-sub">
-            The Kathart Path — Five Steps, One Truth
-          </span>
-          <div
-            className="cas-final-body"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.55rem",
-              textAlign: "left",
-              maxWidth: "28rem",
-            }}
-          >
-            {SLIDE_CONTENT.map((s, i) => (
-              <div
-                key={i}
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: "0.75rem",
-                }}
-              >
-                <span
-                  style={{
-                    color: "#E382FF",
-                    fontWeight: 700,
-                    fontSize: "0.7rem",
-                    letterSpacing: "0.1em",
-                    minWidth: "1.6rem",
-                    paddingTop: "0.18rem",
-                  }}
-                >
-                  0{i + 1}
-                </span>
-                <span
-                  style={{
-                    color: "var(--foreground)",
-                    fontWeight: 500,
-                    fontSize: "clamp(0.8rem, 1.2vw, 0.95rem)",
-                  }}
-                >
-                  {s.title}
-                </span>
-              </div>
-            ))}
-          </div>
+          <ConstellationReveal idp="cas-final" />
         </div>
       </div>
     </section>

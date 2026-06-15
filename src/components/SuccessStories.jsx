@@ -220,10 +220,7 @@ export default function SuccessStories() {
       </div>
 
       <div className="relative w-full max-w-4xl mx-auto">
-        <div
-          className="relative w-full"
-          style={{ height: "clamp(430px, 58vh, 560px)" }}
-        >
+        <div className="relative w-full h-[490px] sm:h-[520px] md:h-[58vh] md:min-h-[430px] md:max-h-[560px]">
           {testimonials.slice(0, 3).map((t, i) => (
             <div
               key={i}
@@ -232,7 +229,7 @@ export default function SuccessStories() {
               style={{ top: 0, willChange: "transform" }}
             >
               <div
-                className="w-full rounded-xl md:rounded-2xl flex flex-col gap-4 sm:gap-5 md:flex-row md:gap-6 lg:gap-8 p-5 sm:p-6 md:p-6 lg:p-8 overflow-hidden"
+                className="w-full h-[420px] sm:h-[450px] md:h-auto justify-center rounded-xl md:rounded-2xl flex flex-col gap-4 sm:gap-5 md:flex-row md:gap-6 lg:gap-8 p-5 sm:p-6 md:p-6 lg:p-8 overflow-hidden"
                 style={{
                   backgroundColor: theme === "light" ? "#FFFFFF" : undefined,
                   backgroundImage:
