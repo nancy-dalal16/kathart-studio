@@ -251,7 +251,7 @@ function ConstellationReveal({ idp }) {
               y={s.cy - 10}
               textAnchor={i % 2 === 0 ? "end" : "start"}
               fontSize="9.5"
-              fontFamily="Questrial, sans-serif"
+              fontFamily="Geologica, sans-serif"
               letterSpacing="0.8"
               fill="#B88BFF"
               opacity="0.9"
@@ -313,6 +313,7 @@ function ConstellationReveal({ idp }) {
               style={{
                 color: "var(--foreground)",
                 fontWeight: 500,
+                fontFamily: '"Geologica", sans-serif',
                 fontSize: "clamp(0.8rem, 1.2vw, 0.95rem)",
               }}
             >
@@ -767,6 +768,7 @@ export default function CassiopeiaConstellation() {
           font-size: clamp(5rem, 15vw, 13rem);
           font-weight: 950;
           line-height: 1;
+          font-family: "Geologica", sans-serif;
           background: linear-gradient(135deg, rgba(184,139,255,0.12) 0%, rgba(227,130,255,0.08) 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -782,6 +784,7 @@ export default function CassiopeiaConstellation() {
         .cas-subtitle {
           font-size: 0.75rem;
           font-weight: 700;
+          font-family: "Geologica", sans-serif;
           letter-spacing: 0.4em;
           text-transform: uppercase;
           color: #E382FF;
@@ -943,6 +946,7 @@ export default function CassiopeiaConstellation() {
         }
         .cas-final-sub {
           font-size: 0.72rem;
+          font-family: "Geologica", sans-serif;
           color: #E382FF;
           letter-spacing: 0.35em;
           text-transform: uppercase;
@@ -1026,6 +1030,7 @@ export default function CassiopeiaConstellation() {
             style={{
               fontSize: "0.75rem",
               fontWeight: 600,
+              fontFamily: '"Geologica", sans-serif',
               letterSpacing: "0.4em",
               textTransform: "uppercase",
               color: "#E382FF",
