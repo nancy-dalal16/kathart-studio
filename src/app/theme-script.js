@@ -10,8 +10,7 @@ export function ThemeScript() {
           (function() {
             try {
               const saved = localStorage.getItem("theme");
-              const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-              const theme = saved || (prefersLight ? "light" : "dark");
+              const theme = saved || "dark";
               document.documentElement.dataset.theme = theme;
               if (theme === "light") {
                 document.documentElement.classList.add("light");

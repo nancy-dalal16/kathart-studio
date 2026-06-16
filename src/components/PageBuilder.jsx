@@ -6,6 +6,8 @@ import GalleryGrid from "./blocks/GalleryGrid";
 import MetricsRow from "./blocks/MetricsRow";
 import PullQuote from "./blocks/PullQuote";
 import VideoEmbed from "./blocks/VideoEmbed";
+import GifBlock from "./blocks/GifBlock";
+import Spacer from "./blocks/Spacer";
 
 const BLOCK_MAP = {
   pb_hero: HeroSection,
@@ -16,6 +18,8 @@ const BLOCK_MAP = {
   pb_metrics: MetricsRow,
   pb_quote: PullQuote,
   pb_video: VideoEmbed,
+  pb_gif: GifBlock,
+  pb_spacer: Spacer,
 };
 
 export default function PageBuilder({ blocks = [] }) {

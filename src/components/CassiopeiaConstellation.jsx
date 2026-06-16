@@ -26,20 +26,20 @@ gsap.registerPlugin(ScrollTrigger);
 // Canvas y units are vh and x units are vw, so x is divided by the ~16:9
 // viewport ratio to keep the on-screen angles faithful to the image.
 const SLIDE_POSITIONS = [
-  { x: 0,    y: 0    },  // P1 — top-left (highest), viewport centre at start
-  { x: 0.27, y: 0.81 },  // P2 — steep drop
-  { x: 0.66, y: 0.77 },  // P3 — flat across
-  { x: 0.87, y: 1.6  },  // P4 — deepest point (brightest star)
-  { x: 1.3,  y: 1.07 },  // P5 — rising tail
+  { x: 0, y: 0 }, // P1 — top-left (highest), viewport centre at start
+  { x: 0.27, y: 0.81 }, // P2 — steep drop
+  { x: 0.66, y: 0.77 }, // P3 — flat across
+  { x: 0.87, y: 1.6 }, // P4 — deepest point (brightest star)
+  { x: 1.3, y: 1.07 }, // P5 — rising tail
 ];
 
 // Star metadata
 const STARS = [
   { name: "Segin", sanskrit: "शिकार", meaning: "The Hunt" },
-  { name: "Ruchbah", sanskrit: "सार", meaning: "The Essence" },
+  { name: "Ruchbah", sanskrit: "सार", meaning: "The Strip" },
   { name: "Gamma", sanskrit: "शिल्प", meaning: "The Craft" },
   { name: "Schedar", sanskrit: "मुक्ति", meaning: "The Release" },
-  { name: "Caph", sanskrit: "विकास", meaning: "The Growth" },
+  { name: "Caph", sanskrit: "विकास", meaning: "The Katharsis" },
 ];
 
 // Content for each full-screen slide — mirrors the Our Approach steps
@@ -47,32 +47,37 @@ const SLIDE_CONTENT = [
   {
     number: "01",
     subtitle: "Segin — The Hunt",
-    title: "We find the story you can't ignore.",
-    body: "We don't invent stories. We hunt the one already living in your system… the part you keep repeating to yourself at 3 a.m., the reason you started this in the first place — the \"why\". That's the story worth telling.",
+    // title: "We find the story you can't ignore.",
+    title: "Hunt",
+    body: "We don't invent stories. We hunt the one already living inside your brand - the part you keep repeating to yourself at 3 a.m., the reason you started this in the first place. That's the story worth telling.",
   },
   {
     number: "02",
-    subtitle: "Ruchbah — The Essence",
-    title: "We strip everything that isn't it.",
-    body: "We gently move aside the noise until only the one thing that truly matters is left standing. What's left is the single, undeniable truth your brand owns. Nothing added. Nothing forced. Just the essence.",
+    subtitle: "Ruchbah — The Strip",
+    // title: "We strip everything that isn't it.",
+    title: "Strip",
+    body: "We move aside the noise until only the one thing that truly matters is left standing. Nothing added. Nothing forced. Just the single, undeniable truth your brand owns.",
   },
   {
     number: "03",
     subtitle: "Gamma — The Craft",
-    title: "We craft like it's ours.",
-    body: "Identity that feels like it's always belonged to you. Films that stop thumbs mid-scroll. Words that turn strangers into believers. We don't stop until the work sells itself.",
+    // title: "We craft like it's ours.",
+    title: "Craft",
+    body: " Strategy becomes form. Ideas become experiences. We bring a point of view to everything we make and push back when something isn't right. We don't stop until the work is strong enough to sell itself.",
   },
   {
     number: "04",
     subtitle: "Schedar — The Release",
-    title: "We release what lasts.",
-    body: "The katha leaves our hands quietly. Just a story set free to find its people. Ten years from now it still feels true, still pulls the right founders in, still quietly prospers. That's the catharsis we chase.",
+    // title: "We release what lasts.",
+    title: "Release",
+    body: "The katha leaves our hands quietly. Just a story set free to find its people. Ten years from now it still feels true, still pulls the right founders in, still quietly prospers.",
   },
   {
     number: "05",
-    subtitle: "Caph — The Growth",
-    title: "We stay as the story takes root.",
-    body: "The katha doesn't end at launch. We stay in orbit — watching how your brand lands, sharpening what resonates, amplifying what finds its people. Long after delivery, we're still invested in the truth we set free together.",
+    subtitle: "Caph — The Katharsis",
+    // title: "We stay as the story takes root.",
+    title: "Katharsis",
+    body: "Something lifts. The noise clears. What your brand was always meant to be is suddenly, undeniably visible - to you, to your market, to the people you've been trying to reach. That feeling is Katharsis.",
   },
 ];
 
@@ -125,11 +130,11 @@ const INTRO_STARS = Array.from({ length: 220 }, (_, i) => {
 
 // Final constellation node positions (matches the reference illustration)
 const REVEAL_NODES = [
-  { cx: 30,  cy: 30,  r: 1    },  // P1 — top-left, highest
-  { cx: 142, cy: 215, r: 0.9  },  // P2 — first dip
-  { cx: 300, cy: 206, r: 1    },  // P3 — flat across
-  { cx: 385, cy: 397, r: 1.45 },  // P4 — lowest, brightest star
-  { cx: 563, cy: 275, r: 1.1  },  // P5 — rising tail
+  { cx: 30, cy: 30, r: 1 }, // P1 — top-left, highest
+  { cx: 142, cy: 215, r: 0.9 }, // P2 — first dip
+  { cx: 300, cy: 206, r: 1 }, // P3 — flat across
+  { cx: 385, cy: 397, r: 1.45 }, // P4 — lowest, brightest star
+  { cx: 563, cy: 275, r: 1.1 }, // P5 — rising tail
 ];
 
 // The full constellation "screen" — rendered identically at the opening and
@@ -144,7 +149,13 @@ function ConstellationReveal({ idp }) {
             <stop offset="40%" stopColor="#E382FF" />
             <stop offset="100%" stopColor="#FF9F7F" />
           </linearGradient>
-          <filter id={`${idp}-glow`} x="-80%" y="-80%" width="260%" height="260%">
+          <filter
+            id={`${idp}-glow`}
+            x="-80%"
+            y="-80%"
+            width="260%"
+            height="260%"
+          >
             <feGaussianBlur stdDeviation="4" />
           </filter>
           <filter
@@ -169,7 +180,13 @@ function ConstellationReveal({ idp }) {
         </defs>
 
         {/* Constellation backdrop nebula glow — radial fade, fits inside viewBox */}
-        <ellipse cx={296} cy={213} rx={293} ry={210} fill={`url(#${idp}-bg-glow)`} />
+        <ellipse
+          cx={296}
+          cy={213}
+          rx={293}
+          ry={210}
+          fill={`url(#${idp}-bg-glow)`}
+        />
 
         {/* Cassiopeia W traced from the reference illustration */}
         <polyline
@@ -213,9 +230,21 @@ function ConstellationReveal({ idp }) {
               opacity={0.95}
             />
             {/* Bright core */}
-            <circle cx={s.cx} cy={s.cy} r={4 * s.r} fill="#ffffff" opacity={0.8} />
+            <circle
+              cx={s.cx}
+              cy={s.cy}
+              r={4 * s.r}
+              fill="#ffffff"
+              opacity={0.8}
+            />
             {/* Sparkle point */}
-            <circle cx={s.cx} cy={s.cy} r={1.4 * s.r} fill="#ffffff" opacity={1} />
+            <circle
+              cx={s.cx}
+              cy={s.cy}
+              r={1.4 * s.r}
+              fill="#ffffff"
+              opacity={1}
+            />
             {/* Star name */}
             <text
               x={s.cx + (i % 2 === 0 ? -22 : 22)}
@@ -248,9 +277,7 @@ function ConstellationReveal({ idp }) {
       </svg>
 
       <h3 className="cas-final-title">Our Approach</h3>
-      <span className="cas-final-sub">
-        The Kathart Path — Five Steps, One Truth
-      </span>
+      <span className="cas-final-sub">The Kathart Path</span>
       <div
         className="cas-final-body"
         style={{
@@ -264,7 +291,11 @@ function ConstellationReveal({ idp }) {
         {SLIDE_CONTENT.map((s, i) => (
           <div
             key={i}
-            style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "0.75rem",
+            }}
           >
             <span
               style={{
@@ -474,11 +505,15 @@ export default function CassiopeiaConstellation() {
         t + 0.3,
       );
 
-      tl.to(starDotRefs.current[0], {
-        scale: 1,
-        duration: 0.4,
-        ease: "power2.inOut",
-      }, t + 0.8);
+      tl.to(
+        starDotRefs.current[0],
+        {
+          scale: 1,
+          duration: 0.4,
+          ease: "power2.inOut",
+        },
+        t + 0.8,
+      );
 
       t += 1.6 + HOLD;
 
@@ -582,11 +617,15 @@ export default function CassiopeiaConstellation() {
           t + MOVE * 0.75,
         );
 
-        tl.to(starDotRefs.current[i + 1], {
-          scale: 1,
-          duration: 0.45,
-          ease: "power2.inOut",
-        }, t + MOVE * 1.4);
+        tl.to(
+          starDotRefs.current[i + 1],
+          {
+            scale: 1,
+            duration: 0.45,
+            ease: "power2.inOut",
+          },
+          t + MOVE * 1.4,
+        );
 
         t += MOVE * 1.3 + HOLD;
       }
@@ -1035,25 +1074,34 @@ export default function CassiopeiaConstellation() {
           <div
             className="cas-nebula"
             style={{
-              width: "36vw", height: "36vw",
-              background: "radial-gradient(circle, rgba(184,139,255,0.05) 0%, transparent 70%)",
-              left: "30vw", top: "30vh",   /* near P1 */
+              width: "36vw",
+              height: "36vw",
+              background:
+                "radial-gradient(circle, rgba(184,139,255,0.05) 0%, transparent 70%)",
+              left: "30vw",
+              top: "30vh" /* near P1 */,
             }}
           />
           <div
             className="cas-nebula"
             style={{
-              width: "34vw", height: "34vw",
-              background: "radial-gradient(circle, rgba(227,130,255,0.04) 0%, transparent 70%)",
-              left: "80vw", top: "110vh",  /* near P2–P3 */
+              width: "34vw",
+              height: "34vw",
+              background:
+                "radial-gradient(circle, rgba(227,130,255,0.04) 0%, transparent 70%)",
+              left: "80vw",
+              top: "110vh" /* near P2–P3 */,
             }}
           />
           <div
             className="cas-nebula"
             style={{
-              width: "44vw", height: "44vw",
-              background: "radial-gradient(circle, rgba(81,60,213,0.06) 0%, transparent 70%)",
-              left: "135vw", top: "165vh", /* near P4–P5 */
+              width: "44vw",
+              height: "44vw",
+              background:
+                "radial-gradient(circle, rgba(81,60,213,0.06) 0%, transparent 70%)",
+              left: "135vw",
+              top: "165vh" /* near P4–P5 */,
             }}
           />
 
@@ -1133,7 +1181,7 @@ export default function CassiopeiaConstellation() {
               >
                 <div className="cas-slide-inner">
                   <div className="cas-bg-number">{slide.number}</div>
-                  <span className="cas-subtitle">{slide.subtitle}</span>
+                  {/* <span className="cas-subtitle">{slide.subtitle}</span> */}
                   <h3 className="cas-title">{slide.title}</h3>
                   <p className="cas-body">{slide.body}</p>
                   <div className="cas-pips">

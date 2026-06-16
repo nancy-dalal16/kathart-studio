@@ -8,6 +8,7 @@ import metricsRow from "./blocks/metricsRow";
 import pullQuote from "./blocks/pullQuote";
 import videoEmbed from "./blocks/videoEmbed";
 import gifUpload from "./blocks/gifUpload";
+import spacer from "./blocks/spacer";
 
 export const schemaTypes = [
   project,
@@ -20,4 +21,5 @@ export const schemaTypes = [
   pullQuote,
   videoEmbed,
   gifUpload,
+  spacer,
 ];

@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { ColorInput } from "../../studio/components/ColorInput";
 
 export default defineType({
   name: "pb_grid",
@@ -46,6 +47,13 @@ export default defineType({
       initialValue: 2,
     }),
     defineField({ name: "caption", title: "Section Caption", type: "string" }),
+    defineField({
+      name: "bgColor",
+      title: "Background Color",
+      description: "Optional color panel behind the gallery. Leave empty for none.",
+      type: "string",
+      components: { input: ColorInput },
+    }),
   ],
   preview: {
     select: { columns: "columns", caption: "caption", count: "images" },

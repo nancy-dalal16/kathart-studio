@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { insert, PatchEvent, ArrayOfObjectsInputMember } from "sanity";
+import { insert, unset, PatchEvent, ArrayOfObjectsInputMember } from "sanity";
 import { randomKey } from "@sanity/util/content";
 import {
   DndContext,
@@ -143,6 +143,19 @@ function IconGif() {
   );
 }
 
+function IconSpacer() {
+  return (
+    <svg viewBox="0 0 88 60" fill="none" width="88" height="60">
+      <rect width="88" height="60" rx="4" fill="#F4F4F7" />
+      <rect x="14" y="10" width="60" height="8" rx="2" fill="#DDE1F0" />
+      <rect x="14" y="42" width="60" height="8" rx="2" fill="#DDE1F0" />
+      <path d="M44 22V38" stroke="#6B5CE7" strokeOpacity=".6" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="3 3" />
+      <path d="M40 25L44 21L48 25" stroke="#6B5CE7" strokeOpacity=".6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M40 35L44 39L48 35" stroke="#6B5CE7" strokeOpacity=".6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 // ─── Block type registry ─────────────────────────────────────────────────────
 
 const BLOCK_TYPES = [
@@ -155,6 +168,7 @@ const BLOCK_TYPES = [
   { name: "pb_quote",   label: "Pull Quote",  desc: "Large editorial pull quote",      Icon: IconQuote   },
   { name: "pb_video",   label: "Video",       desc: "Embed or upload a video file",    Icon: IconVideo   },
   { name: "pb_gif",     label: "Animated GIF",desc: "Upload a looping .gif file",      Icon: IconGif     },
+  { name: "pb_spacer",  label: "Spacer",      desc: "Blank space or a divider rule",   Icon: IconSpacer  },
 ];
 
 const TYPE_LABEL = Object.fromEntries(BLOCK_TYPES.map((b) => [b.name, b.label]));
@@ -237,9 +251,38 @@ function AddDivider({ onClick }) {
   );
 }
 
+// ─── Card-header action button ────────────────────────────────────────────────
+
+function ActionButton({ title, onClick, disabled, danger, children }) {
+  const [hov, setHov] = useState(false);
+  const accent = danger ? "#C0392B" : "#6B5CE7";
+  return (
+    <button
+      type="button"
+      title={title}
+      aria-label={title}
+      onClick={onClick}
+      disabled={disabled}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        display: "flex", alignItems: "center", justifyContent: "center",
+        width: "26px", height: "26px", flexShrink: 0,
+        background: hov && !disabled ? (danger ? "#FCEFEF" : "rgba(107,92,231,0.1)") : "transparent",
+        border: "none", borderRadius: "6px",
+        color: disabled ? "#CFCFD8" : hov ? accent : "#9A9AA8",
+        cursor: disabled ? "default" : "pointer",
+        transition: "background 0.12s, color 0.12s",
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
 // ─── Sortable item wrapper — renders one block card with drag handle ──────────
 
-function SortableItem({ id, member, renderProps }) {
+function SortableItem({ id, member, renderProps, index, total, onMove, onDuplicate, onRemove }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
   const typeLabel = TYPE_LABEL[member?.item?.value?._type] ?? (member?.item?.value?._type ?? "Block");
@@ -294,6 +337,40 @@ function SortableItem({ id, member, renderProps }) {
           </span>
 
           <div style={{ flex: 1 }} />
+
+          {/* Quick actions */}
+          <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+            <ActionButton
+              title="Move up"
+              disabled={index === 0}
+              onClick={() => onMove(index, index - 1)}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 15l-6-6-6 6" />
+              </svg>
+            </ActionButton>
+            <ActionButton
+              title="Move down"
+              disabled={index === total - 1}
+              onClick={() => onMove(index, index + 1)}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </ActionButton>
+            <ActionButton title="Duplicate module" onClick={() => onDuplicate(member)}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+            </ActionButton>
+            <ActionButton title="Delete module" danger onClick={() => onRemove(member.key)}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                <path d="M10 11v6M14 11v6" />
+              </svg>
+            </ActionButton>
+          </div>
         </div>
 
         {/* Sanity renders the item's fields here */}
@@ -340,6 +417,35 @@ export function PageBuilderInput(props) {
       setPendingOpenKey(key);
     },
     [onChange]
+  );
+
+  const duplicateBlock = useCallback(
+    (member) => {
+      const value = member?.item?.value;
+      if (!value) return;
+      const key = randomKey(12);
+      // Only the top-level _key must be regenerated — nested array items keep
+      // their keys (they're unique within the cloned object's own arrays).
+      const clone = { ...value, _key: key };
+      onChange(PatchEvent.from(insert([clone], "after", [{ _key: member.key }])));
+      setPendingOpenKey(key);
+    },
+    [onChange]
+  );
+
+  const removeBlock = useCallback(
+    (key) => {
+      onChange(PatchEvent.from(unset([{ _key: key }])));
+    },
+    [onChange]
+  );
+
+  const moveBlock = useCallback(
+    (fromIndex, toIndex) => {
+      if (toIndex < 0 || !onMoveItem) return;
+      onMoveItem({ fromIndex, toIndex });
+    },
+    [onMoveItem]
   );
 
   // Once the new member appears in the list, open it.
@@ -403,9 +509,18 @@ export function PageBuilderInput(props) {
       {!isEmpty && (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={itemMembers.map((m) => m.key)} strategy={verticalListSortingStrategy}>
-            {itemMembers.map((member) => (
+            {itemMembers.map((member, index) => (
               <React.Fragment key={member.key}>
-                <SortableItem id={member.key} member={member} renderProps={renderProps} />
+                <SortableItem
+                  id={member.key}
+                  member={member}
+                  renderProps={renderProps}
+                  index={index}
+                  total={itemMembers.length}
+                  onMove={moveBlock}
+                  onDuplicate={duplicateBlock}
+                  onRemove={removeBlock}
+                />
 
                 {/* Between-item add divider + picker */}
                 {activePicker === member.key ? (

@@ -8,14 +8,17 @@ const ratioClasses = {
 
 // ratio: "50/50" | "60/40" | "40/60"
 export default function GallerySplit({ block }) {
-  const { leftImage, rightImage, caption, ratio = "50/50" } = block;
+  const { leftImage, rightImage, caption, ratio = "50/50", bgColor } = block;
   if (!leftImage && !rightImage) return null;
 
   const [leftClass, rightClass] = ratioClasses[ratio] ?? ["flex-1", "flex-1"];
 
   return (
     <section className="px-4 sm:px-8 md:px-12 lg:px-20 py-4">
-      <figure>
+      <figure
+        className={bgColor ? "rounded-2xl p-4 sm:p-6" : ""}
+        style={bgColor ? { background: bgColor } : undefined}
+      >
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           {leftImage && (
             <div className={`${leftClass} relative aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden`}>

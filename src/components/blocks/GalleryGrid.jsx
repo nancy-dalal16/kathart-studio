@@ -2,14 +2,17 @@ import Image from "next/image";
 
 // columns: 2 | 3
 export default function GalleryGrid({ block }) {
-  const { images = [], columns = 2, caption } = block;
+  const { images = [], columns = 2, caption, bgColor } = block;
   if (!images.length) return null;
 
   const colClass = columns === 3 ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2";
 
   return (
     <section className="px-4 sm:px-8 md:px-12 lg:px-20 py-4">
-      <figure>
+      <figure
+        className={bgColor ? "rounded-2xl p-4 sm:p-6" : ""}
+        style={bgColor ? { background: bgColor } : undefined}
+      >
         <div className={`grid ${colClass} gap-3 sm:gap-4`}>
           {images.map((item, i) => (
             <div key={i} className="group relative aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-secondary">

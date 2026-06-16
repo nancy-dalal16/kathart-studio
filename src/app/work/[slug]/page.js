@@ -3,6 +3,10 @@ import ProjectDetailClient from "./ProjectDetailClient";
 import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
 
+// ISR: re-render this page at most once every 60s so published Sanity edits
+// appear on the live site without needing a full rebuild/redeploy.
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const slugs = await getProjectSlugs();
   return slugs.map((s) => ({ slug: s.slug }));

@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { ColorInput } from "../../studio/components/ColorInput";
 
 export default defineType({
   name: "pb_split",
@@ -33,6 +34,13 @@ export default defineType({
         layout: "radio",
       },
       initialValue: "50/50",
+    }),
+    defineField({
+      name: "bgColor",
+      title: "Background Color",
+      description: "Optional color panel behind the images. Leave empty for none.",
+      type: "string",
+      components: { input: ColorInput },
     }),
   ],
   preview: {

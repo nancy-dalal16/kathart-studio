@@ -76,6 +76,7 @@ export default defineType({
         { type: "pb_quote" },
         { type: "pb_video" },
         { type: "pb_gif" },
+        { type: "pb_spacer" },
       ],
     }),
   ],

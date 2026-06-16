@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { ColorInput } from "../../studio/components/ColorInput";
 
 export default defineType({
   name: "pb_video",
@@ -52,6 +53,15 @@ export default defineType({
 
     // ── Shared fields ─────────────────────────────────────────────────────────
     defineField({ name: "caption", title: "Caption", type: "string" }),
+    defineField({
+      name: "bgColor",
+      title: "Background Color",
+      description:
+        "The letterbox color shown behind the video when it doesn't fill the frame — like Behance. Defaults to black.",
+      type: "string",
+      components: { input: ColorInput },
+      initialValue: "#000000",
+    }),
     defineField({
       name: "aspectRatio",
       title: "Aspect Ratio",

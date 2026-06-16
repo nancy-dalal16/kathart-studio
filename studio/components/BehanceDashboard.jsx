@@ -188,7 +188,7 @@ function ProjectCard({ p, onOpen }) {
           background: "linear-gradient(to top, rgba(15,15,26,0.68) 0%, rgba(15,15,26,0.15) 55%, transparent 100%)",
           opacity: hover ? 1 : 0, transition: "opacity 0.22s ease",
         }}>
-          {/* Stats */}
+          {/* Stats — real metadata only (no vanity counters) */}
           <div style={{
             position: "absolute", bottom: "12px", left: "12px",
             display: "flex", gap: "14px",
@@ -196,12 +196,12 @@ function ProjectCard({ p, onOpen }) {
             transition: "transform 0.22s ease",
           }}>
             <StatChip
-              icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"/></svg>}
-              value="—"
+              icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>}
+              value={typeof p.modules === "number" && p.modules > 0 ? `${p.modules} block${p.modules !== 1 ? "s" : ""}` : "Empty"}
             />
             <StatChip
-              icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>}
-              value={typeof p.modules === "number" && p.modules > 0 ? `${p.modules} blocks` : "—"}
+              icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>}
+              value={timeAgo(p._updatedAt)}
             />
           </div>
 
@@ -342,6 +342,7 @@ export default function BehanceDashboard({ onOpen, onCreate }) {
   const { projects, loading } = useProjects();
   const [search, setSearch]         = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
+  const [sortBy, setSortBy]         = useState("updated"); // updated | title | blocks
 
   const counts = useMemo(() => ({
     All:       projects.length,
@@ -364,8 +365,18 @@ export default function BehanceDashboard({ onOpen, onCreate }) {
           (Array.isArray(p.category) ? p.category.join(" ") : (p.category || "")).toLowerCase().includes(q)
       );
     }
-    return list;
-  }, [projects, activeFilter, search]);
+
+    // Sort (clone first — never mutate the source list)
+    const sorted = [...list];
+    if (sortBy === "title") {
+      sorted.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+    } else if (sortBy === "blocks") {
+      sorted.sort((a, b) => (b.modules || 0) - (a.modules || 0));
+    } else {
+      sorted.sort((a, b) => new Date(b._updatedAt) - new Date(a._updatedAt));
+    }
+    return sorted;
+  }, [projects, activeFilter, search, sortBy]);
 
   return (
     <div style={{
@@ -453,7 +464,7 @@ export default function BehanceDashboard({ onOpen, onCreate }) {
           </button>
         </div>
 
-        {/* Filter tabs */}
+        {/* Filter tabs + sort */}
         <div style={{
           display: "flex", alignItems: "center",
           padding: "0 24px", borderTop: "1px solid #F5F5F8",
@@ -467,6 +478,33 @@ export default function BehanceDashboard({ onOpen, onCreate }) {
               onClick={() => setActiveFilter(f)}
             />
           ))}
+
+          <div style={{ flex: 1, minWidth: "12px" }} />
+
+          <label style={{ display: "flex", alignItems: "center", gap: "7px", flexShrink: 0 }}>
+            <span style={{ fontSize: "11px", fontWeight: 600, color: "#B0B0BC", whiteSpace: "nowrap" }}>
+              Sort by
+            </span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              style={{
+                appearance: "none", WebkitAppearance: "none",
+                background: "#F5F5F8", border: "1px solid transparent",
+                borderRadius: "100px", padding: "6px 28px 6px 12px",
+                fontSize: "12px", fontWeight: 600, color: "#0F0F1A",
+                cursor: "pointer", outline: "none",
+                backgroundImage:
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%238E8E9A' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>\")",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right 10px center",
+              }}
+            >
+              <option value="updated">Recently updated</option>
+              <option value="title">Title A–Z</option>
+              <option value="blocks">Most blocks</option>
+            </select>
+          </label>
         </div>
       </header>
 
