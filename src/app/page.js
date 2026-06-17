@@ -4,8 +4,13 @@ import OurClients from "@/components/OurClients";
 import OurWork from "@/components/OurWork";
 import SuccessStories from "@/components/SuccessStories";
 import WhatWeDoPhilosophy from "@/components/WhatWeDoPhilosophy";
+import { getRecentProjects } from "@/sanity/queries";
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function Home() {
+  const recentProjects = await getRecentProjects(3);
+
   return (
     <>
       <HeroSection />
@@ -13,7 +18,7 @@ export default function Home() {
         <WhatWeDoPhilosophy />
       </div>
       <div className="snap-section relative z-[2]">
-        <OurWork />
+        <OurWork projects={recentProjects} />
       </div>
       <div className="snap-section relative z-[3]">
         <OurClients />

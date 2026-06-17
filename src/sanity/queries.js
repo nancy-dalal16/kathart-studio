@@ -1,6 +1,30 @@
 import { getSanityClient, getPreviewClient, isSanityConfigured } from "./client";
 import { projects as staticProjects } from "@/data/projects";
 
+export async function getRecentProjects(limit = 3, preview = false) {
+  if (!isSanityConfigured()) return staticProjects.slice(0, limit);
+
+  const client = preview ? getPreviewClient() : getSanityClient();
+  if (!client) return staticProjects.slice(0, limit);
+
+  try {
+    const data = await client.fetch(
+      `*[_type == "project"] | order(_createdAt desc) [0...$limit] {
+        "slug": slug.current,
+        category,
+        tags,
+        title,
+        description,
+        "coverImage": coalesce(coverImage.asset->url, ""),
+      }`,
+      { limit }
+    );
+    return data?.length ? data : staticProjects.slice(0, limit);
+  } catch {
+    return staticProjects.slice(0, limit);
+  }
+}
+
 export async function getAllProjects(preview = false) {
   if (!isSanityConfigured()) return staticProjects;
 

@@ -12,43 +12,10 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const slides = [
-  {
-    title: "FinEase – UPI Payment App",
-    badge: "Mobile App",
-    image: "/images/fin-ease.png",
-    description:
-      "Designed an intuitive banking app for seamless UPI and fund transfers, improving transaction completion by 40%.",
-    highlights: "Modern UI | Dark Mode | User-Centered Flows",
-    impact: [
-      "85% faster payments",
-      "0 data errors",
-      "2.5X customer satisfaction score",
-    ],
-  },
-  {
-    title: "NeoBank – Finance Dashboard",
-    badge: "FinTech SaaS",
-    image: "/images/fin-ease.png",
-    description:
-      "Built a modern dashboard for fintech startups to manage money flow, transactions, and analytics.",
-    highlights: "Analytics | Reports | Secure Architecture",
-    impact: ["60% workflow improvement", "100% uptime", "3X engagement"],
-  },
-  {
-    title: "FoodKart – Delivery App",
-    badge: "Mobile App",
-    image: "/images/fin-ease.png",
-    description:
-      "A visually rich food delivery experience with smoother cart & checkout interaction.",
-    highlights: "Dark Mode | UI Revamp | Faster Checkout",
-    impact: ["50% faster ordering", "Zero cart drop-offs", "2X retention"],
-  },
-];
+const FALLBACK_IMAGE = "/images/work/travel-smarter.png";
 
-const N = slides.length;
-
-export default function OurWork() {
+export default function OurWork({ projects = [] }) {
+  const N = projects.length;
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const ctaRef = useRef(null);
@@ -251,7 +218,7 @@ export default function OurWork() {
 
           {/* Progress dots — only meaningful for the horizontal desktop slideshow */}
           <div className="hidden lg:flex gap-2 md:gap-3 items-center lg:pt-4">
-            {slides.map((_, i) => (
+            {projects.map((_, i) => (
               <div
                 key={i}
                 className="h-2 rounded-full transition-all duration-300"
@@ -274,14 +241,14 @@ export default function OurWork() {
             className="flex flex-col lg:flex-row lg:h-full"
             style={{ willChange: "transform" }}
           >
-            {slides.map((slide, i) => (
+            {projects.map((project, i) => (
               <div
-                key={i}
+                key={project.slug}
                 ref={(el) => (slideRefs.current[i] = el)}
                 className="flex-shrink-0 w-full lg:w-screen lg:h-full flex items-center justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-6 sm:py-8 md:py-10 lg:py-8"
               >
                 <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-14 items-center justify-center lg:justify-start w-full lg:h-full">
-                  {/* Image — full image shown on mobile (contain), fills frame on desktop (cover) */}
+                  {/* Image */}
                   <div
                     ref={(el) => (imageRefs.current[i] = el)}
                     className="w-full lg:w-[48%] rounded-2xl lg:rounded-3xl overflow-hidden flex-shrink-0 lg:h-full lg:max-h-[440px]"
@@ -290,8 +257,8 @@ export default function OurWork() {
                     onMouseLeave={() => resetTilt(i)}
                   >
                     <Image
-                      src={slide.image}
-                      alt={slide.title}
+                      src={project.coverImage || FALLBACK_IMAGE}
+                      alt={project.title}
                       width={700}
                       height={500}
                       className="w-full h-auto lg:h-full object-contain lg:object-cover"
@@ -301,40 +268,26 @@ export default function OurWork() {
                   {/* Content */}
                   <div className="w-full lg:w-[52%] flex flex-col gap-3 md:gap-4 lg:gap-5">
                     <span className="text-xs font-semibold wwd-phil-gradient tracking-[0.18em] uppercase">
-                      {slide.badge}
+                      {project.category}
                     </span>
                     <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight">
-                      {slide.title}
+                      {project.title}
                     </h3>
                     <p className="text-textColor text-sm sm:text-base md:text-lg leading-relaxed">
-                      {slide.description}
+                      {project.description}
                     </p>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-textColor mb-1">
-                        Highlights
-                      </p>
-                      <p className="text-foreground text-sm sm:text-base">
-                        {slide.highlights}
-                      </p>
-                    </div>
-                    <div className="flex flex-col gap-1.5 md:gap-2">
-                      {slide.impact.map((metric, j) => (
-                        <div key={j} className="flex gap-2 items-center">
-                          <Image
-                            src="/images/check-mark-green.svg"
-                            width={16}
-                            height={16}
-                            alt="check"
-                            className="w-4 sm:w-[18px]"
-                          />
-                          <span className="text-textColor text-xs sm:text-sm md:text-base">
-                            {metric}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                    {project.tags?.length > 0 && (
+                      <div>
+                        <p className="text-xs uppercase tracking-widest text-textColor mb-1">
+                          Highlights
+                        </p>
+                        <p className="text-foreground text-sm sm:text-base">
+                          {project.tags.join(" | ")}
+                        </p>
+                      </div>
+                    )}
                     <Link
-                      href="/work"
+                      href={`/work/${project.slug}`}
                       className="btn-border-gradient self-start"
                     >
                       View Case Study
@@ -359,7 +312,7 @@ export default function OurWork() {
           <p className="text-white sm:text-lg md:text-xl lg:text-2xl text-center sm:text-left">
             We&apos;ve got more cool stuff waiting for you — go explore!
           </p>
-          <Link href="#" className="primary-btn">
+          <Link href="/work" className="primary-btn">
             View All Projects
             <span className="btn-icon">
               <ArrowRight size={13} strokeWidth={2.5} />

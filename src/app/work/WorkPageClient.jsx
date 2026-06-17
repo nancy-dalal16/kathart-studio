@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
@@ -12,8 +12,6 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Categories are derived from the projects present, so any new Creative Field
-// added in the Studio automatically becomes a filter tab.
 function buildCategories(projects) {
   const seen = [];
   for (const p of projects) {
@@ -22,33 +20,47 @@ function buildCategories(projects) {
   return ["All", ...seen];
 }
 
-// Distribute N cards into 3 columns (round-robin) and assign tall/short heights
-// so all columns end at the same total height when N is divisible by 3,
-// and differ by at most one card height otherwise.
-function buildMasonryColumns(items) {
-  const cols = [[], [], []];
-  items.forEach((project, i) => {
-    cols[i % 3].push(project);
+// Width-to-height ratios cycling through each card slot for natural variation
+const CARD_RATIOS = [4 / 5, 4 / 3, 2 / 3, 3 / 2, 1];
+const GAP = 16;
+
+function computeLayout(count, containerWidth) {
+  if (containerWidth === 0 || count === 0) return { positions: [], totalHeight: 0 };
+
+  const cols = containerWidth < 640 ? 1 : containerWidth < 1024 ? 2 : 3;
+  const colWidth = (containerWidth - GAP * (cols - 1)) / cols;
+  const colHeights = Array(cols).fill(0);
+  const lastInCol = Array(cols).fill(-1);
+
+  const positions = Array.from({ length: count }, (_, i) => {
+    const ratio = CARD_RATIOS[i % CARD_RATIOS.length];
+    const height = Math.round(colWidth / ratio);
+
+    const minH = Math.min(...colHeights);
+    const col = colHeights.indexOf(minH);
+
+    const pos = { x: col * (colWidth + GAP), y: colHeights[col], width: colWidth, height };
+    colHeights[col] += height + GAP;
+    lastInCol[col] = i;
+    return pos;
   });
 
-  // Track how many items each column got for height balancing
-  const colCounts = cols.map((c) => c.length);
-  const maxCount = Math.max(...colCounts);
-
-  // Within each column, alternate tall/short.
-  // Longer columns (extra item) start with SHORT to stay close in total height
-  // to the shorter columns that start with TALL.
-  return cols.map((col, ci) => {
-    const startTall = col.length < maxCount; // shorter col → start tall
-    return col.map((project, j) => ({
-      project,
-      tall: startTall ? j % 2 === 0 : j % 2 === 1,
-    }));
+  // Stretch the last card in each column so all columns end at the same baseline
+  const maxH = Math.max(...colHeights);
+  lastInCol.forEach((idx, col) => {
+    if (idx < 0) return;
+    const p = positions[idx];
+    const gap = maxH - GAP - (p.y + p.height);
+    if (gap > 0) p.height += gap;
   });
+
+  return { positions, totalHeight: maxH - GAP };
 }
 
 export default function WorkPageClient({ projects }) {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [layout, setLayout] = useState({ positions: [], totalHeight: 0 });
+  const gridRef = useRef(null);
   const wrapRef = useRef(null);
   const heroRef = useRef(null);
 
@@ -58,7 +70,23 @@ export default function WorkPageClient({ projects }) {
       : projects.filter((p) => p.category === activeCategory);
 
   const categories = buildCategories(projects);
-  const masonryColumns = buildMasonryColumns(filtered);
+
+  const recompute = useCallback(() => {
+    if (!gridRef.current) return;
+    const w = gridRef.current.offsetWidth;
+    setLayout(computeLayout(filtered.length, w));
+  }, [filtered.length]);
+
+  useLayoutEffect(() => {
+    recompute();
+  }, [recompute]);
+
+  useEffect(() => {
+    if (!gridRef.current) return;
+    const ro = new ResizeObserver(recompute);
+    ro.observe(gridRef.current);
+    return () => ro.disconnect();
+  }, [recompute]);
 
   // Hero entrance
   useLayoutEffect(() => {
@@ -67,14 +95,7 @@ export default function WorkPageClient({ projects }) {
       gsap.fromTo(
         heroRef.current.querySelectorAll(".h-anim"),
         { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          stagger: 0.1,
-          ease: "power4.out",
-          delay: 0.2,
-        },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power4.out", delay: 0.2 },
       );
     }, heroRef);
     return () => ctx.revert();
@@ -121,12 +142,8 @@ export default function WorkPageClient({ projects }) {
             { v: "99%", l: "Client Satisfaction" },
           ].map(({ v, l }) => (
             <div key={l} className="text-center">
-              <div className="text-2xl sm:text-3xl font-semibold text-foreground">
-                {v}
-              </div>
-              <div className="text-textColor text-xs sm:text-sm mt-0.5">
-                {l}
-              </div>
+              <div className="text-2xl sm:text-3xl font-semibold text-foreground">{v}</div>
+              <div className="text-textColor text-xs sm:text-sm mt-0.5">{l}</div>
             </div>
           ))}
         </div>
@@ -155,38 +172,31 @@ export default function WorkPageClient({ projects }) {
       <section className="px-4 sm:px-8 md:px-12 lg:px-20 pb-28" ref={wrapRef}>
         {filtered.length === 0 ? (
           <div className="py-28 text-center">
-            <p className="text-textColor text-lg">
-              No projects in this category yet.
-            </p>
+            <p className="text-textColor text-lg">No projects in this category yet.</p>
           </div>
         ) : (
-          <>
-            {/* Desktop: 3 explicit flex columns — guarantees consistent endings */}
-            <div className="hidden lg:flex gap-4 items-start">
-              {masonryColumns.map((col, ci) => (
-                <div key={ci} className="flex flex-col gap-4 flex-1 min-w-0">
-                  {col.map(({ project, tall }) => (
-                    <ProjectCard
-                      key={project.slug}
-                      project={project}
-                      tall={tall}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
-
-            {/* Mobile / tablet: 2-col simple grid */}
-            <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {filtered.map((project, i) => (
-                <ProjectCard
+          <div
+            ref={gridRef}
+            className="relative w-full"
+            style={{ height: layout.totalHeight || 600 }}
+          >
+            {filtered.map((project, i) => {
+              const pos = layout.positions[i];
+              return (
+                <div
                   key={project.slug}
-                  project={project}
-                  tall={false}
-                />
-              ))}
-            </div>
-          </>
+                  className="absolute gallery-item"
+                  style={
+                    pos
+                      ? { left: pos.x, top: pos.y, width: pos.width, height: pos.height }
+                      : { opacity: 0 }
+                  }
+                >
+                  <ProjectCard project={project} />
+                </div>
+              );
+            })}
+          </div>
         )}
       </section>
 
@@ -196,7 +206,7 @@ export default function WorkPageClient({ projects }) {
 }
 
 /* ── Individual project card ── */
-function ProjectCard({ project, tall }) {
+function ProjectCard({ project }) {
   const cardRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -222,10 +232,7 @@ function ProjectCard({ project, tall }) {
   }, []);
 
   return (
-    <div
-      ref={cardRef}
-      className={`gallery-item ${tall ? "h-[560px]" : "h-[280px]"}`}
-    >
+    <div ref={cardRef} className="gallery-item w-full h-full">
       <Link
         href={`/work/${project.slug}`}
         className="group relative overflow-hidden rounded-2xl border border-border bg-secondary block h-full"
