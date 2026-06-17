@@ -41,8 +41,7 @@
 
 /* Light mode overrides */
 [data-theme="light"] {
-  /* --background: linear-gradient(180deg, #F5F4FE 0%, #FFFFFF 12.75%); */
-  --background: #FFFFFF;
+  --background: linear-gradient(180deg, #F5F4FE 0%, #FFFFFF 12.75%);
   --foreground: #0F0F1A;
   --primary:#B88BFF;
   --secondary:#EDE9FF;

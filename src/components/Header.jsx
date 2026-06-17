@@ -184,7 +184,7 @@ export function Header() {
     gsap.set(overlay, {
       display: "block",
       backgroundColor: oldThemeColor,
-      clipPath: `circle(150% at ${x}px ${y}px)`,
+      clipPath: `circle(200% at ${x}px ${y}px)`,
     });
 
     setTheme(next);
@@ -296,7 +296,7 @@ export function Header() {
           <div className="flex-1 flex items-center justify-end gap-4">
             <button
               onClick={toggleTheme}
-              className={`theme-toggle-pill${currentTheme === "light" ? " is-light" : ""}`}
+              className="theme-toggle-pill"
               aria-label={
                 currentTheme === "light"
                   ? "Switch to dark mode"
@@ -402,10 +402,10 @@ export function Header() {
         </div>
       </div>
 
-      {/* Transition overlay */}
+      {/* Transition overlay — must be above cursor (z-index 10000) */}
       <div
         ref={transitionRef}
-        className="fixed inset-0 z-[999] pointer-events-none hidden"
+        className="fixed inset-0 z-[11000] pointer-events-none hidden"
       />
     </>
   );

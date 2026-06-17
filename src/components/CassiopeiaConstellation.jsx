@@ -35,11 +35,11 @@ const SLIDE_POSITIONS = [
 
 // Star metadata
 const STARS = [
-  { name: "Segin", sanskrit: "शिकार", meaning: "The Hunt" },
-  { name: "Ruchbah", sanskrit: "सार", meaning: "The Strip" },
-  { name: "Gamma", sanskrit: "शिल्प", meaning: "The Craft" },
-  { name: "Schedar", sanskrit: "मुक्ति", meaning: "The Release" },
-  { name: "Caph", sanskrit: "विकास", meaning: "The Katharsis" },
+  { name: "Hunt", sanskrit: "शिकार", meaning: "The Hunt" },
+  { name: "Strip", sanskrit: "सार", meaning: "The Strip" },
+  { name: "Craft", sanskrit: "शिल्प", meaning: "The Craft" },
+  { name: "Release", sanskrit: "मुक्ति", meaning: "The Release" },
+  { name: "Katharsis", sanskrit: "विकास", meaning: "The Katharsis" },
 ];
 
 // Content for each full-screen slide — mirrors the Our Approach steps
@@ -142,6 +142,9 @@ const REVEAL_NODES = [
 function ConstellationReveal({ idp }) {
   return (
     <>
+      <h3 className="cas-final-title">Our Approach</h3>
+      <span className="cas-final-sub">The Kathart Path</span>
+
       <svg className="cas-final-svg" viewBox="0 0 593 427" fill="none">
         <defs>
           <linearGradient id={`${idp}-fg`} x1="0%" y1="0%" x2="100%" y2="100%">
@@ -250,7 +253,7 @@ function ConstellationReveal({ idp }) {
               x={s.cx + (i % 2 === 0 ? -22 : 22)}
               y={s.cy - 10}
               textAnchor={i % 2 === 0 ? "end" : "start"}
-              fontSize="9.5"
+              fontSize="16"
               fontFamily="Questrial, sans-serif"
               letterSpacing="0.8"
               fill="#B88BFF"
@@ -270,57 +273,11 @@ function ConstellationReveal({ idp }) {
               opacity="0.65"
               fontStyle="italic"
             >
-              {STARS[i].sanskrit}
+              {/* {STARS[i].sanskrit} */}
             </text>
           </g>
         ))}
       </svg>
-
-      <h3 className="cas-final-title">Our Approach</h3>
-      <span className="cas-final-sub">The Kathart Path</span>
-      <div
-        className="cas-final-body"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.55rem",
-          textAlign: "left",
-          maxWidth: "28rem",
-        }}
-      >
-        {SLIDE_CONTENT.map((s, i) => (
-          <div
-            key={i}
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "0.75rem",
-            }}
-          >
-            <span
-              style={{
-                color: "#E382FF",
-                fontWeight: 700,
-                fontSize: "0.7rem",
-                letterSpacing: "0.1em",
-                minWidth: "1.6rem",
-                paddingTop: "0.18rem",
-              }}
-            >
-              0{i + 1}
-            </span>
-            <span
-              style={{
-                color: "var(--foreground)",
-                fontWeight: 500,
-                fontSize: "clamp(0.8rem, 1.2vw, 0.95rem)",
-              }}
-            >
-              {s.title}
-            </span>
-          </div>
-        ))}
-      </div>
     </>
   );
 }
@@ -851,7 +808,8 @@ export default function CassiopeiaConstellation() {
           position: absolute;
           inset: 2px;
           border-radius: 50%;
-          background: var(--foreground);
+          background: radial-gradient(circle, #ffffff 0%, #C9A0FF 55%, #8855FF 100%);
+          box-shadow: 0 0 8px 3px rgba(184,139,255,0.7), 0 0 16px 6px rgba(184,139,255,0.3);
         }
         @keyframes cas-pulse {
           0%,100% { transform: scale(1); opacity: 0.5; }
@@ -888,7 +846,12 @@ export default function CassiopeiaConstellation() {
         }
         [data-theme="light"] .cas-bg-star,
         .light .cas-bg-star {
-          display: none;
+          background: radial-gradient(circle, #B88BFF 0%, rgba(184,139,255,0.55) 45%, rgba(227,130,255,0.15) 100%);
+          box-shadow:
+            0 0 2px 1px rgba(184, 139, 255, 0.8),
+            0 0 8px 2px rgba(184, 139, 255, 0.45),
+            0 0 16px 4px rgba(184, 139, 255, 0.2),
+            0 0 24px 6px rgba(227, 130, 255, 0.1);
         }
 
         /* SVG lines */
@@ -926,6 +889,7 @@ export default function CassiopeiaConstellation() {
         .cas-final-svg {
           width: min(56vw, 440px);
           max-height: 32vh;
+          margin-top: 1.8rem;
           height: auto;
           flex-shrink: 1;
           min-height: 0;
