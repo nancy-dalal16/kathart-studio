@@ -42,6 +42,7 @@ export default function HeroSection() {
     const maskElevatedEl = maskElevatedRef.current;
 
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth <= 640;
       const totalScroll = window.innerHeight * 3.2;
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -63,8 +64,8 @@ export default function HeroSection() {
         .to(
           maskElevatedEl,
           {
-            scale: 75,
-            duration: 0.55,
+            scale: isMobile ? 100 : 75,
+            duration: isMobile ? 0.82 : 0.55,
             transformOrigin: "53% 53%",
             ease: "power3.in",
             force3D: false,

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, ArrowRight, MapPin } from "lucide-react";
 import { MailIcon, PhoneIcon, MapPinIcon } from "lucide-react";
@@ -73,9 +74,71 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
+  const recaptchaRef = useRef(null);
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.name.trim()) {
+      errors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = "Please enter a valid email";
+    }
+
+    return errors;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setError("");
+
+    const errors = validateForm();
+    setFieldErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
+    const recaptchaToken = recaptchaRef.current?.getValue();
+    if (!recaptchaToken) {
+      setError("Please complete the reCAPTCHA verification");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData, recaptchaToken }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      setSubmitted(true);
+      setFormData({ name: "", email: "", company: "", message: "" });
+      setFieldErrors({});
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -120,27 +183,63 @@ export default function ContactPage() {
                 </p> */}
               </div>
               <div className="bg-seccolor-cta-cards-bg gradient-border rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10">
-                <form
-                  onSubmit={handleSubmit}
-                  className="space-y-5 sm:space-y-6"
-                >
+                {submitted ? (
+                  <div className="py-12 text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500/10 rounded-full mb-4">
+                      <span className="text-3xl text-green-500">✓</span>
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">
+                      Thank You!
+                    </h3>
+                    <p className="text-textColor text-base sm:text-lg mb-6">
+                      Your message has been sent successfully. We'll get back to you soon.
+                    </p>
+                    <button
+                      onClick={() => {
+                        setSubmitted(false);
+                        setFormData({ name: "", email: "", company: "", message: "" });
+                      }}
+                      className="text-primary hover:text-primary/80 font-medium transition-colors"
+                    >
+                      Send Another Message
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    {error && (
+                      <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+                        <p className="text-red-500 font-medium">✗ {error}</p>
+                      </div>
+                    )}
+                    <form
+                      onSubmit={handleSubmit}
+                      className="space-y-5 sm:space-y-6"
+                    >
                   <div>
                     <label
                       htmlFor="name"
                       className="block text-foreground text-xs sm:text-sm font-medium mb-2 [font-family:var(--font-geologica)]"
                     >
-                      Full Name
+                      Full Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       id="name"
                       name="name"
-                      required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 [font-family:var(--font-questrial)] focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all"
+                      className={`w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border text-foreground placeholder-textColor/50 [font-family:var(--font-questrial)] focus:outline-none focus:bg-foreground/8 transition-all ${
+                        fieldErrors.name
+                          ? "border-red-500/60 focus:border-red-500/80"
+                          : "border-[#B88BFF]/20 focus:border-[#B88BFF]/60"
+                      }`}
                       placeholder="Ex: John Williamsons"
                     />
+                    {fieldErrors.name && (
+                      <p className="text-red-500 text-xs sm:text-sm mt-1">
+                        {fieldErrors.name}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -148,18 +247,26 @@ export default function ContactPage() {
                       htmlFor="email"
                       className="block text-foreground text-xs sm:text-sm font-medium mb-2 [font-family:var(--font-geologica)]"
                     >
-                      Email
+                      Email <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="email"
                       id="email"
                       name="email"
-                      required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 [font-family:var(--font-questrial)] focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all"
+                      className={`w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border text-foreground placeholder-textColor/50 [font-family:var(--font-questrial)] focus:outline-none focus:bg-foreground/8 transition-all ${
+                        fieldErrors.email
+                          ? "border-red-500/60 focus:border-red-500/80"
+                          : "border-[#B88BFF]/20 focus:border-[#B88BFF]/60"
+                      }`}
                       placeholder="Ex: john@gmail.com"
                     />
+                    {fieldErrors.email && (
+                      <p className="text-red-500 text-xs sm:text-sm mt-1">
+                        {fieldErrors.email}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -173,7 +280,6 @@ export default function ContactPage() {
                       type="text"
                       id="company"
                       name="company"
-                      required
                       value={formData.company}
                       onChange={handleChange}
                       className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-[#B88BFF]/20 text-foreground placeholder-textColor/50 [font-family:var(--font-questrial)] focus:outline-none focus:border-[#B88BFF]/60 focus:bg-foreground/8 transition-all"
@@ -191,7 +297,6 @@ export default function ContactPage() {
                     <textarea
                       id="message"
                       name="message"
-                      required
                       value={formData.message}
                       onChange={handleChange}
                       rows={5}
@@ -200,16 +305,27 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    className="primary-btn w-full sm:w-auto mt-4"
-                  >
-                    Submit Inquiry
-                    <span className="btn-icon">
-                      <ArrowRight size={13} strokeWidth={2.5} />
-                    </span>
-                  </button>
-                </form>
+                      <div className="flex justify-start my-6">
+                        <ReCAPTCHA
+                          ref={recaptchaRef}
+                          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                          theme="dark"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="primary-btn w-full sm:w-auto mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {loading ? "Sending..." : "Submit Inquiry"}
+                        <span className="btn-icon">
+                          <ArrowRight size={13} strokeWidth={2.5} />
+                        </span>
+                      </button>
+                    </form>
+                  </>
+                )}
               </div>
             </div>
 

@@ -14,19 +14,19 @@ export default async function Home() {
   return (
     <>
       <HeroSection />
-      <div className="snap-section relative z-[1]">
+      <div className="snap-section relative lg:z-[1]">
         <WhatWeDoPhilosophy />
       </div>
-      <div className="snap-section relative z-[2]">
+      <div className="snap-section relative lg:z-[2]">
         <OurWork projects={recentProjects} />
       </div>
-      <div className="snap-section relative z-[3]">
+      <div className="snap-section relative lg:z-[3]">
         <OurClients />
       </div>
-      <div className="snap-section relative z-[4]">
+      <div className="snap-section relative lg:z-[4]">
         <SuccessStories />
       </div>
-      <div className="snap-section relative z-[5]">
+      <div className="snap-section relative lg:z-[5]">
         <CTA />
       </div>
     </>

@@ -286,6 +286,15 @@
   white-space: nowrap;
 }
 
+@media (max-width: 640px) {
+  .elevatedTextMask {
+    font-size: clamp(3rem, 12vw, 16rem);
+  }
+  .elevatedTextSolid {
+    font-size: clamp(3.75rem, 18vw, 22rem);
+  }
+}
+
 /* Scroll cue — drip animation */
 .scrollCue {
   display: none;

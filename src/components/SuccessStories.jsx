@@ -11,30 +11,24 @@ if (typeof window !== "undefined") {
 const testimonials = [
   {
     quote:
-      "They listened to our needs, focused on our audience, and gave our brand a competitive edge. Their approach was strategic and highly effective!",
-    author: "Aron Finch",
-    position: "CEO & Tech Director - Amplify Tech",
-    image: "/images/aron-finch.png",
+      "Kathart has been our trusted creative partner for nearly a decade — handling everything from logo and UI/UX to web development and video production. Their creativity, strategic insight, and reliability have truly shaped our success.",
+    author: "Prasanna Vaidya",
+    position: "Co-founder, DAI Labs Pvt Ltd",
+    image: "/images/clients/prasanna_vaidya.png",
   },
   {
     quote:
-      "Their eye for detail and understanding of our audience completely transformed our visual identity.",
-    author: "Sana Kapoor",
-    position: "Brand Director - Vistara Media",
-    image: "/images/aron-finch.png",
+      "For almost 10 years, Kathart has been our go-to creative agency for Gyde — delivering branding, UI/UX, web development, and video production backed by invaluable marketing guidance. Deeply invested in our growth and always innovative.",
+    author: "Shubham Deshmukh",
+    position: "Co-founder, DAI Labs Pvt Ltd",
+    image: "/images/clients/shubham_deshmukh.png",
   },
   {
     quote:
-      "A thoughtful, strategic, and highly creative team. The results we saw were outstanding.",
-    author: "Rahul Deshmukh",
-    position: "Founder - PixelForge",
-    image: "/images/aron-finch.png",
-  },
-  {
-    quote: "They didn't just design for us — they designed with us.",
-    author: "Mira Patel",
-    position: "Co-founder - Brightnest",
-    image: "/images/aron-finch.png",
+      "Kathart has been our trusted creative partner for Altzor — managing everything from branding and UI/UX to video production and personal brand strategy. Reliable, innovative, and always in sync with our vision.",
+    author: "Girish Deshpande",
+    position: "Co-Founder, Altzor Digital Solutions",
+    image: "/images/clients/Girish_Chandra.jpeg",
   },
 ];
 
@@ -261,16 +255,18 @@ export default function SuccessStories() {
                     </p>
                   </div>
                 </div>
-                <div className="w-full md:w-[40%] flex-shrink-0 flex justify-center md:block md:rounded-lg md:overflow-hidden md:h-[230px] lg:h-[260px]">
-                  <img
-                    src={t.image}
-                    className="h-[180px] sm:h-[220px] w-auto max-w-full rounded-xl md:w-full md:h-full md:max-w-none md:rounded-none md:object-cover md:object-center"
-                    alt={t.author}
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                      e.target.parentElement.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(108,84,255,0.3),rgba(227,130,255,0.2));font-size:3rem;font-weight:700;color:#B88BFF">${t.author.charAt(0)}</div>`;
-                    }}
-                  />
+                <div className="w-full md:w-[40%] flex-shrink-0 flex justify-center items-center">
+                  <div className="w-[160px] h-[160px] sm:w-[190px] sm:h-[190px] md:w-full md:h-[210px] lg:h-[240px] rounded-xl overflow-hidden flex-shrink-0">
+                    <img
+                      src={t.image}
+                      className="w-full h-full object-cover object-top"
+                      alt={t.author}
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                        e.target.parentElement.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(108,84,255,0.3),rgba(227,130,255,0.2));font-size:3rem;font-weight:700;color:#B88BFF">${t.author.charAt(0)}</div>`;
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

@@ -78,28 +78,28 @@ function LogoRow1() {
         alt="Coreco"
         width={500}
         height={500}
-        className={logoClass}
+        className="client-logo h-5 sm:h-6 md:h-9 lg:h-12 w-auto max-w-[60px] sm:max-w-[70px] md:max-w-[85px] lg:max-w-[105px] object-contain flex-shrink-0"
       />
       <Image
         src="/images/clients/Cogbee.svg"
         alt="Cogbee"
         width={500}
         height={500}
-        className={logoClass}
+        className="client-logo h-5 sm:h-6 md:h-9 lg:h-12 w-auto max-w-[60px] sm:max-w-[70px] md:max-w-[85px] lg:max-w-[105px] object-contain flex-shrink-0"
       />
       <Image
         src="/images/clients/Gyde.png"
         alt="Gyde"
         width={500}
         height={500}
-        className={logoClass}
+        className="client-logo h-5 sm:h-6 md:h-9 lg:h-12 w-auto max-w-[60px] sm:max-w-[70px] md:max-w-[85px] lg:max-w-[105px] object-contain flex-shrink-0"
       />
       <Image
         src="/images/clients/Altzor.svg"
         alt="Altzor"
         width={500}
         height={500}
-        className={logoClass}
+        className="client-logo h-5 sm:h-6 md:h-9 lg:h-12 w-auto max-w-[60px] sm:max-w-[70px] md:max-w-[85px] lg:max-w-[105px] object-contain flex-shrink-0"
       />
       <Image
         src="/images/clients/Whitehedge.svg"
@@ -134,7 +134,7 @@ function LogoRow2() {
         alt="ezest"
         width={500}
         height={500}
-        className={logoClass}
+        className="client-logo h-12 sm:h-14 md:h-20 lg:h-24 w-auto max-w-[130px] sm:max-w-[160px] md:max-w-[190px] lg:max-w-[220px] object-contain flex-shrink-0"
       />
 
       <Image
@@ -142,35 +142,35 @@ function LogoRow2() {
         alt="Indus"
         width={500}
         height={500}
-        className={logoClass}
+        className="client-logo h-12 sm:h-14 md:h-20 lg:h-24 w-auto max-w-[130px] sm:max-w-[160px] md:max-w-[190px] lg:max-w-[220px] object-contain flex-shrink-0"
       />
       <Image
         src="/images/clients/Purple.png"
         alt="Purple"
         width={500}
         height={500}
-        className={logoClass}
+        className="client-logo h-12 sm:h-14 md:h-20 lg:h-24 w-auto max-w-[130px] sm:max-w-[160px] md:max-w-[190px] lg:max-w-[220px] object-contain flex-shrink-0"
       />
       <Image
         src="/images/clients/Cresa.png"
         alt="Cresa"
         width={500}
         height={500}
-        className={logoClass}
+        className="client-logo h-5 sm:h-6 md:h-9 lg:h-12 w-auto max-w-[60px] sm:max-w-[70px] md:max-w-[85px] lg:max-w-[105px] object-contain flex-shrink-0"
       />
       <Image
         src="/images/clients/SAPL.png"
         alt="SAPL"
         width={500}
         height={500}
-        className={logoClass}
+        className="client-logo h-5 sm:h-6 md:h-9 lg:h-12 w-auto max-w-[60px] sm:max-w-[70px] md:max-w-[85px] lg:max-w-[105px] object-contain flex-shrink-0"
       />
       <Image
         src="/images/clients/Tracelink.svg"
         alt="Tracelink"
         width={500}
         height={500}
-        className={logoClass}
+        className="client-logo h-5 sm:h-6 md:h-9 lg:h-12 w-auto max-w-[60px] sm:max-w-[70px] md:max-w-[85px] lg:max-w-[105px] object-contain flex-shrink-0"
       />
       <Image
         src="/images/clients/Startup-Factory.png"

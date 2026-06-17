@@ -251,7 +251,7 @@ export default function OurWork({ projects = [] }) {
                   {/* Image */}
                   <div
                     ref={(el) => (imageRefs.current[i] = el)}
-                    className="w-full lg:w-[48%] rounded-2xl lg:rounded-3xl overflow-hidden flex-shrink-0 lg:h-full lg:max-h-[440px]"
+                    className="w-full lg:w-[48%] rounded-2xl lg:rounded-3xl overflow-hidden flex-shrink-0 md:h-[260px] lg:h-full lg:max-h-[440px]"
                     style={{ transformStyle: "preserve-3d" }}
                     onMouseMove={(e) => handleMouseMove(e, i)}
                     onMouseLeave={() => resetTilt(i)}
@@ -261,7 +261,7 @@ export default function OurWork({ projects = [] }) {
                       alt={project.title}
                       width={700}
                       height={500}
-                      className="w-full h-auto lg:h-full object-contain lg:object-cover"
+                      className="w-full h-auto md:h-full object-contain md:object-cover lg:object-cover"
                     />
                   </div>
 

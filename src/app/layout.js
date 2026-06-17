@@ -70,8 +70,55 @@ const geologica = localFont({
 });
 
 export const metadata = {
-  title: "Kathart Studios",
-  description: "Creative marketing agency",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  ),
+  title: {
+    default: "Kathart Studios",
+    template: "%s | Kathart Studios",
+  },
+  description:
+    "Kathart Studios is an end-to-end creative agency specialising in brand design, UI/UX, web development, and video production.",
+  keywords: [
+    "creative agency",
+    "branding",
+    "UI/UX design",
+    "web development",
+    "video production",
+    "marketing agency",
+    "Kathart Studios",
+  ],
+  authors: [{ name: "Kathart Studios" }],
+  creator: "Kathart Studios",
+  publisher: "Kathart Studios",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Kathart Studios",
+    title: "Kathart Studios",
+    description: "An end-to-end creative agency for brands that demand more.",
+    images: [
+      {
+        url: "/images/Kathart_logo-light.svg",
+        width: 1200,
+        height: 630,
+        alt: "Kathart Studios",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kathart Studios",
+    description: "An end-to-end creative agency for brands that demand more.",
+    images: ["/images/Kathart_logo-light.svg"],
+  },
+  icons: {
+    icon: "/images/Kathart_logo-light.svg",
+  },
 };
 
 export default async function RootLayout({ children }) {

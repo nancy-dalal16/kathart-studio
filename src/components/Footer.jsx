@@ -50,9 +50,21 @@ if (typeof window !== "undefined") {
 }
 
 const socialLinks = [
-  { icon: FacebookIcon, alt: "Facebook" },
-  { icon: InstagramIcon, alt: "Instagram" },
-  { icon: LinkedinIcon, alt: "Linkedin" },
+  {
+    icon: FacebookIcon,
+    alt: "Facebook",
+    link: "https://www.facebook.com/kathart.studio27/",
+  },
+  {
+    icon: InstagramIcon,
+    alt: "Instagram",
+    link: "https://www.instagram.com/kathart.studios/",
+  },
+  {
+    icon: LinkedinIcon,
+    alt: "Linkedin",
+    link: "https://www.linkedin.com/company/kathart-studios/",
+  },
 ];
 
 const companyLinks = [
@@ -142,12 +154,15 @@ export function Footer() {
                       key={index}
                       className="flex items-center gap-4 md:gap-6"
                     >
-                      <button
+                      <a
+                        href={social.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         aria-label={social.alt}
                         className="w-5 h-5 md:w-6 md:h-6 text-foreground hover:text-primary transition-colors"
                       >
                         <social.icon className="w-5 h-5 md:w-6 md:h-6 hover:scale-125 hover:text-primary" />
-                      </button>
+                      </a>
 
                       {index < socialLinks.length - 1 && (
                         <Separator
