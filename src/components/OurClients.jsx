@@ -54,60 +54,67 @@ function Marquee({
 // ⭐ Logo Rows (Inline, same file)
 // -----------------------------------------------------------------------------
 const logoClass =
-  "client-logo h-10 sm:h-12 md:h-14 lg:h-16 w-auto max-w-[110px] sm:max-w-[130px] md:max-w-[150px] lg:max-w-[170px] object-contain flex-shrink-0";
+  "client-logo h-10 sm:h-12 md:h-16 lg:h-20 w-auto max-w-[110px] sm:max-w-[130px] md:max-w-[150px] lg:max-w-[170px] object-contain flex-shrink-0";
 
 function LogoRow1() {
   return (
     <>
       <Image
-        src="/images/clients/Murgappa.png"
-        alt="Creative market"
-        width={500}
-        height={500}
-        className={logoClass}
-      />
-      <Image
-        src="/images/clients/Tide.png"
-        alt="Walmart"
+        src="/images/clients/Zlade.png"
+        alt="Zlade"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
         src="/images/clients/Wealthseva.png"
-        alt="Maze"
+        alt="Wealthseva"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/Startup-Factory.png"
-        alt="Bukalapak"
+        src="/images/clients/Coreco.png"
+        alt="Coreco"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/Altizon.png"
-        alt="Grapho"
+        src="/images/clients/Cogbee.svg"
+        alt="Cogbee"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/Zlade.png"
-        alt="Traveloka"
+        src="/images/clients/Gyde.png"
+        alt="Gyde"
         width={500}
         height={500}
         className={logoClass}
       />
-      {/* <Image
-        src="/images/clients/ebay.svg"
-        alt="eBay"
+      <Image
+        src="/images/clients/Altzor.svg"
+        alt="Altzor"
         width={500}
         height={500}
         className={logoClass}
-      /> */}
+      />
+      <Image
+        src="/images/clients/Whitehedge.svg"
+        alt="Whitehedge"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/Murgappa.png"
+        alt="Murgappa"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
     </>
   );
 }
@@ -116,43 +123,65 @@ function LogoRow2() {
   return (
     <>
       <Image
-        src="/images/clients/ezest.png"
-        alt="Emblem"
+        src="/images/clients/Altizon.png"
+        alt="Altizon"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
-        src="/images/clients/Gyde.png"
-        alt="Iconic"
+        src="/images/clients/ezest.png"
+        alt="ezest"
         width={500}
         height={500}
         className={logoClass}
       />
+
       <Image
         src="/images/clients/Indus.png"
-        alt="Optimal"
+        alt="Indus"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
         src="/images/clients/Purple.png"
-        alt="Visually"
+        alt="Purple"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
         src="/images/clients/Cresa.png"
-        alt="Signet"
+        alt="Cresa"
         width={500}
         height={500}
         className={logoClass}
       />
       <Image
         src="/images/clients/SAPL.png"
-        alt="Signet"
+        alt="SAPL"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/Tracelink.svg"
+        alt="Tracelink"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/Startup-Factory.png"
+        alt="Startup Factory"
+        width={500}
+        height={500}
+        className={logoClass}
+      />
+      <Image
+        src="/images/clients/Tii.png"
+        alt="Tii"
         width={500}
         height={500}
         className={logoClass}

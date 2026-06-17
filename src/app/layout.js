@@ -4,6 +4,7 @@ import { Questrial } from "next/font/google";
 import { draftMode } from "next/headers";
 import AmbientMusic from "@/components/AmbientMusic";
 import ConditionalLayout from "@/components/ConditionalLayout";
+import HomeLoader from "@/components/HomeLoader";
 import ThemeScript from "@/components/ThemeScript";
 import GlowCursorWrapper from "@/components/atmosphere/GlowCursorWrapper";
 import VisualEditingOverlay from "@/components/VisualEditingOverlay";
@@ -84,6 +85,7 @@ export default async function RootLayout({ children }) {
     >
       <body className="bg-background text-foreground" suppressHydrationWarning>
         <ThemeScript />
+        <HomeLoader />
         <GlowCursorWrapper />
         <ConditionalLayout>
           {children}

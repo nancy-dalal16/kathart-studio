@@ -3,31 +3,25 @@ import { useEffect, useRef, useState } from "react";
 
 export default function PageLoader() {
   const [phase, setPhase] = useState("visible"); // visible → fading → gone
+  const [src, setSrc] = useState(null);
   const videoRef = useRef(null);
 
+  // Detect theme on the client and pick the right video
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
     const isLight =
       document.documentElement.dataset.theme === "light" ||
       document.documentElement.classList.contains("light");
+    setSrc(
+      isLight
+        ? "/images/cursor/Logo_Dark_Full.webm"
+        : "/images/cursor/Logo_Light_Full.webm"
+    );
+  }, []);
 
-    const base = isLight
-      ? "/images/cursor/Logo_Dark_Full"
-      : "/images/cursor/Logo_Light_Full";
-
-    const webm = document.createElement("source");
-    webm.src = `${base}.webm`;
-    webm.type = "video/webm";
-
-    const mov = document.createElement("source");
-    mov.src = `${base}.mov`;
-    mov.type = "video/quicktime";
-
-    video.appendChild(webm);
-    video.appendChild(mov);
-    video.load();
+  // Play once src is set in state (video element already has the src attr)
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !src) return;
 
     const dismiss = () => {
       setPhase("fading");
@@ -35,16 +29,16 @@ export default function PageLoader() {
     };
 
     video.addEventListener("ended", dismiss);
+    video.load();
     video.play().catch(dismiss);
 
-    // Hard fallback in case video fails silently
     const fallback = setTimeout(dismiss, 5000);
 
     return () => {
       video.removeEventListener("ended", dismiss);
       clearTimeout(fallback);
     };
-  }, []);
+  }, [src]);
 
   if (phase === "gone") return null;
 
@@ -63,12 +57,15 @@ export default function PageLoader() {
         pointerEvents: phase === "fading" ? "none" : "all",
       }}
     >
-      <video
-        ref={videoRef}
-        muted
-        playsInline
-        style={{ width: 220, height: 220, objectFit: "contain" }}
-      />
+      {src && (
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          src={src}
+          style={{ width: 220, height: 220, objectFit: "contain" }}
+        />
+      )}
     </div>
   );
 }

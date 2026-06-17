@@ -205,7 +205,7 @@ export default function ProjectDetailClient({ project, nextProjects = [] }) {
       {/* ── NEXT PROJECTS ── */}
       {nextProjects.length > 0 && (
         <section className="px-4 sm:px-8 md:px-12 lg:px-20 pt-16 sm:pt-20 pb-24 border-t border-border">
-          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-dark-purple mb-8 sm:mb-10">
+          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-primary mb-8 sm:mb-10">
             More Projects
           </p>
 
