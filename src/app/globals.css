@@ -703,7 +703,7 @@ button.nav-link:focus-within {
   font-weight: 500;
   letter-spacing: 0.12em;
   color: var(--foreground);
-  opacity: 0.35;
+  opacity: 0.20;
   min-width: 24px;
   transition: color 0.25s ease, opacity 0.25s ease !important;
 }
@@ -715,11 +715,11 @@ button.nav-link:focus-within {
   letter-spacing: -0.02em;
   line-height: 1.1;
   color: var(--foreground);
-  opacity: 0.65;
+  opacity: 0.20;
   transition: opacity 0.25s ease, color 0.25s ease !important;
 }
 
-.mobile-sheet-item:hover .mobile-sheet-label { opacity: 1; }
+.mobile-sheet-item:hover .mobile-sheet-label { opacity: 0.80; }
 .mobile-sheet-item:hover .mobile-sheet-num   { opacity: 1; color: var(--primary); }
 .mobile-sheet-active .mobile-sheet-label     { opacity: 1; color: var(--primary); }
 .mobile-sheet-active .mobile-sheet-num       { opacity: 1; color: var(--primary); }
@@ -772,7 +772,7 @@ button.nav-link:focus-within {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--foreground);
-  opacity: 0.40;
+  opacity: 0.15;
 }
 
 
